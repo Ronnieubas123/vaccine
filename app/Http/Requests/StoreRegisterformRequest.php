@@ -25,8 +25,8 @@ class StoreRegisterformRequest extends FormRequest
     {
         return [
             'receive_vaccine_dose' => 'required|string',
-            'first_vaccine_type' => 'exists|id',
-            'interested_vaccine' => 'exists|id',
+            'first_vaccine_type' => 'int',
+            'interested_vaccine' => 'string',
             'firstname' => 'required|string',
             'middlename' => 'required|string',
             'lastname' => 'required|string',
@@ -35,8 +35,8 @@ class StoreRegisterformRequest extends FormRequest
             'address_line_1' => 'required|string',
             'city' => 'required|string',
             'state' => 'required|string',
-            'zipcode' => 'required|string',
-            'phone' => 'required|string',
+            'zipcode' => 'required|int',
+            'phone' => 'required|int',
             'email' => 'required|string',
             'sex' => 'required|string',
             'vaccine_location' => 'required|string',

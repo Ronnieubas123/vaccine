@@ -44,7 +44,7 @@
                         <div class="mt-1 rounded-md">
                           <div v-for="formvaccines in formvaccine" :key="formvaccines.id" >
                             <span>
-                              <input v-model="vaccineform.first_vaccine_type" type="radio" name="first_vaccine_type" :value="formvaccines.name" @click="FirstVaccineType">
+                              <input v-model="vaccineform.first_vaccine_type" type="radio" name="first_vaccine_type" :value="formvaccines.id" @click="FirstVaccineType">
                               {{ formvaccines.name }}
                             </span>
                           </div>
@@ -55,7 +55,7 @@
                         <div class="mt-1 rounded-md">
                           <div v-for="formvaccines in formvaccine" :key="formvaccines.id" >
                             <span>
-                              <input v-model="vaccineform.first_vaccine_type" type="radio" name="first_vaccine_type" value="Pfizer" @click="FirstVaccineType">
+                              <input v-model="vaccineform.first_vaccine_type" type="radio" name="first_vaccine_type" :value="formvaccines.id" @click="FirstVaccineType">
                               {{ formvaccines.name }}
                             </span>
                           </div>
@@ -119,14 +119,14 @@
                         <div class="flex gap-2">
                          
                           <select v-model="vaccineform.age" name="age" id="age">
-                            <option value="">Under 18</option>
-                            <option value="">18 - 24</option>
-                            <option value="">25 - 34</option>
-                            <option value="">34 - 44</option>
-                            <option value="">45 - 54</option>
-                            <option value="">55 - 64</option>
-                            <option value="">65 - 97</option>
-                            <option value="">98+</option>
+                            <option value="Under 18">Under 18</option>
+                            <option value="18 - 24">18 - 24</option>
+                            <option value="25 - 34">25 - 34</option>
+                            <option value="34 - 44">34 - 44</option>
+                            <option value="45 - 54">45 - 54</option>
+                            <option value="55 - 64">55 - 64</option>
+                            <option value="65 - 97">65 - 97</option>
+                            <option value="98+">98+</option>
                           </select>
                         </div>
                       </div>
@@ -198,12 +198,12 @@
                     <div class="col-span-3 sm:col-span-2">
                       <label for="company-website" class="block text-sm font-medium text-gray-700">Vaccine Location</label>
                       <div class="mt-1 rounded-md">
-                        <select name="location" id="location">
-                          <option value="">BRGY 1</option>
-                          <option value="">BRGY 2</option>
-                          <option value="">BRGY 3</option>
-                          <option value="">BRGY 4</option>
-                          <option value="">BRGY 5</option>
+                        <select v-model="vaccineform.vaccine_location" name="location" id="location">
+                          <option value="Barangay 1">Barangay 1</option>
+                          <option value="Barangay 2">Barangay 2</option>
+                          <option value="Barangay 3">Barangay 3</option>
+                          <option value="Barangay 4">Barangay 4</option>
+                          <option value="Barangay 5">Barangay 5</option>
                         </select>
                       </div>
                     </div>
@@ -233,20 +233,23 @@
  </template>
 <script setup>
 import AdminPageComponent from "../../components/AdminPageComponent.vue";
-import { ref, watch, computed } from "vue";
+import { ref, computed } from "vue";
 import store from "../../store";
+import { useRouter, useRoute } from "vue-router";
 
 
 
-const formvaccine = computed(() => store.state.vaccinestest.data);
-// console.log(formvaccine);
+
+const router = useRouter();
+
+const formvaccine = computed(() => store.state.vaccines.data);
 
 store.dispatch("getVaccinesRegisterForm");
 
 let vaccineform = ref({
   receive_vaccine_dose: '',
   first_vaccine_type: '',
-  interested_vaccine: '',
+  interested_vaccine: '0',
   firstname: '',
   middlename: '',
   lastname: '',
@@ -275,8 +278,20 @@ function VaccineDose() {
 }
 
 function saveVaccineForm() {
-  console.log(vaccineform.value);
+  store.dispatch("saveRegistrationForm", vaccineform.value).then(() => {
+    router.push({
+       name: 'RegisterForm',
+    });
+  });
 }
+
+// function saveBarangay() {
+//   store.dispatch("saveBarangay", barangay.value).then(() => {
+//     router.push({
+//        name: 'Barangay',
+//     });
+//   })
+// }
 
 </script>
 <style></style>

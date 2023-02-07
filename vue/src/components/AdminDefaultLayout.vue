@@ -75,7 +75,7 @@
               <DisclosureButton as="a" @click="logout"  class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Sign out</DisclosureButton>
             </div>
           </div>
-        </DisclosurePanel>
+        </DisclosurePanel>  
       </Disclosure>
       <header class="bg-sky-400 h-11">
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -102,8 +102,9 @@
   import { useStore } from 'vuex'
   import { computed } from 'vue'
   import { useRouter } from 'vue-router'
+  import router from "@/router";
   
-  
+  console.log(router.currentRoute.value.fullPath)
   
   const navigation = [
     { name: 'Dashboard', to: { name: 'Dashboard' } },

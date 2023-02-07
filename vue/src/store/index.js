@@ -19,8 +19,7 @@ const store = createStore({
             loading: false,
             data: []
         },
-        vaccinestest: {
-            loading: false,
+        vaccineRegistration: {
             data: []
         },
         currentBarangay: {
@@ -35,20 +34,18 @@ const store = createStore({
     },
     getters: {},
     actions: {
-        getVaccinesRegisterForm({ commit }) {
-                return axiosClient.get("/vaccine-form").then((res) => {
-                    commit("setVaccinestest", res.data);
+        saveRegistrationForm({ commit }, registration) {
+            let response;
+
+            if(registration.id) {
+
+            } else {
+                response = axiosClient.post('/vaccine-registration', registration).then((res) =>{
+                    commit("setCurrentVaccineForm", res.data);
                     return res;
                 })
+            }
         },
-        // getVaccines({ commit }) {
-        //     commit('setVaccinesLoading', true)
-        //         return axiosClient.get("/vaccine").then((res) => {
-        //             commit('setVaccinesLoading', false);
-        //             commit("setVaccines", res.data);
-        //             return res;
-        //         })
-        // },
         //Barangay CRUD
         saveBarangay({ commit }, barangay) {
             let response;
@@ -119,6 +116,12 @@ const store = createStore({
                 })
             }
         },
+        getVaccinesRegisterForm({ commit }) {
+            return axiosClient.get("/getVaccineForRegistration").then((res) => {
+                commit("setVaccines", res.data);        
+                return res;
+            });
+        },
         getVaccines({ commit }) {
             commit('setVaccinesLoading', true)
                 return axiosClient.get("/vaccine").then((res) => {
@@ -127,6 +130,7 @@ const store = createStore({
                     return res;
                 })
         },
+        
         deleteVaccine({ dispatch }, id) {
             return axiosClient.delete(`/vaccine/${id}`).then((res) => {
               dispatch('getVaccines')
@@ -156,13 +160,8 @@ const store = createStore({
             sessionStorage.setItem('TOKEN', userData.token);
         },
         setVaccines: (state, vaccines) => {
-            state.vaccines.data = vaccines.data;
             console.log(vaccines.data);
-        },
-        setVaccinestest: (state, vaccinestest) => {
-            console.log(vaccinestest.data);
-            // state.vaccinestest.data = vaccinestest.data;
-            // console.log(vaccinestest.data);
+            state.vaccines.data = vaccines.data;
         },
         setVaccinesLoading: (state, loading) => {
             state.vaccines.loading = loading;
@@ -185,10 +184,6 @@ const store = createStore({
         setBarangays: (state, barangays) => {
             state.barangays.data = barangays.data;
         },
-        
-        
-        
-        
     },
     module: {}
 })

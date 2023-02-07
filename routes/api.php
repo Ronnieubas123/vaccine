@@ -24,8 +24,13 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::resource('/vaccine', \App\Http\Controllers\VaccineController::class);
     Route::resource('/barangay', \App\Http\Controllers\BarangayController::class);
+    
+    
 });
-Route::get('/vaccine-form', [\App\Http\Controllers\RegisterformController::class, 'getvaccine']);
+Route::resource('/vaccine-registration', \App\Http\Controllers\RegisterformController::class);
+Route::get('/getVaccineForRegistration', [\App\Http\Controllers\RegisterformController::class, 'getvaccine']);
+
+
 
 
 Route::post('/register', [AuthController::class, 'register']);

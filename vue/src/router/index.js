@@ -4,7 +4,7 @@ import Announcement from '../views/Admin/Announcement.vue'
 import Vaccine from '../views/Admin/Vaccine.vue'
 import VaccineCreate from '../views/Admin/VaccineCreate.vue'
 import Vaccinee from '../views/Admin/Vaccinee.vue'
-import AdminDefaultLayout from '../components/AdminDefaultLayout.vue'
+import AdminlteLayout from '../components/AdminlteLayout.vue'
 import store from "../store"
 import AuthLayout from '../components/AuthLayout.vue'
 import Login from '../views/Login.vue'
@@ -19,10 +19,10 @@ import LandingPage from '../views/Citizen/LandingPage.vue'
 
 const routes = [
     {
-        path: '/admin',
+        path: '/admin',  
         redirect: '/admin/dashboard',
         name: 'Dashboard',
-        component: AdminDefaultLayout,
+        component: AdminlteLayout,
         meta: { requiresAuth: true},
         children: [
             { path: 'dashboard', name: 'Dashboard', component: Dashboard },
@@ -63,7 +63,7 @@ const routes = [
         meta: { requiresAuth: false},
         children: [
             { path: 'landingpage', name: 'LandingPage', component: LandingPage},
-            { path: 'vaccine-form', name: 'RegisterForm', component: RegisterForm },
+            { path: 'vaccine-registration', name: 'RegisterForm', component: RegisterForm },
         ]
 
     },

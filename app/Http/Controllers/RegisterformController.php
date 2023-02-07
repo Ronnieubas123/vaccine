@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Registerform;
 use App\Models\Vaccine;
 use App\Http\Resources\VaccineResource;
+use App\Http\Resources\RegisterformResource;
 use App\Http\Requests\StoreRegisterformRequest;
 use App\Http\Requests\UpdateRegisterformRequest;
 
@@ -28,7 +29,8 @@ class RegisterformController extends Controller
      */
     public function store(StoreRegisterformRequest $request)
     {
-        //
+        $registrationForm = Registerform::create($request->validated());
+        return new RegisterformResource($registrationForm);
     }
 
     /**
@@ -66,7 +68,6 @@ class RegisterformController extends Controller
     }
 
     public function getvaccine(Vaccine $vaccine) {
-        var_dump("test");
         return VaccineResource::collection(Vaccine::orderBy('created_at', 'DESC')->paginate(10));
     }
 }
