@@ -32,7 +32,12 @@ class RegisterformResource extends JsonResource
             'email' => $this->email,
             'sex' => $this->sex,
             'vaccine_location' => $this->vaccine_location,
-            'vaccine_date' => $this->vaccine_date
+            'vaccine_date' => $this->vaccine_date,
+            'status' => $this->status,
+            'pregnant' => $this->pregnant,
+            'month' => $this->month,
+            'day' => $this->day,
+            'reference_id' => $this->reference_id
 
         ];
     }

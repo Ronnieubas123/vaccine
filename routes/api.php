@@ -24,13 +24,14 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::resource('/vaccine', \App\Http\Controllers\VaccineController::class);
     Route::resource('/barangay', \App\Http\Controllers\BarangayController::class);
+    Route::resource('/getvaccine-registration', \App\Http\Controllers\RegisterformController::class);
     
     
 });
 Route::resource('/vaccine-registration', \App\Http\Controllers\RegisterformController::class);
+
 Route::get('/getVaccineForRegistration', [\App\Http\Controllers\RegisterformController::class, 'getvaccine']);
-
-
+Route::get('/track-request/{registerform:reference_id}', [\App\Http\Controllers\RegisterformController::class, 'trackerRequest']);
 
 
 Route::post('/register', [AuthController::class, 'register']);

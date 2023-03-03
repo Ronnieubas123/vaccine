@@ -13,7 +13,7 @@ class UpdateRegisterformRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,29 @@ class UpdateRegisterformRequest extends FormRequest
     public function rules()
     {
         return [
-            //
-        ];
+            'receive_vaccine_dose' => 'required|string',
+            'first_vaccine_type' => 'int',
+            'interested_vaccine' => 'string',
+            'firstname' => 'required|string',
+            'middlename' => 'required|string',
+            'lastname' => 'required|string',
+            'dof' => 'required|string',
+            'age' => 'required|string',
+            'address_line_1' => 'required|string',
+            'city' => 'required|string',
+            'state' => 'required|string',
+            'zipcode' => 'required|int',
+            'phone' => 'required|int',
+            'email' => 'required|string',
+            'sex' => 'required|string',
+            'vaccine_location' => 'required|string',
+            'vaccine_date' => 'required|string',
+            'status' => 'required|string',
+            'pregnant' => 'required|string',
+            'month' => 'required|string',
+            'days' => 'required|string',
+            'reference_id' => 'required|string'
+            
+        ]; 
     }
 }

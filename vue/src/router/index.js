@@ -1,20 +1,22 @@
-import { createRouter, createWebHistory } from "vue-router"
-import Dashboard from '../views/Admin/Dashboard.vue'
-import Announcement from '../views/Admin/Announcement.vue'
-import Vaccine from '../views/Admin/Vaccine.vue'
-import VaccineCreate from '../views/Admin/VaccineCreate.vue'
-import Vaccinee from '../views/Admin/Vaccinee.vue'
-import AdminlteLayout from '../components/AdminlteLayout.vue'
-import store from "../store"
-import AuthLayout from '../components/AuthLayout.vue'
-import Login from '../views/Login.vue'
-import Register from '../views/Citizen/Register.vue'
-import Barangay from '../views/Admin/Barangay.vue'
-import BarangayCreate from '../views/Admin/BarangayCreate.vue'
+import { createRouter, createWebHistory } from "vue-router";
+import Dashboard from '../views/Admin/Dashboard.vue';
+import Announcement from '../views/Admin/Announcement.vue';
+import Vaccine from '../views/Admin/Vaccine.vue';
+import VaccineCreate from '../views/Admin/VaccineCreate.vue';
+import Vaccinee from '../views/Admin/Vaccinee.vue';
+import AdminlteLayout from '../components/AdminlteLayout.vue';
+import store from "../store";
+import AuthLayout from '../components/AuthLayout.vue';
+import Login from '../views/Login.vue';
+import Register from '../views/Citizen/Register.vue';
+import Barangay from '../views/Admin/Barangay.vue';
+import BarangayCreate from '../views/Admin/BarangayCreate.vue';
+import VaccineRegistration from '../views/Admin/VaccineRegistration.vue';
 
-import CitizenDefaultLayout from '../components/CitizenDefaultLayout.vue'
-import RegisterForm from '../views/Citizen/RegisterForm.vue'
-import LandingPage from '../views/Citizen/LandingPage.vue'
+import CitizenDefaultLayout from '../components/CitizenDefaultLayout.vue';
+import RegisterForm from '../views/Citizen/RegisterForm.vue';
+import LandingPage from '../views/Citizen/LandingPage.vue';
+import TrackRequestStatus from '../views/Citizen/TrackRequestStatus.vue';
 
 
 const routes = [
@@ -33,7 +35,8 @@ const routes = [
             { path: 'vaccine/:id', name: 'VaccineView', component: VaccineCreate},
             { path: 'barangay', name: 'Barangay', component: Barangay },
             { path: 'barangay/create', name: 'BarangayCreate', component: BarangayCreate },
-            { path: 'barangay/:id', name:'BarangayView', component: BarangayCreate }
+            { path: 'barangay/:id', name:'BarangayView', component: BarangayCreate },
+            { path: 'vaccine-registration', name:'VaccineRegistration', component: VaccineRegistration }
         ]
     },
     {
@@ -64,6 +67,7 @@ const routes = [
         children: [
             { path: 'landingpage', name: 'LandingPage', component: LandingPage},
             { path: 'vaccine-registration', name: 'RegisterForm', component: RegisterForm },
+            {path: 'track-request-status', name: 'TrackRequestStatus', component: TrackRequestStatus}
         ]
 
     },

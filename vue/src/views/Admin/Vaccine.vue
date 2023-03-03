@@ -64,7 +64,7 @@ import { computed } from "vue";
 
 
 const vaccine = computed(() => store.state.vaccines.data);
-console.log(vaccine);
+
 
 const vaccinesLoading = computed(() => store.state.vaccines.loading);
 

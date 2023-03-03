@@ -10,19 +10,28 @@
             </div>
           </div>
           <div class="mt-5 md:col-span-2 md:mt-0">
-            
               <div class="shadow sm:overflow-hidden sm:rounded-md">
                 <div class="space-y-6 bg-white px-4 py-5 sm:p-6">
-                  
-                  <div class="grid grid-cols-3 gap-6">
+                  <div class="grid grid-cols-1 gap-6">
                     <div class="col-span-3 sm:col-span-2">
-                  
-                      <label for="company-website" class="block text-sm font-medium text-gray-700">Have you previously received a COVID-19 vaccine dose?</label>
+                      <label for="company-website" class="block text-sm font-medium text-gray-700">Reference Id</label>
+                      <span class="block text-sm font-sm text-gray-700">Don't forget to copy the reference id</span>
+                      <div class="mt-1 rounded-md">
+                        <div class="flex gap-2">
+                          <input v-model="vaccineform.reference_id" type="text" name="reference_id" id="reference_id" class="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-3 gap-6">  
+                    <div class="col-span-3 sm:col-span-2">
+                      <label for="company-website" class="block text-sm font-medium text-gray-700">Have you previously received a vaccine dose?</label>
                       <div class="mt-1 rounded-md">
                         <div>
                           <span>
                             <input v-model="vaccineform.receive_vaccine_dose" type="radio" name="receive_vaccine_dose" value="Yes" @click="VaccineDose">
-                            Yes
+                              
                           </span>
                         </div>
                         <div>
@@ -31,7 +40,6 @@
                             No
                           </span>
                         </div>
-                        
                       </div>
                     </div>
                   </div>
@@ -46,7 +54,7 @@
                             <span>
                               <input v-model="vaccineform.first_vaccine_type" type="radio" name="first_vaccine_type" :value="formvaccines.id" @click="FirstVaccineType">
                               {{ formvaccines.name }}
-                            </span>
+                            </span> 
                           </div>
                         </div>
                       </div>
@@ -117,8 +125,8 @@
                       <label for="company-website" class="block text-sm font-medium text-gray-700">Age</label>
                       <div class="mt-1 rounded-md">
                         <div class="flex gap-2">
-                         
-                          <select v-model="vaccineform.age" name="age" id="age">
+                          <input v-model="vaccineform.age" type="number" name="age" id="age" class="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder=" Age" />
+                          <!-- <select v-model="vaccineform.age" name="age" id="age">
                             <option value="Under 18">Under 18</option>
                             <option value="18 - 24">18 - 24</option>
                             <option value="25 - 34">25 - 34</option>
@@ -127,7 +135,7 @@
                             <option value="55 - 64">55 - 64</option>
                             <option value="65 - 97">65 - 97</option>
                             <option value="98+">98+</option>
-                          </select>
+                          </select> -->
                         </div>
                       </div>
                     </div>
@@ -179,19 +187,52 @@
                       <div class="mt-1 rounded-md">
                         <div>
                           <span>
-                            <input v-model="vaccineform.sex" value="Female" type="radio" name="sex" id="sex" class=" border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"  />
+                            <input v-model="vaccineform.sex" value="Female" type="radio" name="sex" id="sex" class=" border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" @click="genderOpen = true"/>
                             Female
                           </span>
                         </div>
                         <div>
                           <span>
-                            <input v-model="vaccineform.sex" value="Male" type="radio" name="sex" id="sex" class=" border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+                            <input v-model="vaccineform.sex" value="Male" type="radio" name="sex" id="sex" class=" border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" @click="genderOpen = false" />
                             Male
                           </span>
                         </div>
                       </div>
                     </div>
                   </div>
+                  <TransitionRoot as="template" :show="genderOpen">
+                    <div>
+                      <div class="grid grid-cols-1 gap-6">
+                        <div class="col-span-3 sm:col-span-2">
+                          <label for="company-website" class="block text-sm font-medium text-gray-700">Pregnant?</label>
+                          <div class="mt-1 rounded-md">
+                            <select v-model="vaccineform.pregnant" name="pregnant" id="pregnant">
+                              <option value="Yes">Yes</option>
+                              <option value="No">No</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="grid grid-cols-1 gap-6">
+                        <div class="col-span-3 sm:col-span-2">
+                          <label for="company-website" class="block text-sm font-medium text-gray-700">Month</label>
+                          <div class="mt-1 rounded-md">
+                            <input v-model="vaccineform.month" type="number" name="month" id="month" class="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Month" />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="grid grid-cols-1 gap-6">
+                        <div class="col-span-3 sm:col-span-2">
+                          <label for="company-website" class="block text-sm font-medium text-gray-700">Days</label>
+                          <div class="mt-1 rounded-md">
+                            <input v-model="vaccineform.days" type="number" name="days" id="days" class="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Days" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </TransitionRoot>
 
 
                   <div class="grid grid-cols-1 gap-6">
@@ -228,6 +269,7 @@
           </div>
         </div>
       </form>
+      {{ vaccineform }}
    </div>
   </admin-page-component>
  </template>
@@ -237,7 +279,10 @@ import { ref, computed } from "vue";
 import store from "../../store";
 import { useRouter, useRoute } from "vue-router";
 
+import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 
+const genderOpen = ref(false);
 
 
 const router = useRouter();
@@ -245,6 +290,22 @@ const router = useRouter();
 const formvaccine = computed(() => store.state.vaccines.data);
 
 store.dispatch("getVaccinesRegisterForm");
+
+const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+function generateReferenceId(length) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      counter += 1;
+    }
+    return result;
+}
+
+let generatedReferenceId = generateReferenceId(6);
 
 let vaccineform = ref({
   receive_vaccine_dose: '',
@@ -264,7 +325,14 @@ let vaccineform = ref({
   sex: '',
   vaccine_location: '',
   vaccine_date: '',
+  status: '0',
+  pregnant: '',
+  month: 'None',
+  days: 'None',
+  reference_id: generatedReferenceId
 });
+
+
 
 function VaccineDose() {
   const VDose = 

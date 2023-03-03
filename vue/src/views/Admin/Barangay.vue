@@ -7,9 +7,23 @@
             <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class=" py-10 inline-block min-w-full sm:px-6 lg:px-8 bg-stone-50">
                 <div class="overflow-hidden">
-                    <div class="mb-4">
-                        <h2 class=" text-2xl tracking-tight text-gray-900 font-medium ">Barangay</h2>
-                        <span class=" font-sm font-normal text-gray-600">List of the Barangay</span>
+                    <div class="mb-4 flex justify-between items-center mt-3">
+                        <div>
+                            <h2 class=" text-2xl tracking-tight text-gray-900 font-medium ">Barangay</h2>
+                            <span class=" font-sm font-normal text-gray-600">List of the Barangay</span>
+                        </div>
+                        <div>
+                            <router-link 
+                                :to="{ name: 'BarangayCreate' }" 
+                                class="py-2 px-3 text-white bg-sky-400 rounded-md hover:bg-sky-400 text-xl"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4 -mt-1 inline-block">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                    </svg>
+                                    Add new Barangay
+                            </router-link>
+                        </div>
+                        
                     </div>
                     <table class="min-w-full text-center">
                     <thead class="border-b">

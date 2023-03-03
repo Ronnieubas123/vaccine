@@ -7,7 +7,7 @@
                 <div>
                     <button
                         @click="all"
-                        :class="[ vaccineestab === 1 ? 'active' : '' ]"
+                        :class="[ registered === 1 ? 'active' : '' ]"
                         class="py-2 px-3 text-white bg-sky-400 rounded-md text-sm mr-2"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4 -mt-1 inline-block">
@@ -19,7 +19,7 @@
 
                     <button
                         @click="below18"
-                        :class="[ vaccineestab === 2 ? 'active' : '' ]"
+                        :class="[ registered === 2 ? 'active' : '' ]"
                         class="py-2 px-3 text-white bg-sky-400 rounded-md text-sm mr-2"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4 -mt-1 inline-block">
@@ -31,7 +31,7 @@
                 
                     <button
                         @click="adult"
-                        :class="[ vaccineestab === 3 ? 'active' : '' ]"
+                        :class="[ registered === 3 ? 'active' : '' ]"
                         class="py-2 px-3 text-white bg-sky-400 rounded-md text-sm mr-2"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4 -mt-1 inline-block">
@@ -43,7 +43,7 @@
 
                     <button
                         @click="senior"
-                        :class="[ vaccineestab === 4 ? 'active' : '' ]"
+                        :class="[ registered === 4 ? 'active' : '' ]"
                         class="py-2 px-3 text-white bg-sky-400 rounded-md text-sm mr-2"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4 -mt-1 inline-block">
@@ -55,7 +55,7 @@
 
                     <button
                         @click="pregnant"
-                        :class="[ vaccineestab === 5 ? 'active' : '' ]"
+                        :class="[ registered === 5 ? 'active' : '' ]"
                         class="py-2 px-3 text-white bg-sky-400 rounded-md text-sm mr-2"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4 -mt-1 inline-block">
@@ -69,7 +69,7 @@
             </div>
             
         <div class="p-3 mt-6 bg-white border">
-            <div v-show="vaccineestab === 1">
+            <div v-show="registered === 1">
                 <table class="w-full text-sm">
                     <thead class=" text-left">
                         <tr>
@@ -88,26 +88,26 @@
                     </thead>
                     <tbody>
                         
-                        <tr v-for="allVaccinee in getallVaccinees">
-                            <template v-if="allVaccinee.status == 1">
-                                <td data-label="Name" class="pt-3 py-3">{{ allVaccinee.firstname +"&nbsp"+  allVaccinee.middlename +"&nbsp"+  allVaccinee.lastname}}</td>
-                                <td data-label="Age" class="pt-3 py-3">{{ allVaccinee.age }}</td>
-                                <td data-label="Sex" class="pt-3 py-3">{{ allVaccinee.sex }}</td>
-                                <td data-label="Email" class="pt-3 py-3">{{ allVaccinee.email }}</td>
-                                <td data-label="Phone" class="pt-3 py-3">{{ allVaccinee.phone }}</td>
-                                <td data-label="Address" class="pt-3 py-3">{{ allVaccinee.address_line_1 + allVaccinee.city + allVaccinee.state  }}</td>
-                                <td data-label="Zip Code" class="pt-3 py-3">{{ allVaccinee.zipcode }}</td>
-                                <td data-label="Vaccine Type" class="pt-3 py-3">{{ allVaccinee.vaccine_type }}</td>
-                                <td data-label="Dosage" class="pt-3 py-3">{{ allVaccinee.dosage }}</td>
-                                <td data-label="Vaccine Date" class="pt-3 py-3">{{ allVaccinee.vaccine_date }}</td>
-                                <td data-label="Location" class="pt-3 py-3">{{ allVaccinee.vaccine_location }}</td>
+                        <tr v-for="allVaccineeRegistered in getAllVaccineeRegistered">
+                            <template v-if="allVaccineeRegistered.status == 0">
+                                <td data-label="Name" class="pt-3 py-3">{{ allVaccineeRegistered.firstname +"&nbsp"+    allVaccineeRegistered.middlename +"&nbsp"+  allVaccineeRegistered.lastname}}</td>
+                                <td data-label="Age" class="pt-3 py-3">{{ allVaccineeRegistered.age }}</td>
+                                <td data-label="Sex" class="pt-3 py-3">{{ allVaccineeRegistered.sex }}</td>
+                                <td data-label="Email" class="pt-3 py-3">{{ allVaccineeRegistered.email }}</td>
+                                <td data-label="Phone" class="pt-3 py-3">{{ allVaccineeRegistered.phone }}</td>
+                                <td data-label="Address" class="pt-3 py-3">{{ allVaccineeRegistered.address_line_1 + allVaccineeRegistered.city + allVaccineeRegistered.state  }}</td>
+                                <td data-label="Zip Code" class="pt-3 py-3">{{ allVaccineeRegistered.zipcode }}</td>
+                                <td data-label="Vaccine Type" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_type }}</td>
+                                <td data-label="Dosage" class="pt-3 py-3">{{ allVaccineeRegistered.dosage }}</td>
+                                <td data-label="Vaccine Date" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_date }}</td>
+                                <td data-label="Location" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_location }}</td>
                             </template>
                         </tr>
                         
                     </tbody>
                 </table>
             </div>
-            <div v-show="vaccineestab === 2">   
+            <div v-show="registered === 2">   
                 <table class="w-full text-sm">
                     <thead class=" text-left">
                         <tr>
@@ -125,19 +125,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="allVaccinee in getallVaccinees">
-                            <template v-if="allVaccinee.age < 18 && allVaccinee.status == 1">
-                                <td data-label="Name" class="pt-3 py-3">{{ allVaccinee.firstname +"&nbsp"+ allVaccinee.middlename +"&nbsp"+ allVaccinee.lastname}}</td>
-                                <td data-label="Age" class="pt-3 py-3">{{ allVaccinee.age }}</td>
-                                <td data-label="Sex" class="pt-3 py-3">{{ allVaccinee.sex }}</td>
-                                <td data-label="Email" class="pt-3 py-3">{{ allVaccinee.email }}</td>
-                                <td data-label="Phone" class="pt-3 py-3">{{ allVaccinee.phone }}</td>
-                                <td data-label="Address" class="pt-3 py-3">{{ allVaccinee.address_line_1 + allVaccinee.city + allVaccinee.state  }}</td>
-                                <td data-label="Zip Code" class="pt-3 py-3">{{ allVaccinee.zipcode }}</td>
-                                <td data-label="Vaccine Type" class="pt-3 py-3">{{ allVaccinee.vaccine_type }}</td>
-                                <td data-label="Dosage" class="pt-3 py-3">{{ allVaccinee.dosage }}</td>
-                                <td data-label="Vaccine Date" class="pt-3 py-3">{{ allVaccinee.vaccine_date }}</td>
-                                <td data-label="Location" class="pt-3 py-3">{{ allVaccinee.vaccine_location }}</td>
+                        <tr v-for="allVaccineeRegistered in getAllVaccineeRegistered">
+                            <template v-if="allVaccineeRegistered.age < 18 && allVaccineeRegistered.status == 0">
+                                <td data-label="Name" class="pt-3 py-3">{{ allVaccineeRegistered.firstname +"&nbsp"+  allVaccineeRegistered.middlename +"&nbsp"+  allVaccineeRegistered.lastname}}</td>
+                                <td data-label="Age" class="pt-3 py-3">{{ allVaccineeRegistered.age }}</td>
+                                <td data-label="Sex" class="pt-3 py-3">{{ allVaccineeRegistered.sex }}</td>
+                                <td data-label="Email" class="pt-3 py-3">{{ allVaccineeRegistered.email }}</td>
+                                <td data-label="Phone" class="pt-3 py-3">{{ allVaccineeRegistered.phone }}</td>
+                                <td data-label="Address" class="pt-3 py-3">{{ allVaccineeRegistered.address_line_1 + allVaccineeRegistered.city + allVaccineeRegistered.state  }}</td>
+                                <td data-label="Zip Code" class="pt-3 py-3">{{ allVaccineeRegistered.zipcode }}</td>
+                                <td data-label="Vaccine Type" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_type }}</td>
+                                <td data-label="Dosage" class="pt-3 py-3">{{ allVaccineeRegistered.dosage }}</td>
+                                <td data-label="Vaccine Date" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_date }}</td>
+                                <td data-label="Location" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_location }}</td>
                             </template>
                             
                           
@@ -145,7 +145,7 @@
                     </tbody>
                 </table>
             </div>
-            <div v-show="vaccineestab === 3">
+            <div v-show="registered === 3">
                 <table class="w-full text-sm">
                     <thead class=" text-left">
                         <tr>
@@ -163,27 +163,25 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="allVaccinee in getallVaccinees">
-                            <template v-if="allVaccinee.age > 17 && allVaccinee.age < 60 && allVaccinee.status == 1">
-                                <td data-label="Name" class="pt-3 py-3">{{ allVaccinee.firstname +"&nbsp"+ allVaccinee.middlename +"&nbsp"+ allVaccinee.lastname}}</td>
-                                <td data-label="Age" class="pt-3 py-3">{{ allVaccinee.age }}</td>
-                                <td data-label="Sex" class="pt-3 py-3">{{ allVaccinee.sex }}</td>
-                                <td data-label="Email" class="pt-3 py-3">{{ allVaccinee.email }}</td>
-                                <td data-label="Phone" class="pt-3 py-3">{{ allVaccinee.phone }}</td>
-                                <td data-label="Address" class="pt-3 py-3">{{ allVaccinee.address_line_1 + allVaccinee.city + allVaccinee.state  }}</td>
-                                <td data-label="Zip Code" class="pt-3 py-3">{{ allVaccinee.zipcode }}</td>
-                                <td data-label="Vaccine Type" class="pt-3 py-3">{{ allVaccinee.vaccine_type }}</td>
-                                <td data-label="Dosage" class="pt-3 py-3">{{ allVaccinee.dosage }}</td>
-                                <td data-label="Vaccine Date" class="pt-3 py-3">{{ allVaccinee.vaccine_date }}</td>
-                                <td data-label="Location" class="pt-3 py-3">{{ allVaccinee.vaccine_location }}</td>
+                        <tr v-for="allVaccineeRegistered in getAllVaccineeRegistered">
+                            <template v-if="(allVaccineeRegistered.age > 17) && (allVaccineeRegistered.age < 60 && allVaccineeRegistered.status == 0)">
+                                <td data-label="Name" class="pt-3 py-3">{{ allVaccineeRegistered.firstname +"&nbsp"+  allVaccineeRegistered.middlename +"&nbsp"+  allVaccineeRegistered.lastname}}</td>
+                                <td data-label="Age" class="pt-3 py-3">{{ allVaccineeRegistered.age }}</td>
+                                <td data-label="Sex" class="pt-3 py-3">{{ allVaccineeRegistered.sex }}</td>
+                                <td data-label="Email" class="pt-3 py-3">{{ allVaccineeRegistered.email }}</td>
+                                <td data-label="Phone" class="pt-3 py-3">{{ allVaccineeRegistered.phone }}</td>
+                                <td data-label="Address" class="pt-3 py-3">{{ allVaccineeRegistered.address_line_1 + allVaccineeRegistered.city + allVaccineeRegistered.state  }}</td>
+                                <td data-label="Zip Code" class="pt-3 py-3">{{ allVaccineeRegistered.zipcode }}</td>
+                                <td data-label="Vaccine Type" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_type }}</td>
+                                <td data-label="Dosage" class="pt-3 py-3">{{ allVaccineeRegistered.dosage }}</td>
+                                <td data-label="Vaccine Date" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_date }}</td>
+                                <td data-label="Location" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_location }}</td>
                             </template>
-                            
-                          
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div v-show="vaccineestab === 4">
+            <div v-show="registered === 4">
                 <table class="w-full text-sm">
                     <thead class=" text-left">
                         <tr>
@@ -201,25 +199,25 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="allVaccinee in getallVaccinees">
-                            <template v-if="allVaccinee.age > 60 || allVaccinee.age == 60 && allVaccinee.status == 1">
-                                <td data-label="Name" class="pt-3 py-3">{{ allVaccinee.firstname +"&nbsp"+ allVaccinee.middlename +"&nbsp"+ allVaccinee.lastname}}</td>
-                                <td data-label="Age" class="pt-3 py-3">{{ allVaccinee.age }}</td>
-                                <td data-label="Sex" class="pt-3 py-3">{{ allVaccinee.sex }}</td>
-                                <td data-label="Email" class="pt-3 py-3">{{ allVaccinee.email }}</td>
-                                <td data-label="Phone" class="pt-3 py-3">{{ allVaccinee.phone }}</td>
-                                <td data-label="Address" class="pt-3 py-3">{{ allVaccinee.address_line_1 + allVaccinee.city + allVaccinee.state  }}</td>
-                                <td data-label="Zip Code" class="pt-3 py-3">{{ allVaccinee.zipcode }}</td>
-                                <td data-label="Vaccine Type" class="pt-3 py-3">{{ allVaccinee.vaccine_type }}</td>
-                                <td data-label="Dosage" class="pt-3 py-3">{{ allVaccinee.dosage }}</td>
-                                <td data-label="Vaccine Date" class="pt-3 py-3">{{ allVaccinee.vaccine_date }}</td>
-                                <td data-label="Location" class="pt-3 py-3">{{ allVaccinee.vaccine_location }}</td>
+                        <tr v-for="allVaccineeRegistered in getAllVaccineeRegistered">
+                            <template v-if="allVaccineeRegistered.age > 60 || allVaccineeRegistered.age == 60 && allVaccineeRegistered.status == 0">
+                                <td data-label="Name" class="pt-3 py-3">{{ allVaccineeRegistered.firstname +"&nbsp"+  allVaccineeRegistered.middlename +"&nbsp"+ allVaccineeRegistered.lastname}}</td>
+                                <td data-label="Age" class="pt-3 py-3">{{ allVaccineeRegistered.age }}</td>
+                                <td data-label="Sex" class="pt-3 py-3">{{ allVaccineeRegistered.sex }}</td>
+                                <td data-label="Email" class="pt-3 py-3">{{ allVaccineeRegistered.email }}</td>
+                                <td data-label="Phone" class="pt-3 py-3">{{ allVaccineeRegistered.phone }}</td>
+                                <td data-label="Address" class="pt-3 py-3">{{ allVaccineeRegistered.address_line_1 + allVaccineeRegistered.city + allVaccineeRegistered.state  }}</td>
+                                <td data-label="Zip Code" class="pt-3 py-3">{{ allVaccineeRegistered.zipcode }}</td>
+                                <td data-label="Vaccine Type" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_type }}</td>
+                                <td data-label="Dosage" class="pt-3 py-3">{{ allVaccineeRegistered.dosage }}</td>
+                                <td data-label="Vaccine Date" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_date }}</td>
+                                <td data-label="Location" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_location }}</td>
                             </template>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div v-show="vaccineestab === 5">
+            <div v-show="registered === 5">
                 <table class="w-full text-sm">
                     <thead class=" text-left">
                         <tr>
@@ -240,22 +238,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="allVaccinee in getallVaccinees">
-                            <template v-if="allVaccinee.pregnant == 'Yes' && allVaccinee.status == 1">
-                                <td data-label="Name" class="pt-3 py-3">{{ allVaccinee.firstname +"&nbsp"+ allVaccinee.middlename +"&nbsp"+ allVaccinee.lastname}}</td>
-                                <td data-label="Age" class="pt-3 py-3">{{ allVaccinee.age }}</td>
-                                <td data-label="Sex" class="pt-3 py-3">{{ allVaccinee.sex }}</td>
-                                <td data-label="Email" class="pt-3 py-3">{{ allVaccinee.email }}</td>
-                                <td data-label="Phone" class="pt-3 py-3">{{ allVaccinee.phone }}</td>
-                                <td data-label="Address" class="pt-3 py-3">{{ allVaccinee.address_line_1 + allVaccinee.city + allVaccinee.state  }}</td>
-                                <td data-label="Zip Code" class="pt-3 py-3">{{ allVaccinee.zipcode }}</td>
-                                <td data-label="Vaccine Type" class="pt-3 py-3">{{ allVaccinee.vaccine_type }}</td>
-                                <td data-label="Dosage" class="pt-3 py-3">{{ allVaccinee.dosage }}</td>
-                                <td data-label="Vaccine Date" class="pt-3 py-3">{{ allVaccinee.vaccine_date }}</td>
-                                <td data-label="Location" class="pt-3 py-3">{{ allVaccinee.vaccine_location }}</td>
-                                <td data-label="Pregnant" class="pt-3 py-3">{{ allVaccinee.pregnant }}</td>
-                                <td data-label="Months" class="pt-3 py-3">{{ allVaccinee.month }}</td>
-                                <td data-label="Days" class="pt-3 py-3">{{ allVaccinee.days }}</td>
+                        <tr v-for="allVaccineeRegistered in getAllVaccineeRegistered">
+                            <template v-if="allVaccineeRegistered.pregnant == 'Yes' && allVaccineeRegistered.status == 0">
+                                <td data-label="Name" class="pt-3 py-3">{{ allVaccineeRegistered.firstname +"&nbsp"+  allVaccineeRegistered.middlename +"&nbsp"+  allVaccineeRegistered.lastname}}</td>
+                                <td data-label="Age" class="pt-3 py-3">{{ allVaccineeRegistered.age }}</td>
+                                <td data-label="Sex" class="pt-3 py-3">{{ allVaccineeRegistered.sex }}</td>
+                                <td data-label="Email" class="pt-3 py-3">{{ allVaccineeRegistered.email }}</td>
+                                <td data-label="Phone" class="pt-3 py-3">{{ allVaccineeRegistered.phone }}</td>
+                                <td data-label="Address" class="pt-3 py-3">{{ allVaccineeRegistered.address_line_1 + allVaccineeRegistered.city + allVaccineeRegistered.state  }}</td>
+                                <td data-label="Zip Code" class="pt-3 py-3">{{ allVaccineeRegistered.zipcode }}</td>
+                                <td data-label="Vaccine Type" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_type }}</td>
+                                <td data-label="Dosage" class="pt-3 py-3">{{ allVaccineeRegistered.dosage }}</td>
+                                <td data-label="Vaccine Date" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_date }}</td>
+                                <td data-label="Location" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_location }}</td>
+                                <td data-label="Pregnant" class="pt-3 py-3">{{ allVaccineeRegistered.pregnant }}</td>
+                                <td data-label="Months" class="pt-3 py-3">{{ allVaccineeRegistered.month }}</td>
+                                <td data-label="Days" class="pt-3 py-3">{{ allVaccineeRegistered.days }}</td>
                             </template>
                         </tr>
                     </tbody>
@@ -272,39 +270,36 @@ import store from "../../store";
 import { computed } from "vue";
 
 
-const getallVaccinees = computed(() => store.state.allVaccinees.data);
-
-
-store.dispatch("getAllVaccinees");
+const getAllVaccineeRegistered = computed(() => store.state.allVaccinees.data);
 
 
 
 export default {
   data() {
     return {
-        vaccineestab: 1,
+        registered: 1,
     };
   },
   methods: {
     all() {
-      this.vaccineestab = 1;
+      this.registered = 1;
     },
     below18() {
-      this.vaccineestab = 2;
+      this.registered = 2;
     },
     adult() {
-      this.vaccineestab = 3;
+      this.registered = 3;
     },
     senior() {
-      this.vaccineestab = 4;
+      this.registered = 4;
     },
     pregnant() {
-      this.vaccineestab = 5;
+      this.registered = 5;
     },
   },
   setup () {
     return {
-        getallVaccinees
+        getAllVaccineeRegistered
     }
   }
 };

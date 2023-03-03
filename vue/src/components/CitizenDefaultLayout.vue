@@ -82,12 +82,8 @@
   
   
   const navigation = [
-    { name: 'Dashboard', to: { name: 'Dashboard' } },
-    { name: 'Announcement', to: { name: 'Announcement' } },
-    { name: 'Vaccine', to: { name: 'Vaccine' } },
-    { name: 'Vaccinee', to: { name: 'Vaccinee' } },
-    { name: 'Barangay', to: {name: 'Barangay' }}
-    //{ name: 'Survey', to: { name: 'Surveys' } },
+    { name: 'Home', to: { name: 'LandingPage' } },
+    { name: 'Track Request Status', to: { name: 'TrackRequestStatus' } },
   ]
   
   export default{

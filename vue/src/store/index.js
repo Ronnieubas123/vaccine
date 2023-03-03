@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createStore } from "vuex";
 import axiosClient from "../axios";
 
@@ -22,18 +23,63 @@ const store = createStore({
         vaccineRegistration: {
             data: []
         },
+        allVaccinees: {
+            loading: false,
+            data: []
+        },
         currentBarangay: {
             data: {},
             loading: false,
         },
         barangays: {
             loading: false,
-            data: [],
+            data: []
+        },
+        currentTrackerStatus: {
+            loaing: false,
+            data: []
         }
+        
         
     },
     getters: {},
     actions: {
+        // getBarangays({ commit }) {
+        //     commit('setBarangaysLoading', true)
+        //         return axiosClient.get("/barangay").then((res) => {
+        //             commit('setBarangaysLoading', false);
+        //             commit('setBarangays', res.data);
+        //             return res;
+        //         });
+        // },
+        // getTheTrackRequest({commit}) {
+        //     commit('setTrackerStatus', true)
+        //       return axiosClient.get('tr')
+        // },
+        trackRequest({ commit }, tracker) {
+            let reference_id = tracker.reference_id;
+             commit("setTrackerLoading", true);
+            return axiosClient
+                .get(`/track-request/${reference_id}`)
+                .then((res) => {
+                    commit("setTracker", res.data);
+                    console.log(res.data);
+                    commit("setTrackerLoading", false);
+                    return res;
+                })
+                .catch((err) => {
+                    commit("setTrackerLoading", false);
+                    throw err;
+                })
+        },
+        getAllVaccinees({ commit }) {
+            commit('setVaccineesLoading', true);
+            return axiosClient.get("/getvaccine-registration").then((res) => {
+                commit('setVaccineesLoading', false);
+                commit('setVaccinees', res.data);
+                return res;
+            });
+        },
         saveRegistrationForm({ commit }, registration) {
             let response;
 
@@ -184,6 +230,20 @@ const store = createStore({
         setBarangays: (state, barangays) => {
             state.barangays.data = barangays.data;
         },
+        setVaccineesLoading: (state, loading) => {
+            state.allVaccinees.loading = loading;
+        },
+        setVaccinees: (state, allVaccinees) => {
+            state.allVaccinees.data = allVaccinees;
+        },
+        setTrackerLoading: (state, loading) => {
+            state.currentTrackerStatus.loading = loading;
+        },
+        setTracker: (state, currentTrackerStatus) => {
+            state.currentTrackerStatus.data = currentTrackerStatus;
+        }
+        
+        
     },
     module: {}
 })

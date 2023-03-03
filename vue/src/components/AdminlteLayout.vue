@@ -1,14 +1,15 @@
 <template>
-  <div class="xl:pl-60 pt-14 min-h-screen w-screen transition-position lg:w-auto bg-gray-50 dark:bg-slate-800 dark:text-slate-100">
-    <nav class="top-0 inset-x-0 fixed bg-gray-50 h-14 z-30 transition-position w-screen lg:w-auto dark:bg-slate-800 xl:pl-60">
+  <div :class="menu ? 'test' : 'overflow-hidden lg:overflow-visible'">
+  <div :class="menu ? 'xl:pl-60 pt-14 min-h-screen w-screen transition-position lg:w-auto bg-gray-50 dark:bg-slate-800 dark:text-slate-100': 'xl:pl-60 ml-60 lg:ml-0 pt-14 min-h-screen w-screen transition-position lg:w-auto bg-gray-50 dark:bg-slate-800 dark:text-slate-100'">
+    <nav :class="menu ? 'top-0 inset-x-0 fixed bg-gray-50 h-14 z-30 transition-position w-screen lg:w-auto dark:bg-slate-800 xl:pl-60' : 'top-0 inset-x-0 fixed bg-gray-50 h-14 z-30 transition-position w-screen lg:w-auto dark:bg-slate-800 xl:pl-60 ml-60 lg:ml-0'">
       <div class="flex lg:items-stretch xl:max-w-7xl xl:mx-auto">
         <div class="flex flex-1 items-stretch h-14">
-          <div class="flex lg:hidden text-black hover:text-blue-500 py-2 px-3 items-center cursor-pointer dark:text-white dark:hover:text-slate-400">
-            <span class="inline-flex justify-center items-center w-6 h-6">
+          <div @click="menu=!menu" class="flex lg:hidden text-black hover:text-blue-500 py-2 px-3 items-center cursor-pointer dark:text-white dark:hover:text-slate-400">
+            <span   class="inline-flex justify-center items-center w-6 h-6">
               <svg viewBox="0 0 24 24" width="24" height="24" class="inline-block">
                 <path fill="currentColor" d="M19,13H3V11H19L15,7L16.4,5.6L22.8,12L16.4,18.4L15,17L19,13M3,6H13V8H3V6M13,16V18H3V16H13Z"></path>
               </svg>
-            </span>
+            </span> 
           </div>
           <div class="hidden lg:flex xl:hidden text-black hover:text-blue-500 py-2 px-3 items-center cursor-pointer dark:text-white dark:hover:text-slate-400">
             <span class="inline-flex justify-center items-center w-6 h-6">
@@ -34,19 +35,6 @@
         </div>
         <div class="max-h-screen-menu overflow-y-auto lg:overflow-visible absolute w-screen top-14 left-0 bg-gray-50 shadow-lg lg:w-auto lg:flex lg:static lg:shadow-none dark:bg-slate-800 hidden">
           <div class="block lg:flex items-center relative cursor-pointer text-black dark:text-white dark:hover:text-slate-400 hover:text-blue-500 lg:py-2 lg:px-3">
-            <!-- <div class="flex items-center bg-gray-100 dark:bg-slate-800 lg:bg-transparent lg:dark:bg-transparent p-3 lg:p-0">
-              <span class="inline-flex justify-center items-center w-6 h-6 transition-colors">
-                <svg viewBox="0 0 24 24" width="16" height="16" class="inline-block">
-                  <path fill="currentColor" d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z"></path>
-                </svg>
-              </span>
-              <span class="px-2 transition-colors">Sample menu</span>
-              <span class="inline-flex justify-center items-center w-6 h-6 hidden lg:inline-flex transition-colors">
-                <svg viewBox="0 0 24 24" width="16" height="16" class="inline-block">
-                  <path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path>
-                </svg>
-              </span>
-            </div> -->
             <div class="text-sm border-b border-gray-100 lg:border lg:bg-white lg:absolute lg:top-full lg:left-0 lg:min-w-full lg:z-20 lg:rounded-lg lg:shadow-lg lg:dark:bg-slate-800 dark:border-slate-700 lg:hidden">
               <div class="block lg:flex items-center relative cursor-pointer text-black dark:text-white dark:hover:text-slate-400 hover:text-blue-500 py-2 px-3">
                 <div class="flex items-center"><!---->
@@ -82,13 +70,6 @@
             </div>
           </div>
           <div class="block lg:flex items-center relative cursor-pointer text-black dark:text-white dark:hover:text-slate-400 hover:text-blue-500 lg:py-2 lg:px-3">
-            <!-- <div class="flex items-center bg-gray-100 dark:bg-slate-800 lg:bg-transparent lg:dark:bg-transparent p-3 lg:p-0">
-              <div class="w-6 h-6 mr-3 inline-flex">
-                <img src="https://avatars.dicebear.com/api/avataaars/example.svg?options[top][]=shortHair&amp;options[accessoriesChance]=93" alt="John Doe" class="rounded-full block h-auto w-full max-w-full bg-gray-100 dark:bg-slate-800">
-              </div>
-              <span class="px-2 transition-colors">John Doe</span>
-             
-            </div> -->
             <div class="text-sm border-b border-gray-100 lg:border lg:bg-white lg:absolute lg:top-full lg:left-0 lg:min-w-full lg:z-20 lg:rounded-lg lg:shadow-lg lg:dark:bg-slate-800 dark:border-slate-700 lg:hidden">
               <a class="block lg:flex items-center relative cursor-pointer text-black dark:text-white dark:hover:text-slate-400 hover:text-blue-500 py-2 px-3">
                 <div class="flex items-center">
@@ -176,7 +157,7 @@
       </div>
     </nav>
 
-    <aside id="aside" class="lg:py-2 lg:pl-2 w-60 fixed flex z-40 top-0 h-screen transition-position overflow-hidden -left-60 lg:left-0 lg:hidden xl:flex">
+    <aside id="aside" :class="menu ? 'lg:py-2 lg:pl-2 w-60 fixed flex z-40 top-0 h-screen transition-position overflow-hidden -left-60 lg:left-0 lg:hidden xl:flex': 'lg:py-2 lg:pl-2 w-60 fixed flex z-40 top-0 h-screen transition-position overflow-hidden left-0 lg:hidden xl:flex'">
       <div class="bg-gray-800 lg:rounded-2xl flex-1 flex flex-col overflow-hidden dark:bg-slate-900">
         <div class="bg-gray-900 text-white flex flex-row h-14 items-center justify-between dark:bg-slate-900">
           <div class="text-center flex-1 lg:text-left lg:pl-6 xl:text-center xl:pl-0">
@@ -206,7 +187,7 @@
       <router-view></router-view>
     </section>
   </div>
-
+  </div>  
 </template>
 <script>
 
@@ -223,12 +204,19 @@ const url = window.location.origin + "/src/assets/image/";
     { name: 'Announcement', to: { name: 'Announcement' }, logo: "megaphone.png" },
     { name: 'Vaccine', to: { name: 'Vaccine' }, logo: "vaccine (3).png" },
     { name: 'Vaccinee', to: { name: 'Vaccinee' }, logo: "vaccinated.png"},
-    { name: 'Barangay', to: {name: 'Barangay' }, logo: "crowd-of-users.png"}
+    { name: 'Barangay', to: {name: 'Barangay' }, logo: "crowd-of-users.png"},
+    {name: 'VaccineRegistration', to: {name: 'VaccineRegistration'}, logo: "verify.png"}
   ];
+
 
 
   
   export default{
+    data() {
+      return {
+        menu: false
+      }
+    },
     components: {
       Disclosure,
       DisclosureButton,
@@ -250,8 +238,14 @@ const url = window.location.origin + "/src/assets/image/";
       }
     }
   }
-
- 
   </script>
+
+<style>
+.transition-position {
+  transition-property: right,left,top,bottom,margin,padding;
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+    transition-duration: .15s;
+}
+</style>
 
 

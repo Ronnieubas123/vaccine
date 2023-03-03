@@ -31,7 +31,7 @@ class StoreRegisterformRequest extends FormRequest
             'middlename' => 'required|string',
             'lastname' => 'required|string',
             'dof' => 'required|string',
-            'age' => 'required|string',
+            'age' => 'required',
             'address_line_1' => 'required|string',
             'city' => 'required|string',
             'state' => 'required|string',
@@ -41,6 +41,11 @@ class StoreRegisterformRequest extends FormRequest
             'sex' => 'required|string',
             'vaccine_location' => 'required|string',
             'vaccine_date' => 'required|string',
+            'status' => 'required|string',
+            'pregnant' => 'required|string',
+            'month' => '',
+            'days' => '',
+            'reference_id' => 'required|string'
             
         ]; 
     }
