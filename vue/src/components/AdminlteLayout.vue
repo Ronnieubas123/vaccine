@@ -190,7 +190,7 @@
   </div>  
 </template>
 <script>
-
+  import  store  from "../store";
   import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
   import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
   import { useStore } from 'vuex'
@@ -202,13 +202,30 @@ const url = window.location.origin + "/src/assets/image/";
   const navigation = [
     { name: 'Dashboard', to: { name: 'Dashboard' }, logo: "dashboard.png" },
     { name: 'Announcement', to: { name: 'Announcement' }, logo: "megaphone.png" },
-    { name: 'Vaccine', to: { name: 'Vaccine' }, logo: "vaccine (3).png" },
+    { name: 'Vaccine', to: { name: 'Vaccine' }, logo: "vaccine (3).png" }, 
     { name: 'Vaccinee', to: { name: 'Vaccinee' }, logo: "vaccinated.png"},
     { name: 'Barangay', to: {name: 'Barangay' }, logo: "crowd-of-users.png"},
-    {name: 'VaccineRegistration', to: {name: 'VaccineRegistration'}, logo: "verify.png"}
+    {name: 'Vaccine Registration', to: {name: 'VaccineRegistration'}, logo: "verify.png"},
+    {name: 'Reports', to: {name: 'Reports'}, logo: "verify.png"}
   ];
 
 
+  const test = setTimeout(myGreeting, 5000);
+
+function myGreeting() {
+  var dateObj = new Date();
+  var month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
+  var date = ("0" + dateObj.getDate()).slice(-2);
+  var year = dateObj.getUTCFullYear();
+
+  var newdate = year + "-" + month + "-" + date;
+
+  store.dispatch("message", newdate).then(() => {
+        // router.push({
+        //     name: "Announcement",
+        // })
+  })
+}
 
   
   export default{
@@ -234,7 +251,9 @@ const url = window.location.origin + "/src/assets/image/";
 
       return {
         navigation,
-        url
+        url,
+        myGreeting
+        
       }
     }
   }

@@ -269,7 +269,6 @@
           </div>
         </div>
       </form>
-      {{ vaccineform }}
    </div>
   </admin-page-component>
  </template>
@@ -326,7 +325,7 @@ let vaccineform = ref({
   vaccine_location: '',
   vaccine_date: '',
   status: '0',
-  pregnant: '',
+  pregnant: 'None',
   month: 'None',
   days: 'None',
   reference_id: generatedReferenceId

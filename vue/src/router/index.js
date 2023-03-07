@@ -12,6 +12,8 @@ import Register from '../views/Citizen/Register.vue';
 import Barangay from '../views/Admin/Barangay.vue';
 import BarangayCreate from '../views/Admin/BarangayCreate.vue';
 import VaccineRegistration from '../views/Admin/VaccineRegistration.vue';
+import Reports from '../views/Admin/Reports.vue';
+import AnnouncementCreate from '../views/Admin/AnnouncementCreate.vue';
 
 import CitizenDefaultLayout from '../components/CitizenDefaultLayout.vue';
 import RegisterForm from '../views/Citizen/RegisterForm.vue';
@@ -36,7 +38,10 @@ const routes = [
             { path: 'barangay', name: 'Barangay', component: Barangay },
             { path: 'barangay/create', name: 'BarangayCreate', component: BarangayCreate },
             { path: 'barangay/:id', name:'BarangayView', component: BarangayCreate },
-            { path: 'vaccine-registration', name:'VaccineRegistration', component: VaccineRegistration }
+            { path: 'vaccine-registration', name:'VaccineRegistration', component: VaccineRegistration },
+            { path: 'reports', name:'Reports', component: Reports },
+            { path: 'announcement-create', name:'AnnouncementCreate', component: AnnouncementCreate },
+            { path: 'announcement/:id', name:'AnnouncementView', component: AnnouncementCreate }
         ]
     },
     {

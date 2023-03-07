@@ -25,6 +25,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('/vaccine', \App\Http\Controllers\VaccineController::class);
     Route::resource('/barangay', \App\Http\Controllers\BarangayController::class);
     Route::resource('/getvaccine-registration', \App\Http\Controllers\RegisterformController::class);
+    Route::resource('/announcement', \App\Http\Controllers\AnnouncementController::class);
+    
     
     
 });
@@ -32,6 +34,14 @@ Route::resource('/vaccine-registration', \App\Http\Controllers\RegisterformContr
 
 Route::get('/getVaccineForRegistration', [\App\Http\Controllers\RegisterformController::class, 'getvaccine']);
 Route::get('/track-request/{registerform:reference_id}', [\App\Http\Controllers\RegisterformController::class, 'trackerRequest']);
+Route::get('/filter-barangay/{registerform:vaccine_location}', [\App\Http\Controllers\RegisterformController::class, 'filterByBarangay']);
+Route::get('/filter-date/{registerform:vaccine_date}', [\App\Http\Controllers\RegisterformController::class, 'filterDate']);
+Route::get('/filter-vaccine/{vaccine:name}', [\App\Http\Controllers\RegisterformController::class, 'filterVaccine']);
+Route::get('/message/{registerform:vaccine_date}', [\App\Http\Controllers\RegisterformController::class, 'message']);
+
+
+
+
 
 
 Route::post('/register', [AuthController::class, 'register']);

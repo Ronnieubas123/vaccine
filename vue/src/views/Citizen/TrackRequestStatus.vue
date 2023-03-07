@@ -32,7 +32,7 @@
         </form>
       </div>
     </div>
-
+    
     <TransitionRoot as="template" :show="open">
     <Dialog as="div" class="relative z-10" @close="open = false">
       <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
@@ -62,6 +62,7 @@
                             <th class="pt-3 py-3">Pregnant</th>
                             <th class="pt-3 py-3">Months</th>
                             <th class="pt-3 py-3">Days</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <div v-if="trackerLoading" class=" h-fit ">
@@ -92,23 +93,111 @@
                             <td data-label="Pregnant" class="pt-3 py-3">{{ trackStatus.pregnant }}</td>
                             <td data-label="Months" class="pt-3 py-3">{{ trackStatus.month }}</td>
                             <td data-label="Days" class="pt-3 py-3">{{ trackStatus.days }}</td>
+                            <td data-label="Status" class="pt-3 py-3">
+                              <span v-if="trackStatus.status == 0" class="text-red-400">Not Completed</span>
+                              <span v-else class="text-green-400">Completed</span> 
+                            </td>
                         </tr>
-                        
                     </tbody>  
                     </template>
-                   
-                    
-                    
                 </table>
-                  
                 </div>
-              </div>
-              <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 flex justify-between items-center">
-                <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto" @click="open = false" ref="cancelButtonRef">Close</button>
-                <div v-if="getallVaccinees > 0">
-                  <span class="text-green-400 font-bold ">Status: Complete</span>
-                </div>
+                <!--Certificate-->
                 
+                <div id="vaccineCertificate" class="grid mt-4 ml-10 mr-10">
+                  <!-- <div class="w-full">
+                      <div class="float-right flex">
+                        <div class="mr-2">
+                          <label> Vaccination Certificate: </label>
+                          <input type="radio" name="pdftype">
+                        </div>
+                        <div>
+                          <label> Vaccination Card: </label>
+                          <input type="radio" name="pdftype">
+                        </div>
+                        
+                      </div>
+                  </div> -->
+                  <div class="w-full mt-4">
+                      <div class="text-center">
+                          <img class="m-auto" src="http://127.0.0.1:5173/src/assets/image/barangay.jpg" alt="">
+                          <h2 class="text-2xl font-bold">All in one Vaccination for Barangay Health Center</h2>
+                      </div>
+                      <div class="bg-green-600 text-center mt-6 p-10">
+                            <h1 class=" text-5xl font-bold text-white">Vaccination Certificate</h1>
+                      </div>
+                      <div class="text-center mt-4">
+                        <p class="text-2xl">This individual has received all required vaccinations</p>
+                      </div>
+                      <div class=" flex justify-between items-center mt-4 text-2xl">
+                          <div>
+                            <div>
+                              <span class="font-bold">Name:</span>
+                            </div>
+                            <div>
+                              <span v-for="getallVaccinee in getallVaccinees">
+                                {{ getallVaccinee.firstname + " " + getallVaccinee.middlename + " " + getallVaccinee.lastname  }}
+                              </span>
+                           </div>
+                          </div>
+
+                          <div class="text-right">
+                            <div>
+                              <span class="font-bold">Date of Birth:</span>
+                            </div>
+                            <div>
+                              <span v-for="getallVaccinee in getallVaccinees">
+                                {{ getallVaccinee.dof }}
+                              </span>
+                           </div>
+                          </div>
+                      </div>
+
+                      <div class=" flex justify-between items-center mt-10 text-2xl">
+                          <div>
+                            <div>
+                              <span class="font-bold">Vaccinations:</span>
+                            </div>
+                          </div>
+
+                          <div class="text-right">
+                            <div>
+                              <span class="font-bold">Date Completed</span>
+                            </div>
+                          </div>
+                      </div>
+                      <div class="h-[2px] bg-black mt-2 mb-2"></div>
+                      <div class=" flex justify-between items-center text-2xl">
+                          <div>
+                            <div>
+                              <span class="font-bold" v-for="getallVaccinee in getallVaccinees">
+                                {{getallVaccinee.vaccine_type}}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div class="text-right">
+                            <div>
+                              <span class="font-bold" v-for="getallVaccinee in getallVaccinees">
+                                {{ getallVaccinee.vaccine_date }}
+                              </span>
+                            </div>
+                          </div>
+                      </div>
+                      <div class="mb-4 mt-10">
+                        This certificate shows your details as reported to the All in one Vaccination for Barangay Health Center Register by your vaccination provider. 
+                        It is available because you have received all required vaccinations approved for use in Philippines. The Valid from date reflects the date from whice 
+                        your received all required vaccination.
+                      </div>
+                      <div>
+                        Every effort is made to ensure that the information contained of the All in one Vaccination for Barangay Health Center Register is correct. The data is based on information provired
+                         by vaccination providers and the accuracy of data is dependent on the quality and timeliness provided.
+                      </div>
+                      <div class="mt-3">
+                        <button class="bg-red-500 text-white pb-2 pt-2 pl-4 pr-4 float-right" @click="pdfVaccineCertificate">Download PDF</button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </DialogPanel>
           </TransitionChild>
@@ -120,11 +209,13 @@
 
     
 </template>
-<script setup>
+<script>
 import AdminPageComponent from "../../components/AdminPageComponent.vue";
 import { ref, watch,computed } from "vue";
 import store from "../../store";
-import { useRouter, useRoute } from "vue-router"
+import { useRouter, useRoute } from "vue-router";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
@@ -143,10 +234,39 @@ const open = ref(false);
 function trackVaccineStatus() {
   store.dispatch("trackRequest", trackRequestStatus.value).then(() => {
     
-    router.push({
-      name: "TrackRequestStatus",
-    });
+    // router.push({
+    //   name: "TrackRequestStatus",
+    // });
   });
+}
+
+export default {
+  methods: {
+    pdfVaccineCertificate() {
+        window.html2canvas = html2canvas;
+        var doc = new jsPDF("l","pt",[1000, 1200], 'center');
+        doc.html(document.querySelector("#vaccineCertificate"), {
+            callback:function(pdf) {
+                pdf.save("vaccine-certificate.pdf");
+            }
+        })
+    }
+},
+components: {
+      Dialog,
+      DialogPanel,
+      TransitionChild,
+      TransitionRoot
+  },
+  setup () {
+    return {
+      getallVaccinees,
+      trackerLoading,
+      trackRequestStatus,
+      trackVaccineStatus,
+      open
+    }
+  }
 }
 
 

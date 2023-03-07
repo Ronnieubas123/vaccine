@@ -14,7 +14,6 @@ const store = createStore({
         currentVaccine: {
             data: {},
             loading: false,
-            
         },
         vaccines: {
             loading: false,
@@ -36,7 +35,23 @@ const store = createStore({
             data: []
         },
         currentTrackerStatus: {
-            loaing: false,
+            loading: false,
+            data: []
+        },
+        filterBarangay: {
+            loading: false,
+            data: []
+        },
+        filterDate: {
+            loading: false,
+            data: []
+        },
+        filterVaccine: {
+            loading: false,
+            data: []
+        },
+        currentAnnouncement: {
+            loading: false,
             data: []
         }
         
@@ -44,18 +59,113 @@ const store = createStore({
     },
     getters: {},
     actions: {
-        // getBarangays({ commit }) {
-        //     commit('setBarangaysLoading', true)
-        //         return axiosClient.get("/barangay").then((res) => {
-        //             commit('setBarangaysLoading', false);
-        //             commit('setBarangays', res.data);
-        //             return res;
-        //         });
-        // },
-        // getTheTrackRequest({commit}) {
-        //     commit('setTrackerStatus', true)
-        //       return axiosClient.get('tr')
-        // },
+        message({ commit }, message) {
+            let vaccine_date = message;
+            return axiosClient
+                .get(`message/${vaccine_date}`)
+                .then((res) => {
+                    return res;
+                })
+                .catch((err) => {
+                    commit("setVaccineFilterLoading", false);
+                    throw err;
+                })
+        },
+        //Announcement
+        
+        getAnnouncement({ commit }, id) {
+            commit("setCurrentAnnouncementLoading", true);
+            return axiosClient
+              .get(`/announcement/${id}`)
+              .then((res) => {
+                commit("setCurrentAnnouncementLoading", false);
+                commit("setCurrentAnnouncement", res.data);
+                return res;
+              })
+              .catch((err) => {
+                commit("setCurrentAnnouncementLoading", false);
+                throw err;
+              });
+        },
+        getAllAnnouncements({ commit }) {
+            commit('setCurrentAnnouncementLoading', true);
+            return axiosClient.get("announcement").then((res) => {
+                commit('setCurrentAnnouncementLoading', false);
+                commit('setCurrentAnnouncement', res.data);
+                return res;
+            });
+
+        },
+        deleteAnnouncement({ dispatch }, id) {
+            return axiosClient.delete(`/announcement/${id}`).then((res) => {
+              dispatch('getAnnouncements')
+              return res;
+            });
+        },
+        saveAnnouncement({commit}, announcement ) {
+            let response;
+            if (announcement.id) {
+                response = axiosClient
+                    .put(`announcement/${announcement.id}`, announcement)
+                    .then((res) => {
+                        commit("setCurrentAnnouncement", res.data);
+                        return res;
+                    });
+            } else {
+                response = axiosClient.post("/announcement", announcement).then((res) => {
+                    commit("setCurrentAnnouncement", res.data);
+                    return res;
+                })
+            }
+        },
+        
+        //Filter report
+        filterByVaccine({ commit }, vaccines) {
+            let name = vaccines.vaccine;
+            console.log(name);
+            commit('setVaccineFilterLoading', true);
+            return axiosClient
+                .get(`filter-vaccine/${name}`)
+                .then((res) => {
+                    commit("setVaccineFilterLoading", false);
+                    commit("setVaccineFilter", res.data);
+                    return res;
+                })
+                .catch((err) => {
+                    commit("setVaccineFilterLoading", false);
+                    throw err;
+                })
+        },
+        filterByDate({ commit }, dates) {
+            let date = dates.date;
+            commit('setDateFilterLoading', true);
+            return axiosClient
+                .get(`filter-date/${date}`)
+                .then((res) => {
+                    commit("setDateFilterLoading", false);
+                    commit("setDate", res.data);
+                    return res;
+                })
+                .catch((err) => {
+                    commit("setDateFilterLoading", false);
+                    throw err;
+                })
+        },
+        filterByBarangay({ commit }, barangays) {
+            let vaccine_location = barangays.barangay;
+            commit('setBarangayFilterLoading', true);
+            return axiosClient
+                .get(`filter-barangay/${vaccine_location}`)
+                .then((res) => {
+                    commit("setBarangayFilter", res.data);
+                    commit("setBarangayFilterLoading", false);
+                    return res;
+                })
+                .catch((err) => {
+                    commit("setBarangayFilterLoading", false);
+                    throw err;
+                })
+        },
         trackRequest({ commit }, tracker) {
             let reference_id = tracker.reference_id;
              commit("setTrackerLoading", true);
@@ -241,6 +351,30 @@ const store = createStore({
         },
         setTracker: (state, currentTrackerStatus) => {
             state.currentTrackerStatus.data = currentTrackerStatus;
+        },
+        setBarangayFilterLoading: (state, loading) => {
+            state.filterBarangay.loading = loading;
+        },
+        setBarangayFilter: (state, filterBarangay) => {
+            state.filterBarangay.data = filterBarangay.data;
+        },
+        setDateFilterLoading: (state, loading) => {
+            state.filterDate.loading = loading;
+        },
+        setDate: (state, filterDate) => {
+            state.filterDate.data = filterDate.data;
+        },
+        setVaccineFilterLoading: (state, loading) => {
+            state.filterVaccine.loading = loading;
+        },
+        setVaccineFilter: (state, filterVaccine) => {
+            state.filterVaccine.data = filterVaccine;
+        },
+        setCurrentAnnouncementLoading: (state, loading) => {
+            state.currentAnnouncement.loading = loading;
+        },
+        setCurrentAnnouncement: (state, currentAnnouncement) => {
+            state.currentAnnouncement.data = currentAnnouncement.data;
         }
         
         

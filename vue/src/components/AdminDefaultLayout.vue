@@ -114,6 +114,7 @@
     { name: 'Barangay', to: {name: 'Barangay' }}
     //{ name: 'Survey', to: { name: 'Surveys' } },
   ]
+
   
   export default{
     components: {
@@ -143,7 +144,9 @@
       // }
       return {
        // user: computed(() => store.state.user.data),
-        navigation
+        navigation,
+        myGreeting,
+        myTimeout
         //logout
       }
     }
