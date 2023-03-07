@@ -20,25 +20,24 @@
           <div class="flex items-center justify-between h-28">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <img class=" h-14 w-30" src="http://127.0.0.1:5173/src/assets/image/healthcareph_2021.png" alt="Your Company" />
+                <h1 class="text-3xl header font-bold">Bakrek</h1>
               </div>
               
             </div>
-            <div class="hidden md:block">
-                <div class="hidden md:block">
+            <div>
+                <div>
                 <div class="ml-10 flex items-baseline space-x-4">
                   <router-link v-for="item in navigation" :key="item.name" :to="item.to" active-class="text-gray-900 hover:font-bold" :class="[this.$route.name === item.to.name ? '' : 'text-gray-900 hover:font-bold', 'px-3 py-2 rounded-md text-lg font-medium']">{{ item.name }}</router-link>
                 </div>
               </div>
             </div>
-            <div class="-mr-2 flex md:hidden">
-              <!-- Mobile menu button -->
+            <!-- <div class="-mr-2 flex md:hidden">
               <DisclosureButton class="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                 <span class="sr-only">Open main menu</span>
                 <Bars3Icon v-if="!open" class="block h-6 w-6" aria-hidden="true" />
                 <XMarkIcon v-else class="block h-6 w-6" aria-hidden="true" />
               </DisclosureButton>
-            </div>
+            </div> -->
           </div>
         </div>
   
@@ -120,3 +119,14 @@
     }
   }
   </script>
+<style>
+  @media screen and (max-width: 768px) {
+  .header {
+    font-size: 30px !important;
+  }
+  a.text-gray-900.hover\:font-bold.px-3.py-2.rounded-md.text-lg.font-medium {
+    font-size: 14px !important;
+    margin-left: 0px;
+  }
+}
+</style>

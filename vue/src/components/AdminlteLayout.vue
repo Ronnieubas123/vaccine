@@ -200,7 +200,6 @@
 const url = window.location.origin + "/src/assets/image/";
 
   const navigation = [
-    { name: 'Dashboard', to: { name: 'Dashboard' }, logo: "dashboard.png" },
     { name: 'Announcement', to: { name: 'Announcement' }, logo: "megaphone.png" },
     { name: 'Vaccine', to: { name: 'Vaccine' }, logo: "vaccine (3).png" }, 
     { name: 'Vaccinee', to: { name: 'Vaccinee' }, logo: "vaccinated.png"},

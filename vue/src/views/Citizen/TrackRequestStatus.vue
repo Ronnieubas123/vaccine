@@ -103,8 +103,9 @@
                 </table>
                 </div>
                 <!--Certificate-->
-                
-                <div id="vaccineCertificate" class="grid mt-4 ml-10 mr-10">
+                <template v-if="getallVaccinees < 1">
+                </template>
+                <div v-else id="vaccineCertificate" class="grid mt-4 ml-10 mr-10">
                   <!-- <div class="w-full">
                       <div class="float-right flex">
                         <div class="mr-2">
