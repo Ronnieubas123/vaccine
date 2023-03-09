@@ -3,6 +3,7 @@ use App\Http\Controllers\AuthController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,14 +23,30 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request){
         return $request->user();
     });
+    Route::get('/current-user', function() {
+        return auth()->user();
+    });
     Route::resource('/vaccine', \App\Http\Controllers\VaccineController::class);
     Route::resource('/barangay', \App\Http\Controllers\BarangayController::class);
     Route::resource('/getvaccine-registration', \App\Http\Controllers\RegisterformController::class);
     Route::resource('/announcement', \App\Http\Controllers\AnnouncementController::class);
+    Route::get('/vaccine-type', [\App\Http\Controllers\VaccineController::class, 'getVaccineType']);
+    Route::get('/vaccine-type-name', [\App\Http\Controllers\VaccineController::class, 'getVaccineTypeName']);
+    Route::resource('/logistic', \App\Http\Controllers\LogisticController::class);
+    Route::resource('/schedule', \App\Http\Controllers\ScheduleController::class);
+    Route::get('/complete-status/{registerform:id}', [\App\Http\Controllers\RegisterformController::class, 'completeStatus']);
+    
+   
+    
     
     
     
 });
+Route::get('/citizine-get-sched', [\App\Http\Controllers\ScheduleController::class, 'citizineGetSched']);
+Route::resource('/users', \App\Http\Controllers\UserController::class);
+
+Route::resource('/announcement', \App\Http\Controllers\AnnouncementController::class);
+
 Route::resource('/vaccine-registration', \App\Http\Controllers\RegisterformController::class);
 
 Route::get('/getVaccineForRegistration', [\App\Http\Controllers\RegisterformController::class, 'getvaccine']);

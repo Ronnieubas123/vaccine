@@ -25,8 +25,8 @@
             </div>
 
             <div class="max-w-sm w-full lg:max-w-full lg:flex" v-for="getAllAnnouncement in allAnnouncements">
-                <div class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
-                    <div class="mb-8">
+                <div class="w-full border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+                    <div class="">
                     <p class="text-gray-700 text-base">{{ getAllAnnouncement.announcement }}</p>
                     <div class="mb-4 flex justify-between items-center mt-3">
                         <div></div>

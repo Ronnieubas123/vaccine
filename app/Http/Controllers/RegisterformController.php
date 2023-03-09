@@ -38,15 +38,18 @@ class RegisterformController extends Controller
                 "registerform.state as state",
                 "registerform.city as city",
                 "registerform.zipcode as zipcode",
-                "registerform.vaccine_date as vaccine_date",
+                "schedule.date as vaccine_date",
                 "registerform.vaccine_location as vaccine_location",
                 "registerform.pregnant as pregnant",
                 "registerform.month as month",
                 "registerform.days as days",
                 "registerform.status as status",
+                "registerform.id as id"
                 // "registerform.reference_id as reference_id"
                 )
-            ->join("vaccines", "registerform.first_vaccine_type", "=", "vaccines.id")->get();
+            ->join("vaccines", "registerform.first_vaccine_type", "=", "vaccines.id")
+            ->join("schedule", "registerform.vaccine_date", "=", "schedule.id")
+            ->get();
         return $vaccinated;
     }
 
@@ -218,6 +221,14 @@ class RegisterformController extends Controller
 
        
         
+    }
+
+    public function completeStatus(Registerform $registerform) {
+        $id = $registerform->id;
+        DB::table('registerform')
+                ->where('id', $id)
+                ->update(['status' => 1]);
+
     }
     
 }

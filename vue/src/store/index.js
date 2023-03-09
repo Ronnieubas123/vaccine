@@ -53,12 +53,189 @@ const store = createStore({
         currentAnnouncement: {
             loading: false,
             data: []
+        },
+        loggedinUser: {
+            data: []
+        },
+        currentUser: {
+            loading: false,
+            data: []
+        },
+        currentUsers: {
+            loading: false,
+            data: []
+        },
+        allUsers: {
+            loading:false,
+            data: []
+        },
+        vaccineType: {
+            loading: false,
+            data: []
+        },
+        vaccineTypeName: {
+            loading: false,
+            data: []
+        },
+        currentLogistic: {
+            loading: false,
+            data: []
+        },
+        logistic: {
+            loading: false,
+            data: []
+        },
+        currentSchedule: {
+            loading: false,
+            data: []
+        },
+        citizineSchedule: {
+            loading: false,
+            data: []
+        },
+        schedule: {
+            loading: false,
+            data: []
         }
         
         
     },
     getters: {},
     actions: {
+        
+        getSchedules({ commit }, id ) {
+            commit("currentScheduleLoading", true);
+            return axiosClient
+                .get(`schedule/${id}`)
+                .then((res) => {
+                    commit("setCurrentschedule", res.data);
+                    commit("setCurrentScheduleLoading", false);
+                    return res;
+                })
+                .catch((err) => {
+                    commit("setCurrentVaccineLoading", false);
+                    throw err;
+                  });
+        },
+        getSchedule({ commit }) {
+            return axiosClient.get("/schedule").then((res) => {
+                commit('setSchedule', res.data);    
+                return res;
+            });
+         },
+        citizineGetSchedule({ commit }) {
+            return axiosClient.get("/citizine-get-sched").then((res) => {
+                commit('setCitizineSchedule', res.data);    
+                return res;
+            });
+         },
+        AddSchedule({commit}, schedule ) {
+            let response;
+            console.log(schedule.id);
+            if (schedule.id) {
+                response = axiosClient
+                    .put(`schedule/${schedule.id}`, schedule)
+                    .then((res) => {
+                        commit("setCurrentschedule", res.data);
+                        return res;
+                    });
+            } else {
+                response = axiosClient.post("/schedule", schedule).then((res) => {
+                    commit("setCurrentschedule", res.data);
+                    console.log(res.data);
+                    return res;
+                })
+            }
+        },
+        getLogistic({ commit }) {
+            return axiosClient.get("/logistic").then((res) => {
+                commit('setLogistic', res.data);    
+                return res;
+            });
+         },
+        addVaccineLogistic({commit}, logistic ) {
+            let response;
+            if (logistic.id) {
+                // response = axiosClient
+                //     .put(`vaccine/${vaccine.id}`, vaccine)
+                //     .then((res) => {
+                //         commit("setCurrentVaccine", res.data);
+                //         return res;
+                //     });
+            } else {
+                response = axiosClient.post("/logistic", logistic).then((res) => {
+                    commit("setCurrentLogistic", res.data);
+                    return res;
+                })
+            }
+        },
+        
+        getAllVaccineTypeName ({ commit }) {
+            return axiosClient.get("/vaccine-type-name").then((res) => {
+                commit('setVaccineTypeName', res.data);
+                return res;
+            });
+        },
+        getAllVaccineType ({ commit }) {
+            return axiosClient.get("/vaccine-type").then((res) => {
+                commit('setVaccineType', res.data);
+                return res;
+            });
+        },
+        completeStatus({ commit }, buttonValue) {
+            let id = buttonValue;
+            return axiosClient.get(`/complete-status/${id}`).then((res) => {
+              return res;
+            });
+        },
+        deleteUser({ dispatch }, id) {
+            return axiosClient.delete(`/users/${id}`).then((res) => {
+              dispatch('getUsers')
+              return res;
+            });
+        },
+        getUserss({ commit }, id ) {
+            commit("setCurrentUserLoading", true);
+            return axiosClient
+                .get(`users/${id}`)
+                .then((res) => {
+                    commit("setCurrentUser", res.data);
+                    commit("setCurrentUserLoading", false);
+                    return res;
+                })
+                .catch((err) => {
+                    commit("setCurrentVaccineLoading", false);
+                    throw err;
+                  });
+        },
+        getUsers({ commit }) {
+                return axiosClient.get("/users").then((res) => {
+                    commit('setUsers', res.data);
+                    return res;
+                });
+        },
+        saveUser({commit}, user ) {
+            let response;
+            if (user.id) {
+                response = axiosClient
+                    .put(`users/${user.id}`, user)
+                    .then((res) => {
+                        commit("setCurrentUser", res.data);
+                        return res;
+                    });
+            } else {
+                response = axiosClient.post("/users", user).then((res) => {
+                    commit("setCurrentUser", res.data);
+                    return res;
+                })
+            }
+        },
+        getUser({commit }) {
+            return axiosClient.get("/current-user").then((res) => {
+                commit('setLogginenUser', res.data);
+                return res;
+            });
+        },
         message({ commit }, message) {
             let vaccine_date = message;
             return axiosClient
@@ -122,7 +299,6 @@ const store = createStore({
         //Filter report
         filterByVaccine({ commit }, vaccines) {
             let name = vaccines.vaccine;
-            console.log(name);
             commit('setVaccineFilterLoading', true);
             return axiosClient
                 .get(`filter-vaccine/${name}`)
@@ -173,7 +349,6 @@ const store = createStore({
                 .get(`/track-request/${reference_id}`)
                 .then((res) => {
                     commit("setTracker", res.data);
-                    console.log(res.data);
                     commit("setTrackerLoading", false);
                     return res;
                 })
@@ -316,7 +491,6 @@ const store = createStore({
             sessionStorage.setItem('TOKEN', userData.token);
         },
         setVaccines: (state, vaccines) => {
-            console.log(vaccines.data);
             state.vaccines.data = vaccines.data;
         },
         setVaccinesLoading: (state, loading) => {
@@ -375,6 +549,53 @@ const store = createStore({
         },
         setCurrentAnnouncement: (state, currentAnnouncement) => {
             state.currentAnnouncement.data = currentAnnouncement.data;
+        },
+        // setUserLoading: (state, loading) => {
+        //     state.allUsers.loading = loading;
+        // },
+      
+        setLogginenUser: (state, loggedinUser) => {
+            state.loggedinUser.data = loggedinUser;
+        },
+        setUsers: (state, allUsers) => {
+            state.allUsers.data = allUsers.data;
+        },
+        setCurrentUserLoading: (state, loading) => {
+            state.currentUser.loading = loading;
+        },
+        setCurrentUser: (state, currentUser) => {
+            state.currentUser.data = currentUser.data;
+        },
+        setVaccineType: (state, vaccineType) => {
+            state.vaccineType.data = vaccineType;
+        },
+        setVaccineTypeName: (state, vaccineTypeName) => {
+            state.vaccineTypeName.data = vaccineTypeName.data;
+        },
+        setCurrentLogisticLoading: (state, loading) => {
+            state.currentLogistic.loading = loading;
+        },
+        setCurrentLogistic: (state, CurrentLogistic) => {
+            state.currentLogistic.data = CurrentLogistic.data;
+        },
+        setLogisticLoading: (state, loading) => {
+            state.logistic.loading = loading;
+        },
+        setLogistic: (state, logistic) => {
+            console.log(logistic.data);
+            state.logistic.data = logistic.data;
+        },
+        currentScheduleLoading: (state, loading) => {
+            state.currentSchedule.loading = loading;
+        },
+        setCurrentschedule: (state, currentSchedule) => {
+            state.currentSchedule.data = currentSchedule.data;
+        },
+        setCitizineSchedule: (state, citizineSchedule) => {
+            state.citizineSchedule.data = citizineSchedule.data;
+        },
+        setSchedule: (state, schedule) => {
+            state.schedule.data = schedule.data;
         }
         
         

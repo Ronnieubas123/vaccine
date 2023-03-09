@@ -1,10 +1,10 @@
 <template>
     <div class="min-h-full">
-    <header class="bg-sky-400 h-11">
+    <!-- <header class="bg-sky-400 h-11">
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div class="flex items-center justify-between h-11">
             <div class="flex items-center">
-              <span class="text-white px-3 py-2 rounded-md text-sm font-normal">Welcome to Unicare Community Health Center!</span>
+              <span class="text-white px-3 py-2 rounded-md text-sm font-normal">All in one Vaccination Program for barangay health center</span>
             </div>
             <div class="flex items-center">
                 <img src="http://127.0.0.1:5173/src/assets/image/facebook.png" class="h-5 w-5" alt="">
@@ -14,15 +14,14 @@
             <div class="-mr-2 flex md:hidden"></div>
           </div>
       </div>
-    </header>
+    </header> -->
       <Disclosure as="nav" class="bg-white h-22 shadow-md" v-slot="{ open }">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div class="flex items-center justify-between h-28">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <h1 class="text-3xl header font-bold">Bakrek</h1>
+                <h1 class="text-3xl header font-bold">BAKREK</h1>
               </div>
-              
             </div>
             <div>
                 <div>
@@ -83,6 +82,7 @@
   const navigation = [
     { name: 'Home', to: { name: 'LandingPage' } },
     { name: 'Track Request Status', to: { name: 'TrackRequestStatus' } },
+    { name: 'Announcement', to: { name: 'CitizineAnnouncement' } }
   ]
   
   export default{

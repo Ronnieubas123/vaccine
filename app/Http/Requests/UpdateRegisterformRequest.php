@@ -40,7 +40,7 @@ class UpdateRegisterformRequest extends FormRequest
             'email' => 'required|string',
             'sex' => 'required|string',
             'vaccine_location' => 'required|string',
-            'vaccine_date' => 'required|string',
+            'vaccine_date' => 'required',
             'status' => 'required|string',
             'pregnant' => 'required|string',
             'month' => 'required|string',

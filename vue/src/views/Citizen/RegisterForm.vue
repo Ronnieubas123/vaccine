@@ -252,9 +252,16 @@
 
                   <div class="grid grid-cols-1 gap-6">
                     <div class="col-span-3 sm:col-span-2">
-                      <label for="company-website" class="block text-sm font-medium text-gray-700">Vaccine Date</label>
+                      <label for="company-website" class="block text-sm font-medium text-gray-700">Vaccine Schedule</label>
                       <div class="mt-1 rounded-md">
-                        <input v-model="vaccineform.vaccine_date" type="date" name="vaccine_date" id="vaccine_date" class="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+                        
+                        <select v-model="vaccineform.vaccine_date" name="date" id="date">
+                          <template v-for="citizineGetScheds in citizineGetSched">
+                            <option :value="citizineGetScheds.id">{{citizineGetScheds.date}}</option>
+                          </template>
+                          
+                        </select>
+                        
                       </div>
                     </div>
                   </div>
@@ -287,6 +294,7 @@ const genderOpen = ref(false);
 const router = useRouter();
 
 const formvaccine = computed(() => store.state.vaccines.data);
+const citizineGetSched = computed(() => store.state.citizineSchedule.data);
 
 store.dispatch("getVaccinesRegisterForm");
 
@@ -331,7 +339,7 @@ let vaccineform = ref({
   reference_id: generatedReferenceId
 });
 
-
+store.dispatch('citizineGetSchedule');
 
 function VaccineDose() {
   const VDose = 

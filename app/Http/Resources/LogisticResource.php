@@ -3,10 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\URL;
 
-
-class VaccineResource extends JsonResource
+class LogisticResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,19 +12,14 @@ class VaccineResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    
     public function toArray($request)
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'dosage' => $this->dosage,
-            'description' => $this->description,
-            'manufacturer' => $this->manufacturer,
             'type' => $this->type,
-            'image_url' => $this->image ? URL::to($this->image) : null,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'vaccine_name' => $this->vaccine_name,
+            'received_vials' => $this->received_vials,
+            'date' => $this->date,
         ];
     }
 }

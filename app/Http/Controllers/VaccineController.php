@@ -9,6 +9,7 @@ use App\Http\Resources\VaccineResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class VaccineController extends Controller
 {
@@ -134,5 +135,15 @@ class VaccineController extends Controller
         file_put_contents($relativePath, $image);
 
         return $relativePath;
+    }
+    function getVaccineType() {
+        $vaccineType = DB::table('vaccines')
+            ->select('type')
+            ->groupBy('type')
+            ->get();
+            return $vaccineType;
+    }
+    function getVaccineTypeName() {
+        return VaccineResource::collection(Vaccine::orderBy('created_at', 'DESC')->paginate(10));
     }
 }

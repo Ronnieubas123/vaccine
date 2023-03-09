@@ -14,11 +14,20 @@ import BarangayCreate from '../views/Admin/BarangayCreate.vue';
 import VaccineRegistration from '../views/Admin/VaccineRegistration.vue';
 import Reports from '../views/Admin/Reports.vue';
 import AnnouncementCreate from '../views/Admin/AnnouncementCreate.vue';
+import User from '../views/Admin/User.vue';
+import UserCreate from '../views/Admin/UserCreate.vue';
+import Logistic from '../views/Admin/Logistic.vue';
+import LogisticCreate from '../views/Admin/LogisticCreate.vue';
+import Schedule from '../views/Admin/Schedule.vue';
+import ScheduleCreate from '../views/Admin/ScheduleCreate.vue';
+
+
 
 import CitizenDefaultLayout from '../components/CitizenDefaultLayout.vue';
 import RegisterForm from '../views/Citizen/RegisterForm.vue';
 import LandingPage from '../views/Citizen/LandingPage.vue';
 import TrackRequestStatus from '../views/Citizen/TrackRequestStatus.vue';
+import CitizineAnnouncement from '../views/Citizen/CitizineAnnouncement.vue';
 
 
 const routes = [
@@ -41,7 +50,17 @@ const routes = [
             { path: 'vaccine-registration', name:'VaccineRegistration', component: VaccineRegistration },
             { path: 'reports', name:'Reports', component: Reports },
             { path: 'announcement-create', name:'AnnouncementCreate', component: AnnouncementCreate },
-            { path: 'announcement/:id', name:'AnnouncementView', component: AnnouncementCreate }
+            { path: 'announcement/:id', name:'AnnouncementView', component: AnnouncementCreate },
+            { path: 'users-create', name:'UserCreate', component: UserCreate },
+            { path: 'users', name:'User', component: User },
+            { path: 'users/:id', name:'UsersView', component: UserCreate },
+            { path: 'vaccine-logistic', name:'Logistic', component: Logistic },
+            { path: 'vaccine-logistic-create', name:'LogisticCreate', component: LogisticCreate },
+            { path: 'vaccine-logistic/:id', name:'LogisticView', component: LogisticCreate },
+            { path: 'schedule', name:'Schedule', component: Schedule },
+            { path: 'schedule/create', name:'ScheduleCreate', component: ScheduleCreate },
+            { path: 'schedule/:id', name:'ScheduleView', component: ScheduleCreate },
+            
         ]
     },
     {
@@ -72,7 +91,9 @@ const routes = [
         children: [
             { path: 'landingpage', name: 'LandingPage', component: LandingPage},
             { path: 'vaccine-registration', name: 'RegisterForm', component: RegisterForm },
-            {path: 'track-request-status', name: 'TrackRequestStatus', component: TrackRequestStatus}
+            { path: 'track-request-status', name: 'TrackRequestStatus', component: TrackRequestStatus},
+            { path: 'c-announcement', name: 'CitizineAnnouncement', component: CitizineAnnouncement}
+            
         ]
 
     },
@@ -85,7 +106,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next)=> {
-    if (to.meta.requiresAuth && !store.state.user.token) {
+    if (to.meta.requiresAuth && !store.state.user.token ) {
         next({name: 'Login'})
     } else if (store.state.user.token && (to.meta.isGuest)) {
         next({name: 'Dashboard'});

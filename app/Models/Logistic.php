@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Vaccine extends Model
+class Logistic extends Model
 {
     use HasFactory;
-    protected $fillable = ['id','name', 'dosage', 'description', 'manufacturer', 'type', 'image'];
+    protected $fillable = ['type', 'vaccine_name', 'received_vials', 'date'];
 }

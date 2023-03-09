@@ -307,7 +307,7 @@ export default {
         getallVaccinees
     }
   }
-};
+}
 
 
 </script>
