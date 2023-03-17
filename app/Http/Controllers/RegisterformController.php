@@ -59,10 +59,45 @@ class RegisterformController extends Controller
      * @param  \App\Http\Requests\StoreRegisterformRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreRegisterformRequest $request)
+    public function store(StoreRegisterformRequest $request, Registerform $registerform)
     {
-        $registrationForm = Registerform::create($request->validated());
-        return new RegisterformResource($registrationForm);
+
+        $data = $request->validated();
+
+        if(isset($data['firstname']) && $data['middlename'] && $data['lastname'] && $data['first_vaccine_type']) {
+
+            $firstname = $data['firstname'];
+            $middlename = $data['middlename'];
+            $lastname = $data['lastname'];
+            $first_vaccine_type = $data['first_vaccine_type'];
+
+            $registration = Registerform::where(
+                [
+                    ['firstname', '=', $firstname],
+                    ['middlename', '=', $middlename],
+                    ['lastname', '=', $lastname],
+                    ['first_vaccine_type', '=', $first_vaccine_type],
+                    ['status', '=', '0']
+    
+                ])->first();
+            if ($registration === null) {
+               $registrationForm = Registerform::create($request->validated());
+                return new RegisterformResource($registrationForm);
+            } else {
+                return response([
+                    'error' => 'You already registered the vaccine',
+                ], 422);
+            }
+            
+        }
+
+        // $firstname = $registerform->firstname;
+        // $middlename = $registerform->middlename;
+        // $lastname = $registerform->lastname;
+        // $first_vaccine_type = $registerform->first_vaccine_type;
+
+        
+        
     }
 
     /**
@@ -107,7 +142,13 @@ class RegisterformController extends Controller
     public function trackerRequest(Registerform $registerform)  
     {
         $referenceId = $registerform->reference_id;
-        $vaccinated = DB::table("registerform")
+        
+        $vaccineDB = DB::table('registerform')->where('reference_id', $referenceId)->first();
+         $firstname = $vaccineDB->firstname;
+         $middlename = $vaccineDB->middlename;
+         $lastname = $vaccineDB->lastname;
+
+         $vaccinated = DB::table("registerform")
             ->select(
                 "registerform.firstname as firstname",
                 "registerform.middlename as middlename",
@@ -128,60 +169,99 @@ class RegisterformController extends Controller
                 "registerform.month as month",
                 "registerform.days as days",
                 "registerform.status as status",
-                "registerform.dof as dof"
-                // "registerform.reference_id as reference_id"
+                "registerform.dof as dof",
+                "registerform.reference_id as reference_id"
                 )
                 ->join("vaccines", "registerform.first_vaccine_type", "=", "vaccines.id")
-            ->where('reference_id', $referenceId)->get();
-        return $vaccinated;
-          //    if (!$registerform->reference_id) {
-            //         return response("Reference ID not matched");
-            //    }
-            //    return new RegisterformResource($registerform);
-    }
-    public function filterByBarangay(Registerform $registerform, Request $request) 
-    {
-         $barangay = $registerform->vaccine_location;
-        return RegisterformResource::collection(Registerform::orderBy('created_at', 'DESC')->where('vaccine_location', $barangay)->paginate(10));
-    }
-    public function filterDate(Registerform $registerform) 
-    {
-        $date = $registerform->vaccine_date;
-        return RegisterformResource::collection(Registerform::orderBy('created_at', 'DESC')->where('vaccine_date', $date)->paginate(10));
-    }
-    public function filterVaccine(Vaccine $vaccine) 
-    {
-        $vaccine = $vaccine->name;
-        $vaccineDB = DB::table('vaccines')->where('name', $vaccine)->first();
-        $vaccineId = $vaccineDB->id;
+                ->where(
+                    [
+                        ['firstname','=', $firstname],
+                        ['middlename','=',$middlename], 
+                        ['lastname','=',$lastname]
+                    ])->get();
 
-        $filterVaccineTb = DB::table('registerform')
-        ->select(
-            "registerform.firstname as firstname",
-            "registerform.middlename as middlename",
-            "registerform.lastname as lastname",
-            "vaccines.name as vaccine_type",
-            "vaccines.dosage as dosage",
-            "registerform.age as age",
-            "registerform.sex as sex",
-            "registerform.email as email",
-            "registerform.phone as phone",
-            "registerform.address_line_1 as address_line_1",
-            "registerform.state as state",
-            "registerform.city as city",
-            "registerform.zipcode as zipcode",
-            "registerform.vaccine_date as vaccine_date",
-            "registerform.vaccine_location as vaccine_location",
-            "registerform.pregnant as pregnant",
-            "registerform.month as month",
-            "registerform.days as days",
-            "registerform.status as status",
-            // "registerform.reference_id as reference_id"
-            )
+                    return $vaccinated;
+        //  return RegisterformResource::collection(Registerform::orderBy('created_at', 'ASC')
+        //  ->where(
+        //     [
+        //         ['firstname','=',$firstname], 
+        //         ['middlename','=',$middlename], 
+        //         ['lastname','=',$lastname]
+        //         ])->get());
+    }
+    public function filterRegisterform(Registerform $registerform, Request $request) 
+    {
+        //  $barangay = $registerform->vaccine_location;
+        // return RegisterformResource::collection(Registerform::orderBy('created_at', 'DESC')->paginate(10));
+        $vaccinated = DB::table("registerform")
+            ->select(
+                "registerform.firstname as firstname",
+                "registerform.middlename as middlename",
+                "registerform.lastname as lastname",
+                "vaccines.name as vaccine_type",
+                "registerform.first_vaccine_type as vaccine_id",
+                "vaccines.dosage as dosage",
+                "registerform.age as age",
+                "registerform.sex as sex",
+                "registerform.email as email",
+                "registerform.phone as phone",
+                "registerform.address_line_1 as address_line_1",
+                "registerform.state as state",
+                "registerform.city as city",
+                "registerform.zipcode as zipcode",
+                "schedule.date as vaccine_date",
+                "registerform.vaccine_date as date_id",
+                "registerform.vaccine_location as vaccine_location",
+                "registerform.pregnant as pregnant",
+                "registerform.month as month",
+                "registerform.days as days",
+                "registerform.status as status",
+                "registerform.id as id"
+                // "registerform.reference_id as reference_id"
+                )
             ->join("vaccines", "registerform.first_vaccine_type", "=", "vaccines.id")
-            ->where('interested_vaccine', $vaccineId)->get();
-        return $filterVaccineTb;
-    }   
+            ->join("schedule", "registerform.vaccine_date", "=", "schedule.id")
+            ->get();
+        return $vaccinated;
+    }
+    // public function filterDate(Registerform $registerform) 
+    // {
+    //     $date = $registerform->vaccine_date;
+    //     return RegisterformResource::collection(Registerform::orderBy('created_at', 'DESC')->where('vaccine_date', $date)->paginate(10));
+    // }
+    // public function filterVaccine(Vaccine $vaccine) 
+    // {
+    //     $vaccine = $vaccine->name;
+    //     $vaccineDB = DB::table('vaccines')->where('name', $vaccine)->first();
+    //     $vaccineId = $vaccineDB->id;
+
+    //     $filterVaccineTb = DB::table('registerform')
+    //     ->select(
+    //         "registerform.firstname as firstname",
+    //         "registerform.middlename as middlename",
+    //         "registerform.lastname as lastname",
+    //         "vaccines.name as vaccine_type",
+    //         "vaccines.dosage as dosage",
+    //         "registerform.age as age",
+    //         "registerform.sex as sex",
+    //         "registerform.email as email",
+    //         "registerform.phone as phone",
+    //         "registerform.address_line_1 as address_line_1",
+    //         "registerform.state as state",
+    //         "registerform.city as city",
+    //         "registerform.zipcode as zipcode",
+    //         "registerform.vaccine_date as vaccine_date",
+    //         "registerform.vaccine_location as vaccine_location",
+    //         "registerform.pregnant as pregnant",
+    //         "registerform.month as month",
+    //         "registerform.days as days",
+    //         "registerform.status as status",
+    //         // "registerform.reference_id as reference_id"
+    //         )
+    //         ->join("vaccines", "registerform.first_vaccine_type", "=", "vaccines.id")
+    //         ->where('interested_vaccine', $vaccineId)->get();
+    //     return $filterVaccineTb;
+    // }   
 
     public function message(Registerform $registerform) 
     {
@@ -216,10 +296,6 @@ class RegisterformController extends Controller
 
            
         }
-
-        
-
-       
         
     }
 

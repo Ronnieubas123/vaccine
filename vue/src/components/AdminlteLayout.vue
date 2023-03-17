@@ -1,4 +1,5 @@
 <template>
+
   <div :class="menu ? 'test' : 'overflow-hidden lg:overflow-visible'">
   <div :class="menu ? 'xl:pl-60 pt-14 min-h-screen w-screen transition-position lg:w-auto bg-gray-50 dark:bg-slate-800 dark:text-slate-100': 'xl:pl-60 ml-60 lg:ml-0 pt-14 min-h-screen w-screen transition-position lg:w-auto bg-gray-50 dark:bg-slate-800 dark:text-slate-100'">
     <nav :class="menu ? 'top-0 inset-x-0 fixed bg-gray-50 h-14 z-30 transition-position w-screen lg:w-auto dark:bg-slate-800 xl:pl-60' : 'top-0 inset-x-0 fixed bg-gray-50 h-14 z-30 transition-position w-screen lg:w-auto dark:bg-slate-800 xl:pl-60 ml-60 lg:ml-0'">
@@ -46,7 +47,7 @@
         </div>
         <div class="aside-scrollbars-gray flex-1 overflow-y-auto overflow-x-hidden">
           <ul class="pl-5">
-            <template v-if="user.type === 'Admin' ">
+            <template v-if="userType === 'Admin' ">
               <li v-for="item in navigationAdmin" class="flex">
                 <img :src="url + item.logo" alt="" class="inline-flex justify-center items-center h-4 w-4 mt-4">
                 <router-link
@@ -62,8 +63,23 @@
             </li>
             </template>
 
-            <template v-else-if="user.type === 'Bhw'">
+            <template v-else-if="userType === 'Bhw'">
               <li v-for="item in navigationBhw" class="flex">
+                <img :src="url + item.logo" alt="" class="inline-flex justify-center items-center h-4 w-4 mt-4">
+                <router-link
+                    :key="item.name"
+                    :to="item.to"
+                    :class="[
+                    this.$route.name === item.to.name
+                      ? 'flex cursor-pointer py-3 hover:text-white dark:text-slate-300 dark:hover:text-white font-bold text-white ml-5'
+                      : 'flex cursor-pointer py-3 text-gray-300 hover:text-white dark:text-slate-300 dark:hover:text-white ml-5',
+                    ]" exact
+                    >{{ item.name }}
+                </router-link>
+            </li>
+            </template>
+            <template v-else>
+              <li v-for="item in navigationBS" class="flex">
                 <img :src="url + item.logo" alt="" class="inline-flex justify-center items-center h-4 w-4 mt-4">
                 <router-link
                     :key="item.name"
@@ -96,8 +112,11 @@
   import { computed } from 'vue';
   import { useRouter, useRoute } from "vue-router";
 
-  const user = computed(() => store.state.loggedinUser.data);
-  store.dispatch("getUser");
+  // const user = computed(() => store.state.loggedinUser.data);
+  
+  const userType = computed(() => store.state.user.type);
+  
+  // store.dispatch("getUser");
 
 
   
@@ -113,13 +132,18 @@ const navigationAdmin = [
   { name: 'Barangay', to: {name: 'Barangay' }, logo: "crowd-of-users.png"},
   { name: 'Schedule', to: {name: 'Schedule' }, logo: "crowd-of-users.png"},
   {name: 'Vaccine Registration', to: {name: 'VaccineRegistration'}, logo: "verify.png"},
-  {name: 'Reports', to: {name: 'Reports'}, logo: "verify.png"}
+  {name: 'Reports', to: {name: 'Reports'}, logo: "verify.png"},
+  {name: 'Inventory', to:{name: 'Inventory'}, logo: "verify.png"}
   
 ];
 
 const navigationBhw = [
   { name: 'Vaccinee', to: { name: 'Vaccinee' }, logo: "vaccinated.png"},
   {name: 'Vaccine Registration', to: {name: 'VaccineRegistration'}, logo: "verify.png"},
+  {name: 'Reports', to: {name: 'Reports'}, logo: "verify.png"}
+];
+
+const navigationBS = [
   {name: 'Reports', to: {name: 'Reports'}, logo: "verify.png"}
 ];
 
@@ -166,9 +190,10 @@ function myGreeting() {
       return {
         navigationBhw,
         navigationAdmin,
+        navigationBS,
         url,
         myGreeting,
-        user
+        userType
         
       }
     }

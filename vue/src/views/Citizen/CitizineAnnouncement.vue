@@ -4,7 +4,7 @@
             <div class="loader border-t-sky-400 border-10 border-8 rounded-full w-20 h-20 animation-pulse border-t-8 absolute top-1/2 left-1/2"></div>
         </div>
         
-        <div v-else class="flex flex-col">
+        <div v-else class="flex flex-col announcement-wrapper">
             <div class="mb-4 flex justify-between items-center mt-3">
                 <div>
                     <h2 class=" text-2xl tracking-tight text-gray-900 font-medium ">Anouncement</h2>
@@ -39,4 +39,10 @@ store.dispatch("getAllAnnouncements");
 
 
 </script>
-<style></style>
+<style>
+@media screen and (max-width: 768px) {
+    .flex.flex-col.announcement-wrapper {
+        margin-left: 33px;
+    }
+}
+</style>

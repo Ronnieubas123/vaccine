@@ -70,4 +70,11 @@ class BarangayController extends Controller
         $barangay->update();
         
     }
+    public function allBarangysRegisterform() {
+        return BarangayResource::collection(Barangay::orderBy('created_at', 'ASC')->get());
+    }
+    public function allBarangaysReport() {
+        return BarangayResource::collection(Barangay::orderBy('created_at', 'ASC')->get());
+    }
+    
 }

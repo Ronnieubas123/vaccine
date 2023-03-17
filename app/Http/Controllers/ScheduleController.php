@@ -66,7 +66,7 @@ class ScheduleController extends Controller
             $message = $response->current();
                 
             if ($message->getStatus() == 0) {
-                return "The message was sent successfully\n";
+                return "The message was sent successfully\n";   
             } else {
                 return "The message failed with status: " . $message->getStatus() . "\n";
             }
@@ -87,4 +87,8 @@ class ScheduleController extends Controller
     public function citizineGetSched() {
         return ScheduleResource::collection(Schedule::orderBy('created_at', 'DESC')->paginate(10));
     }
+    public function allScheduleReport() {
+        return ScheduleResource::collection(Schedule::orderBy('created_at', 'DESC')->paginate(10));
+    }
+    
 }

@@ -2,19 +2,15 @@
   <div class="lg:w-6/12 px-4 md:px-0">
     <div class="md:p-20 md:mx-6">
         <div class="text-center mb-8">
-          <img
-              class="mx-auto w-48"
-              src="http://127.0.0.1:5173/src/assets/image/healthcareph_2021.png"
-              alt="logo"
-              />
-          <h4 class="text-xl font-semibold mb-1 mt-5 pb-1">Welcome to Unicare Community Health Center!</h4>
-          <p class="mt-2 text-center text-sm text-gray-600">
+          <h2 class="text-3xl font-bold mb-1 mt-5 pb-1 text-cyan-500">BAKREK</h2>
+          <h4 class="text-xl font-semibold mb-1 mt-5 pb-1">All-In-One Vaccination Program for Barangay Health Center</h4>
+          <!-- <p class="mt-2 text-center text-sm text-gray-600">
             Or 
             {{ '' }}
             <router-link :to="{ name: 'Register'}" class="font-medium text-sky-400 hover:text-sky-300">
               register for free
             </router-link>
-          </p>
+          </p> -->
         </div>
         <form @submit="login">
           <div v-if="errorMsg" class="flex items-center justify-between py-3 px-5 bg-red-500 text-white rounded">
@@ -60,7 +56,7 @@
             >
               Log in
             </button>
-            <a class="text-gray-500" href="#!">Forgot password?</a>
+            <!-- <a class="text-gray-500" href="#!">Forgot password?</a> -->
           </div>
                   <!-- <div class="flex items-center justify-between pb-6">
                     <p class="mb-0 mr-2">Don't have an account?</p>
@@ -80,9 +76,11 @@
 <script setup>
 import store from '../store'
 import { useRouter } from 'vue-router'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const router = useRouter();
+
+// const userType = computed(() => store.state.user.type);
 
 const user = {
   email: '',
@@ -96,9 +94,20 @@ function login(ev) {
   ev.preventDefault();
   store.dispatch('login', user)
     .then(() => {
-      router.push({
-        name: 'Dashboard'
-      })
+      if (store.state.user.type === 'Admin') {
+          router.push({ 
+             name: 'Dashboard'
+          })
+      } else if(store.state.user.type === 'Bhw') {
+          router.push({ 
+             name: 'Vaccinee'
+          })
+      } else if (store.state.user.type === 'BS') {
+          router.push({ 
+             name: 'Reports'
+          })
+      }
+      
     })
     .catch(err => {
       errorMsg.value = err.response.data.error

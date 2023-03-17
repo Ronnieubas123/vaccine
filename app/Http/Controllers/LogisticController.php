@@ -64,4 +64,10 @@ class LogisticController extends Controller
     {
         //
     }
+    public function vaccineUsedGetLogistic() {
+        return LogisticResource::collection(Logistic::orderBy('created_at', 'DESC')->paginate(10));
+    }
+    public function logisticInventory() {
+        return LogisticResource::collection(Logistic::orderBy('created_at', 'DESC')->paginate(10));
+    }
 }

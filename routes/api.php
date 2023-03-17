@@ -35,13 +35,22 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('/logistic', \App\Http\Controllers\LogisticController::class);
     Route::resource('/schedule', \App\Http\Controllers\ScheduleController::class);
     Route::get('/complete-status/{registerform:id}', [\App\Http\Controllers\RegisterformController::class, 'completeStatus']);
-    
+    Route::get('/get-all-barangays-reports', [\App\Http\Controllers\BarangayController::class, 'allBarangaysReport']);
+    Route::get('/get-all-schedule-reports', [\App\Http\Controllers\ScheduleController::class, 'allScheduleReport']);
+    Route::get('/get-all-vaccine-reports', [\App\Http\Controllers\VaccineController::class, 'allVaccineReport']);
+    Route::get('/get-logistic-vaccine-used', [\App\Http\Controllers\LogisticController::class, 'vaccineUsedGetLogistic']);
+    Route::get('/get-logistic-inventory', [\App\Http\Controllers\LogisticController::class, 'logisticInventory']);
    
+    Route::resource('/inventory', \App\Http\Controllers\InventoryController::class);
+    Route::get('/get-all-vaccine-left', [\App\Http\Controllers\InventoryController::class, 'vaccineLeft']);
+    Route::get('/get-all-vaccine-used', [\App\Http\Controllers\InventoryController::class, 'vaccineUsed']);
+    Route::get('/get-all-history', [\App\Http\Controllers\InventoryController::class, 'history']);
     
-    
-    
+
     
 });
+
+Route::get('/get-all-barangays', [\App\Http\Controllers\BarangayController::class, 'allBarangysRegisterform']);
 Route::get('/citizine-get-sched', [\App\Http\Controllers\ScheduleController::class, 'citizineGetSched']);
 Route::resource('/users', \App\Http\Controllers\UserController::class);
 
@@ -51,7 +60,7 @@ Route::resource('/vaccine-registration', \App\Http\Controllers\RegisterformContr
 
 Route::get('/getVaccineForRegistration', [\App\Http\Controllers\RegisterformController::class, 'getvaccine']);
 Route::get('/track-request/{registerform:reference_id}', [\App\Http\Controllers\RegisterformController::class, 'trackerRequest']);
-Route::get('/filter-barangay/{registerform:vaccine_location}', [\App\Http\Controllers\RegisterformController::class, 'filterByBarangay']);
+Route::get('/filter-registerform', [\App\Http\Controllers\RegisterformController::class, 'filterRegisterform']);
 Route::get('/filter-date/{registerform:vaccine_date}', [\App\Http\Controllers\RegisterformController::class, 'filterDate']);
 Route::get('/filter-vaccine/{vaccine:name}', [\App\Http\Controllers\RegisterformController::class, 'filterVaccine']);
 Route::get('/message/{registerform:vaccine_date}', [\App\Http\Controllers\RegisterformController::class, 'message']);

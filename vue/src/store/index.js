@@ -3,10 +3,11 @@ import { createStore } from "vuex";
 import axiosClient from "../axios";
 
 const store = createStore({
-    state: {
+    state: {    
         user: {
             data: {},
-            token: sessionStorage.getItem("TOKEN")
+            token: sessionStorage.getItem("TOKEN"),
+            type: sessionStorage.getItem("TYPE"),
         },
         multiform: {
             stepData:[],
@@ -38,25 +39,25 @@ const store = createStore({
             loading: false,
             data: []
         },
-        filterBarangay: {
+        filterRegisterform: {
             loading: false,
             data: []
         },
-        filterDate: {
-            loading: false,
-            data: []
-        },
-        filterVaccine: {
-            loading: false,
-            data: []
-        },
+        // filterDate: {
+        //     loading: false,
+        //     data: []
+        // },
+        // filterVaccine: {
+        //     loading: false,
+        //     data: []
+        // },
         currentAnnouncement: {
             loading: false,
             data: []
         },
-        loggedinUser: {
-            data: []
-        },
+        // loggedinUser: {
+        //     data: []
+        // },
         currentUser: {
             loading: false,
             data: []
@@ -96,13 +97,127 @@ const store = createStore({
         schedule: {
             loading: false,
             data: []
+        },
+        allBarangays: {
+            data: []
+        },
+        filterVaccine: {
+            data: []
+        },
+        currentVaccineUsed: {
+            data: [],
+            loading: false
+        },
+        vaccineUsed: {
+            data: [],
+            loading: false
+        },
+        vaccineLeft: {
+            data: [],
+            logistic: sessionStorage.getItem("LOGISTIC"),
+            inventory: sessionStorage.getItem("INVENTORY"),
+            loading: false
+        },
+        inventoryHistory: {
+            loading: false,
+            data: []
+        },
+        currentVaccineForm: {
+            data: [],
+            error: sessionStorage.getItem("ERROR")
         }
-        
         
     },
     getters: {},
     actions: {
-        
+        getVacccineUseds({ commit }, id ) {
+            return axiosClient
+                .get(`inventory/${id}`)
+                .then((res) => {
+                    commit("setCurrentVaccineUseds", res.data);
+                    // commit("setCurrentschedule", res.data);
+                    return res;
+                })
+                .catch((err) => {
+                    throw err;
+                  });
+        },
+        getHistory({ commit }) {
+                return axiosClient.get("/get-all-history").then((res) => {
+                    commit('setInventoryHistory', res.data);
+                    return res;
+                });
+        },
+        // getHistory({ commit }) {
+        //     return axiosClient.get("/inventory").then((res) => {
+        //         commit('setInventoryHistory', res.data);    
+        //         return res;
+        //     });
+        //  },
+        getVaccineLeft({ commit }) {
+            return axiosClient.get("/get-all-vaccine-left").then((res) => {
+                commit('setVaccineleft', res.data);    
+                return res;
+            });
+         },
+        getAllVaccineUsed({ commit }) {
+            return axiosClient.get("/get-all-vaccine-used").then((res) => {
+                commit('setVaccineUsed', res.data);    
+                return res;
+            });
+         },
+        getAllLogisticListInventory({ commit }) {
+            return axiosClient.get("/get-logistic-inventory").then((res) => {
+                commit('setLogisticInventory', res.data);    
+                return res;
+            });
+         },
+        AddVaccineUsed({commit}, vaccineused ) {
+            let response;
+            if (vaccineused.id) {
+                response = axiosClient
+                    .put(`inventory/${vaccineused.id}`, vaccineused)
+                    .then((res) => {
+                        commit("setCurrentVaccineused", res.data);
+                        return res;
+                    });
+            } else {
+                response = axiosClient.post("/inventory", vaccineused).then((res) => {
+                    commit("setCurrentVaccineused", res.data);
+                    return res;
+                })
+            }
+        },
+        vaccineUsedGetLogistic({ commit }) {
+            return axiosClient.get("/get-logistic-vaccine-used").then((res) => {
+                commit('setLogisticVaccineUsed', res.data);    
+                return res;
+            });
+         },
+        getAllVaccineReports({ commit }) {
+            return axiosClient.get("/get-all-vaccine-reports").then((res) => {
+                commit('setAllVaccineReports', res.data);    
+                return res;
+            });
+         },
+        getAllScheduleReports({ commit }) {
+            return axiosClient.get("/get-all-schedule-reports").then((res) => {
+                commit('setAllScheduleReports', res.data);    
+                return res;
+            });
+         },
+        getAllBarangayReports({ commit }) {
+            return axiosClient.get("/get-all-barangays-reports").then((res) => {
+                commit('setAllBarangaysReports', res.data);    
+                return res;
+            });
+         },
+        getAllBarangayRegisterform({ commit }) {
+            return axiosClient.get("/get-all-barangays").then((res) => {
+                commit('setAllBarangays', res.data);    
+                return res;
+            });
+         },
         getSchedules({ commit }, id ) {
             commit("currentScheduleLoading", true);
             return axiosClient
@@ -230,12 +345,12 @@ const store = createStore({
                 })
             }
         },
-        getUser({commit }) {
-            return axiosClient.get("/current-user").then((res) => {
-                commit('setLogginenUser', res.data);
-                return res;
-            });
-        },
+        // getUser({commit }) {
+        //     return axiosClient.get("/current-user").then((res) => {
+        //         commit('setLogginenUser', res.data);
+        //         return res;
+        //     });
+        // },
         message({ commit }, message) {
             let vaccine_date = message;
             return axiosClient
@@ -297,50 +412,55 @@ const store = createStore({
         },
         
         //Filter report
-        filterByVaccine({ commit }, vaccines) {
-            let name = vaccines.vaccine;
-            commit('setVaccineFilterLoading', true);
-            return axiosClient
-                .get(`filter-vaccine/${name}`)
-                .then((res) => {
-                    commit("setVaccineFilterLoading", false);
-                    commit("setVaccineFilter", res.data);
-                    return res;
-                })
-                .catch((err) => {
-                    commit("setVaccineFilterLoading", false);
-                    throw err;
-                })
-        },
-        filterByDate({ commit }, dates) {
-            let date = dates.date;
-            commit('setDateFilterLoading', true);
-            return axiosClient
-                .get(`filter-date/${date}`)
-                .then((res) => {
-                    commit("setDateFilterLoading", false);
-                    commit("setDate", res.data);
-                    return res;
-                })
-                .catch((err) => {
-                    commit("setDateFilterLoading", false);
-                    throw err;
-                })
-        },
-        filterByBarangay({ commit }, barangays) {
-            let vaccine_location = barangays.barangay;
-            commit('setBarangayFilterLoading', true);
-            return axiosClient
-                .get(`filter-barangay/${vaccine_location}`)
-                .then((res) => {
-                    commit("setBarangayFilter", res.data);
-                    commit("setBarangayFilterLoading", false);
-                    return res;
-                })
-                .catch((err) => {
-                    commit("setBarangayFilterLoading", false);
-                    throw err;
-                })
+        // filterByVaccine({ commit }, vaccines) {
+        //     let name = vaccines.vaccine;
+        //     commit('setVaccineFilterLoading', true);
+        //     return axiosClient
+        //         .get(`filter-vaccine/${name}`)
+        //         .then((res) => {
+        //             commit("setVaccineFilterLoading", false);
+        //             commit("setVaccineFilter", res.data);
+        //             return res;
+        //         })
+        //         .catch((err) => {
+        //             commit("setVaccineFilterLoading", false);
+        //             throw err;
+        //         })
+        // },
+        // filterByDate({ commit }, dates) {
+        //     let date = dates.date;
+        //     commit('setDateFilterLoading', true);
+        //     return axiosClient
+        //         .get(`filter-date/${date}`)
+        //         .then((res) => {
+        //             commit("setDateFilterLoading", false);
+        //             commit("setDate", res.data);
+        //             return res;
+        //         })
+        //         .catch((err) => {
+        //             commit("setDateFilterLoading", false);
+        //             throw err;
+        //         })
+        // },
+        filterRegisterform({ commit }) {
+
+            return axiosClient.get("/filter-registerform").then((res) => {
+                commit('setRegisterformFilter', res.data);    
+                return res;
+            });
+            // let vaccine_location = barangays.barangay;
+            // commit('setBarangayFilterLoading', true);
+            // return axiosClient
+            //     .get(`filter-barangay/${vaccine_location}`)
+            //     .then((res) => {
+            //         commit("setBarangayFilter", res.data);
+            //         commit("setBarangayFilterLoading", false);
+            //         return res;
+            //     })
+            //     .catch((err) => {
+            //         commit("setBarangayFilterLoading", false);
+            //         throw err;
+            //     })
         },
         trackRequest({ commit }, tracker) {
             let reference_id = tracker.reference_id;
@@ -375,6 +495,10 @@ const store = createStore({
                     commit("setCurrentVaccineForm", res.data);
                     return res;
                 })
+                .catch((err) => {
+                    commit("setCurrentVaccineFormError", err.response.data);
+                    throw err;
+                  });
             }
         },
         //Barangay CRUD
@@ -487,8 +611,10 @@ const store = createStore({
     mutations: {
         setUser: (state, userData) => {
             state.user.token = userData.token;
+            state.user.type = userData.type;
             state.user.data = userData.user;
             sessionStorage.setItem('TOKEN', userData.token);
+            sessionStorage.setItem('TYPE', userData.type);
         },
         setVaccines: (state, vaccines) => {
             state.vaccines.data = vaccines.data;
@@ -526,11 +652,11 @@ const store = createStore({
         setTracker: (state, currentTrackerStatus) => {
             state.currentTrackerStatus.data = currentTrackerStatus;
         },
-        setBarangayFilterLoading: (state, loading) => {
-            state.filterBarangay.loading = loading;
+        setRegisterformFilterLoading: (state, loading) => {
+            state.filterRegisterform.loading = loading;
         },
-        setBarangayFilter: (state, filterBarangay) => {
-            state.filterBarangay.data = filterBarangay.data;
+        setRegisterformFilter: (state, filterRegisterform) => {
+            state.filterRegisterform.data = filterRegisterform;
         },
         setDateFilterLoading: (state, loading) => {
             state.filterDate.loading = loading;
@@ -554,9 +680,9 @@ const store = createStore({
         //     state.allUsers.loading = loading;
         // },
       
-        setLogginenUser: (state, loggedinUser) => {
-            state.loggedinUser.data = loggedinUser;
-        },
+        // setLogginenUser: (state, loggedinUser) => {
+        //     state.loggedinUser.data = loggedinUser;
+        // },
         setUsers: (state, allUsers) => {
             state.allUsers.data = allUsers.data;
         },
@@ -582,7 +708,6 @@ const store = createStore({
             state.logistic.loading = loading;
         },
         setLogistic: (state, logistic) => {
-            console.log(logistic.data);
             state.logistic.data = logistic.data;
         },
         currentScheduleLoading: (state, loading) => {
@@ -596,6 +721,54 @@ const store = createStore({
         },
         setSchedule: (state, schedule) => {
             state.schedule.data = schedule.data;
+        },
+        setAllBarangays: (state , allBarangays) => {
+            state.allBarangays.data = allBarangays.data;
+        },
+        setAllBarangaysReports: (state, allBarangays) => {
+            state.allBarangays.data = allBarangays.data;
+        },
+        setAllScheduleReports: (state, schedule) => {
+            state.schedule.data = schedule.data;
+        },
+        setAllVaccineReports: (state, filterVaccine) => {
+            state.filterVaccine.data = filterVaccine.data;
+        },
+        setLogisticVaccineUsed: (state, logistic) => {
+            state.logistic.data = logistic.data;
+        },
+        setCurrentVaccineused: (state, currentVaccineUsed) => {
+            state.currentVaccineUsed.data = currentVaccineUsed.data;
+        },
+        setLogisticInventory: (state, logistic) => {
+            state.logistic.data = logistic.data;
+        },
+        setVaccineUsed: (state, vaccineUsed) => {
+            state.vaccineUsed.data = vaccineUsed;
+        },
+        setVaccineleft: (state, vaccineLeft) => {
+            state.vaccineLeft.data = vaccineLeft;
+            state.vaccineLeft.logistic = vaccineLeft.logistic;
+            state.vaccineLeft.inventory = vaccineLeft.inventory;
+            sessionStorage.setItem('LOGISTIC', vaccineLeft.logistic);
+            sessionStorage.setItem('INVENTORY', vaccineLeft.inventory);
+        },
+        setInventoryHistory: (state, inventoryHistory) => {
+            state.inventoryHistory.data = inventoryHistory;
+        },
+        setCurrentVaccineUseds: (state, currentVaccineUsed) => {
+            state.currentVaccineUsed.data = currentVaccineUsed.data;
+        },
+        setCurrentVaccineForm: (state, currentVaccineForm) => {
+            state.currentVaccineForm.data = currentVaccineForm.data;
+            // state.currentVaccineForm.error = currentVaccineForm.error;
+            // console.log(currentVaccineForm.error);
+            // console.log(currentVaccineForm);
+            // sessionStorage.setItem('ERROR', currentVaccineForm.error);
+        },
+        setCurrentVaccineFormError: (state, currentVaccineForm) => {
+            state.currentVaccineForm.error = currentVaccineForm.error;
+            sessionStorage.setItem('ERROR', currentVaccineForm.error);
         }
         
         

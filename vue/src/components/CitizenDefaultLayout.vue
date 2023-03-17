@@ -20,7 +20,7 @@
           <div class="flex items-center justify-between h-28">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <h1 class="text-3xl header font-bold">BAKREK</h1>
+                <h1 class="text-3xl header font-bold md:text-sm">BAKREK</h1>
               </div>
             </div>
             <div>
@@ -122,10 +122,10 @@
 <style>
   @media screen and (max-width: 768px) {
   .header {
-    font-size: 30px !important;
+    font-size: 20px !important;
   }
   a.text-gray-900.hover\:font-bold.px-3.py-2.rounded-md.text-lg.font-medium {
-    font-size: 14px !important;
+    font-size: 13px !important;
     margin-left: 0px;
   }
 }

@@ -27,6 +27,7 @@ class StoreLogisticRequest extends FormRequest
             'type' => 'required|string',
             'vaccine_name' => 'required|string',
             'received_vials' => 'required|string',
+            'expiration' => 'required',
             'date' => 'required|string'
         ];
     }

@@ -1,7 +1,8 @@
 <template>
   <admin-page-component>
-   <div>
-      <form @submit.prevent="saveVaccineForm">
+   <div> 
+   
+      <form @submit="saveRegistrationForm">
         <div class="md:grid md:grid-cols-3 md:gap-6">
           <div class="md:col-span-1">
             <div class="px-4 sm:px-0">
@@ -31,7 +32,7 @@
                         <div>
                           <span>
                             <input v-model="vaccineform.receive_vaccine_dose" type="radio" name="receive_vaccine_dose" value="Yes" @click="VaccineDose">
-                              
+                            Yes
                           </span>
                         </div>
                         <div>
@@ -240,11 +241,12 @@
                       <label for="company-website" class="block text-sm font-medium text-gray-700">Vaccine Location</label>
                       <div class="mt-1 rounded-md">
                         <select v-model="vaccineform.vaccine_location" name="location" id="location">
-                          <option value="Barangay 1">Barangay 1</option>
-                          <option value="Barangay 2">Barangay 2</option>
-                          <option value="Barangay 3">Barangay 3</option>
-                          <option value="Barangay 4">Barangay 4</option>
-                          <option value="Barangay 5">Barangay 5</option>
+                          <option value="" selected disabled hidden>Choose location here</option>
+                          <template v-for="barangay in barangays">
+                            <template v-if="barangay.status == 1">
+                              <option :value="barangay.barangay_name">{{ barangay.barangay_name }}</option>
+                            </template>
+                          </template>
                         </select>
                       </div>
                     </div>
@@ -256,6 +258,7 @@
                       <div class="mt-1 rounded-md">
                         
                         <select v-model="vaccineform.vaccine_date" name="date" id="date">
+                          <option value="" selected disabled hidden>Choose schedule here</option>
                           <template v-for="citizineGetScheds in citizineGetSched">
                             <option :value="citizineGetScheds.id">{{citizineGetScheds.date}}</option>
                           </template>
@@ -292,11 +295,18 @@ const genderOpen = ref(false);
 
 
 const router = useRouter();
+const route = useRoute();
 
 const formvaccine = computed(() => store.state.vaccines.data);
 const citizineGetSched = computed(() => store.state.citizineSchedule.data);
+const barangays = computed(() => store.state.allBarangays.data);
+
 
 store.dispatch("getVaccinesRegisterForm");
+store.dispatch("getAllBarangayRegisterform");
+store.dispatch('citizineGetSchedule');
+
+// let errorMessage = store.state.currentVaccineForm.error;
 
 const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -339,7 +349,9 @@ let vaccineform = ref({
   reference_id: generatedReferenceId
 });
 
-store.dispatch('citizineGetSchedule');
+
+
+
 
 function VaccineDose() {
   const VDose = 
@@ -352,21 +364,21 @@ function VaccineDose() {
   }
 }
 
-function saveVaccineForm() {
+function saveRegistrationForm(ev) {
+  ev.preventDefault();
   store.dispatch("saveRegistrationForm", vaccineform.value).then(() => {
     router.push({
-       name: 'RegisterForm',
-    });
-  });
+          name: 'LandingPage',
+        });
+      
+  })  
+  
 }
 
-// function saveBarangay() {
-//   store.dispatch("saveBarangay", barangay.value).then(() => {
-//     router.push({
-//        name: 'Barangay',
-//     });
-//   })
-// }
+
+
+
+
 
 </script>
 <style></style>

@@ -18,7 +18,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4 -mt-1 inline-block">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                     </svg>
-                                    Add new User
+                                    Add new Logistic
                             </router-link>
                         </div>
                         
@@ -30,6 +30,7 @@
                             <th class="pt-3 py-3">Type</th>
                             <th class="pt-3 py-3">Vaccine</th>
                             <th class="pt-3 py-3">Received Vails</th>
+                            <th class="pt-3 py-3">Expiration</th>
                             <th class="pt-3 py-3">Date</th>
                             <th class="pt-3 py-3"></th>
                          
@@ -40,6 +41,7 @@
                                 <td data-label="Type" class="pt-3 py-3">{{ vaccineLogistics.type}}</td>
                                 <td data-label="Vaccine Name" class="pt-3 py-3">{{ vaccineLogistics.vaccine_name }}</td>
                                 <td data-label="Received Vials" class="pt-3 py-3">{{ vaccineLogistics.received_vials }}</td>
+                                <td data-label="Expiration" class="pt-3 py-3">{{ vaccineLogistics.expiration }}</td>
                                 <td data-label="Date" class="pt-3 py-3">{{ vaccineLogistics.date }}</td>
                                 <td data-label="Email" class="pt-3 py-3">
                                     <div class="flex items-center mt-1 justify-center ">

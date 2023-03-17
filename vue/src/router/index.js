@@ -20,6 +20,9 @@ import Logistic from '../views/Admin/Logistic.vue';
 import LogisticCreate from '../views/Admin/LogisticCreate.vue';
 import Schedule from '../views/Admin/Schedule.vue';
 import ScheduleCreate from '../views/Admin/ScheduleCreate.vue';
+import Inventory from '../views/Admin/Inventory.vue';
+import VaccineUsed from '../views/Admin/VaccineUsed.vue';
+
 
 
 
@@ -31,6 +34,7 @@ import CitizineAnnouncement from '../views/Citizen/CitizineAnnouncement.vue';
 
 
 const routes = [
+   
     {
         path: '/admin',  
         redirect: '/admin/dashboard',
@@ -60,6 +64,10 @@ const routes = [
             { path: 'schedule', name:'Schedule', component: Schedule },
             { path: 'schedule/create', name:'ScheduleCreate', component: ScheduleCreate },
             { path: 'schedule/:id', name:'ScheduleView', component: ScheduleCreate },
+            { path: 'inventory', name:'Inventory', component: Inventory },
+            { path: 'vaccine/used', name:'VaccineUsed', component: VaccineUsed },
+            { path: 'used/:id', name:'VaccineUsedView', component: VaccineUsed },
+            
             
         ]
     },
@@ -108,9 +116,14 @@ const router = createRouter({
 router.beforeEach((to, from, next)=> {
     if (to.meta.requiresAuth && !store.state.user.token ) {
         next({name: 'Login'})
-    } else if (store.state.user.token && (to.meta.isGuest)) {
+    } else if (store.state.user.token && store.state.user.type === 'Admin' && (to.meta.isGuest)) {
         next({name: 'Dashboard'});
-    } else {
+    } else if(store.state.user.token && store.state.user.type === 'Bhw' && (to.meta.isGuest)) {
+        next({name: 'Vaccinee'});
+    } else if(store.state.user.token && store.state.user.type === 'BS' && (to.meta.isGuest)) {
+        next({name: 'Reports'});
+    }
+    else {
         next();
     }
 })

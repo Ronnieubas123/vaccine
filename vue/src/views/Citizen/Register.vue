@@ -90,6 +90,7 @@
     email: '',
     password: '',
     password_confirmation: '',
+    type: 'Admin',
   }
   
   function register(ev) {

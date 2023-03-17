@@ -48,7 +48,8 @@
                       <div class="mt-1 rounded-md">
                         <select v-model="user.type" name="location" id="location">
                           <option value="Admin">Admin</option>
-                          <option value="Bhw">BHW</option>
+                          <option value="Bhw">Barangay Health Worker</option>
+                          <option value="BS">Barangay Secretary </option>
                         </select>
                       </div>
                     </div>

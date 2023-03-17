@@ -54,10 +54,12 @@ class AuthController extends Controller
         /** @var \App\Models\MyUserModel $user **/
         $user = Auth::user();
         $token = $user->createToken('main')->plainTextToken;
+        $userID = auth()->user()->type; 
 
         return response([
             'user' => $user,
-            'token' => $token
+            'token' => $token,
+            'type' => $userID
         ]);
     }
     public function logout()

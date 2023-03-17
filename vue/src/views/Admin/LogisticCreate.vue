@@ -53,6 +53,15 @@
 
               <div class="grid grid-cols-1 gap-6">
                     <div class="col-span-3 sm:col-span-2">
+                      <label for="company-website" class="block text-sm font-medium text-gray-700">Expiration date</label>
+                      <div class="mt-1 rounded-md">
+                        <input v-model="logistic.expiration" type="date" id="expiration" name="expiration">
+                      </div>
+                    </div>
+                  </div>
+
+              <div class="grid grid-cols-1 gap-6">
+                    <div class="col-span-3 sm:col-span-2">
                       <label for="company-website" class="block text-sm font-medium text-gray-700">Date</label>
                       <div class="mt-1 rounded-md">
                         <input v-model="logistic.date" type="datetime-local" id="date" name="date">
@@ -66,6 +75,7 @@
             </div>
           </div>
         </form>
+        {{ logistic }}
       </div>
     </div>
   </div>
@@ -89,6 +99,7 @@ let logistic = ref({
     type: '',
     vaccine_name: '',
     received_vials: '',
+    expiration: '',
     date: ''
 });
 
