@@ -1,8 +1,23 @@
 <template>
   <admin-page-component>
    <div> 
-   
-      <form @submit="saveRegistrationForm">
+    <div v-if="error == 'You already registered the vaccine'" class="flex items-center justify-between py-3 px-5 bg-red-500 text-white rounded mt-80">
+            {{ error }}
+              <span @click="errors" class="w-8 h-8 flex item-center justify-center rounded-full transition-colors cursor-pointer hover:bg-[rgba(0,0,0,0.2)]">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </span>
+      </div>
+      <div v-else-if="error == 'success' " class="flex items-center justify-between py-3 px-5 bg-green-300 text-white rounded mt-80">
+            <span class="text-center">Vaccine Registration success!!! Please copy the reference id <strong class="font-bold">{{ vaccineform.reference_id }}</strong>.</span>
+              <span @click="errors" class="w-8 h-8 flex item-center justify-center rounded-full transition-colors cursor-pointer hover:bg-[rgba(0,0,0,0.2)]">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </span>
+      </div>
+      <form @submit="saveRegistrationForm" v-else>
         <div class="md:grid md:grid-cols-3 md:gap-6">
           <div class="md:col-span-1">
             <div class="px-4 sm:px-0">
@@ -302,6 +317,17 @@ const citizineGetSched = computed(() => store.state.citizineSchedule.data);
 const barangays = computed(() => store.state.allBarangays.data);
 
 
+
+const error = computed(() => store.state.currentVaccineForm.error);
+console.log(computed(() => store.state.currentVaccineForm.error));
+// const success = computed(() => store.state.currentVaccineForm.success);
+// console.log(store.state.currentVaccineForm.success);
+
+function errors() {
+  location.reload();
+}
+
+
 store.dispatch("getVaccinesRegisterForm");
 store.dispatch("getAllBarangayRegisterform");
 store.dispatch('citizineGetSchedule');
@@ -367,9 +393,8 @@ function VaccineDose() {
 function saveRegistrationForm(ev) {
   ev.preventDefault();
   store.dispatch("saveRegistrationForm", vaccineform.value).then(() => {
-    router.push({
-          name: 'LandingPage',
-        });
+    
+    
       
   })  
   

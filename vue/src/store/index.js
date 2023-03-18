@@ -2,6 +2,7 @@ import axios from "axios";
 import { createStore } from "vuex";
 import axiosClient from "../axios";
 
+
 const store = createStore({
     state: {    
         user: {
@@ -124,7 +125,7 @@ const store = createStore({
         },
         currentVaccineForm: {
             data: [],
-            error: sessionStorage.getItem("ERROR")
+            error: null
         }
         
     },
@@ -496,7 +497,7 @@ const store = createStore({
                     return res;
                 })
                 .catch((err) => {
-                    commit("setCurrentVaccineFormError", err.response.data);
+                    commit("setCurrentVaccineForm", err.response.data);
                     throw err;
                   });
             }
@@ -761,15 +762,22 @@ const store = createStore({
         },
         setCurrentVaccineForm: (state, currentVaccineForm) => {
             state.currentVaccineForm.data = currentVaccineForm.data;
+            
+            if (currentVaccineForm.error != 'You already registered the vaccine') {
+                state.currentVaccineForm.error = 'success';
+            } else {
+                state.currentVaccineForm.error = currentVaccineForm.error;
+            }
+            
             // state.currentVaccineForm.error = currentVaccineForm.error;
             // console.log(currentVaccineForm.error);
             // console.log(currentVaccineForm);
             // sessionStorage.setItem('ERROR', currentVaccineForm.error);
         },
-        setCurrentVaccineFormError: (state, currentVaccineForm) => {
-            state.currentVaccineForm.error = currentVaccineForm.error;
-            sessionStorage.setItem('ERROR', currentVaccineForm.error);
-        }
+        // setCurrentVaccineFormError: (state, currentVaccineForm) => {
+        //     state.currentVaccineForm.error = currentVaccineForm.error;
+        //     sessionStorage.setItem('ERROR', currentVaccineForm.error);
+        // }
         
         
     },

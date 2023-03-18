@@ -9,12 +9,6 @@
             >
             Vaccine form
             </router-link>
-            <div v-if="error" class="flex items-center justify-between py-3 px-5 bg-red-500 text-white rounded error-message">
-            {{ error }}
-              <span class="w-8 h-8 flex item-center justify-center rounded-full transition-colors cursor-pointer hover:bg-[rgba(0,0,0,0.2)]">
-         
-              </span>
-          </div>
             <!-- <h3 class="text-[30px] text-white font-bold drop-shadow-2xl text-center mt-2">test{{ error }} </h3> -->
             
            
@@ -24,7 +18,6 @@
 <script setup>
 import { ref, computed } from "vue";
 import store from "../../store";
-const error = computed(() => store.state.currentVaccineForm.error);
 
 
 

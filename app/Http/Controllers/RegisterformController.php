@@ -82,7 +82,10 @@ class RegisterformController extends Controller
                 ])->first();
             if ($registration === null) {
                $registrationForm = Registerform::create($request->validated());
-                return new RegisterformResource($registrationForm);
+                return response([
+                   'data' => new RegisterformResource($registrationForm),
+                   'success' => 'Success',
+                ]);
             } else {
                 return response([
                     'error' => 'You already registered the vaccine',
