@@ -18,7 +18,8 @@ class InventoryResource extends JsonResource
             'id' => $this->id,
             'logistic_id' => $this->logistic_id,
             'used' => $this->used,
-            'created_at' => $this->created_at
+            'created_at' => $this->created_at,
+            'schedule' => $this->schedule
         ];
     }
 }

@@ -25,7 +25,8 @@ class StoreInventoryRequest extends FormRequest
     {
         return [
             'logistic_id' => 'required',
-            'used' => 'required'
+            'used' => 'required',
+            'schedule' => 'required'
         ];
     }
 }

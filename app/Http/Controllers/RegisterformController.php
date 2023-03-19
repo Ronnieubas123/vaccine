@@ -29,7 +29,7 @@ class RegisterformController extends Controller
                 "registerform.middlename as middlename",
                 "registerform.lastname as lastname",
                 "vaccines.name as vaccine_type",
-                "vaccines.dosage as dosage",
+                "registerform.dose as dose",
                 "registerform.age as age",
                 "registerform.sex as sex",
                 "registerform.email as email",
@@ -93,11 +93,6 @@ class RegisterformController extends Controller
             }
             
         }
-
-        // $firstname = $registerform->firstname;
-        // $middlename = $registerform->middlename;
-        // $lastname = $registerform->lastname;
-        // $first_vaccine_type = $registerform->first_vaccine_type;
 
         
         
@@ -166,7 +161,7 @@ class RegisterformController extends Controller
                 "registerform.state as state",
                 "registerform.city as city",
                 "registerform.zipcode as zipcode",
-                "registerform.vaccine_date as vaccine_date",
+                "schedule.date as vaccine_date",
                 "registerform.vaccine_location as vaccine_location",
                 "registerform.pregnant as pregnant",
                 "registerform.month as month",
@@ -176,6 +171,7 @@ class RegisterformController extends Controller
                 "registerform.reference_id as reference_id"
                 )
                 ->join("vaccines", "registerform.first_vaccine_type", "=", "vaccines.id")
+                ->join("schedule", "registerform.vaccine_date", "=", "schedule.id")
                 ->where(
                     [
                         ['firstname','=', $firstname],
@@ -203,7 +199,7 @@ class RegisterformController extends Controller
                 "registerform.lastname as lastname",
                 "vaccines.name as vaccine_type",
                 "registerform.first_vaccine_type as vaccine_id",
-                "vaccines.dosage as dosage",
+                "registerform.dose as dose",
                 "registerform.age as age",
                 "registerform.sex as sex",
                 "registerform.email as email",
@@ -212,7 +208,7 @@ class RegisterformController extends Controller
                 "registerform.state as state",
                 "registerform.city as city",
                 "registerform.zipcode as zipcode",
-                "schedule.date as vaccine_date",
+                DB::raw("DATE_FORMAT(schedule.date, '%b %d, %Y') as vaccine_date"),
                 "registerform.vaccine_date as date_id",
                 "registerform.vaccine_location as vaccine_location",
                 "registerform.pregnant as pregnant",

@@ -37,7 +37,8 @@ class RegisterformResource extends JsonResource
             'pregnant' => $this->pregnant,
             'month' => $this->month,
             'day' => $this->day,
-            'reference_id' => $this->reference_id
+            'reference_id' => $this->reference_id,
+            'dose' => $this->dose
 
         ];
     }

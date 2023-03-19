@@ -99,10 +99,10 @@
                                 <td data-label="Address" class="pt-3 py-3">{{ allVaccineeRegistered.address_line_1 + allVaccineeRegistered.city + allVaccineeRegistered.state  }}</td>
                                 <td data-label="Zip Code" class="pt-3 py-3">{{ allVaccineeRegistered.zipcode }}</td>
                                 <td data-label="Vaccine Type" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_type }}</td>
-                                <td data-label="Dosage" class="pt-3 py-3">{{ allVaccineeRegistered.dosage }}</td>
+                                <td data-label="Dose" class="pt-3 py-3">{{ allVaccineeRegistered.dose }}</td>
                                 <td data-label="Vaccine Date" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_date }}</td>
                                 <td data-label="Location" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_location }}</td>
-                                <td data-label="Location" class="pt-3 py-3">
+                                <td data-label="Action" class="pt-3 py-3">
                                     <button
                                     :value="allVaccineeRegistered.id"
                                         type="button"
@@ -133,6 +133,7 @@
                             <th class="pt-3 py-3">Vaccine Dose</th>
                             <th class="pt-3 py-3">Vaccine Date</th>
                             <th class="pt-3 py-3">Location</th>
+                            <th class="pt-3 py-3">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -146,9 +147,19 @@
                                 <td data-label="Address" class="pt-3 py-3">{{ allVaccineeRegistered.address_line_1 + allVaccineeRegistered.city + allVaccineeRegistered.state  }}</td>
                                 <td data-label="Zip Code" class="pt-3 py-3">{{ allVaccineeRegistered.zipcode }}</td>
                                 <td data-label="Vaccine Type" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_type }}</td>
-                                <td data-label="Dosage" class="pt-3 py-3">{{ allVaccineeRegistered.dosage }}</td>
+                                <td data-label="Dose" class="pt-3 py-3">{{ allVaccineeRegistered.dose }}</td>
                                 <td data-label="Vaccine Date" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_date }}</td>
                                 <td data-label="Location" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_location }}</td>
+                                <td data-label="Action" class="pt-3 py-3">
+                                    <button
+                                    :value="allVaccineeRegistered.id"
+                                        type="button"
+                                        @click="completeStatus($event)"
+                                        class="h8 w8 flex items-center justify-center rounded-full border border-transparent text-sm text-red-500 focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                                        >
+                                        Not complete
+                                    </button>
+                                </td>
                             </template>
                             
                           
@@ -171,6 +182,7 @@
                             <th class="pt-3 py-3">Vaccine Dose</th>
                             <th class="pt-3 py-3">Vaccine Date</th>
                             <th class="pt-3 py-3">Location</th>
+                            <th class="pt-3 py-3">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -184,9 +196,19 @@
                                 <td data-label="Address" class="pt-3 py-3">{{ allVaccineeRegistered.address_line_1 + allVaccineeRegistered.city + allVaccineeRegistered.state  }}</td>
                                 <td data-label="Zip Code" class="pt-3 py-3">{{ allVaccineeRegistered.zipcode }}</td>
                                 <td data-label="Vaccine Type" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_type }}</td>
-                                <td data-label="Dosage" class="pt-3 py-3">{{ allVaccineeRegistered.dosage }}</td>
+                                <td data-label="Dose" class="pt-3 py-3">{{ allVaccineeRegistered.dose }}</td>
                                 <td data-label="Vaccine Date" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_date }}</td>
                                 <td data-label="Location" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_location }}</td>
+                                <td data-label="Action" class="pt-3 py-3">
+                                    <button
+                                    :value="allVaccineeRegistered.id"
+                                        type="button"
+                                        @click="completeStatus($event)"
+                                        class="h8 w8 flex items-center justify-center rounded-full border border-transparent text-sm text-red-500 focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                                        >
+                                        Not complete
+                                    </button>
+                                </td>
                                
                                 
                             </template>
@@ -209,6 +231,7 @@
                             <th class="pt-3 py-3">Vaccine Dose</th>
                             <th class="pt-3 py-3">Vaccine Date</th>
                             <th class="pt-3 py-3">Location</th>
+                            <th class="pt-3 py-3">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -222,9 +245,19 @@
                                 <td data-label="Address" class="pt-3 py-3">{{ allVaccineeRegistered.address_line_1 + allVaccineeRegistered.city + allVaccineeRegistered.state  }}</td>
                                 <td data-label="Zip Code" class="pt-3 py-3">{{ allVaccineeRegistered.zipcode }}</td>
                                 <td data-label="Vaccine Type" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_type }}</td>
-                                <td data-label="Dosage" class="pt-3 py-3">{{ allVaccineeRegistered.dosage }}</td>
+                                <td data-label="Dose" class="pt-3 py-3">{{ allVaccineeRegistered.dose }}</td>
                                 <td data-label="Vaccine Date" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_date }}</td>
                                 <td data-label="Location" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_location }}</td>
+                                <td data-label="Action" class="pt-3 py-3">
+                                    <button
+                                    :value="allVaccineeRegistered.id"
+                                        type="button"
+                                        @click="completeStatus($event)"
+                                        class="h8 w8 flex items-center justify-center rounded-full border border-transparent text-sm text-red-500 focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                                        >
+                                        Not complete
+                                    </button>
+                                </td>
                             </template>
                         </tr>
                     </tbody>
@@ -248,6 +281,7 @@
                             <th class="pt-3 py-3">Pregnant</th>
                             <th class="pt-3 py-3">Months</th>
                             <th class="pt-3 py-3">Days</th>
+                            <th class="pt-3 py-3">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -261,12 +295,22 @@
                                 <td data-label="Address" class="pt-3 py-3">{{ allVaccineeRegistered.address_line_1 + allVaccineeRegistered.city + allVaccineeRegistered.state  }}</td>
                                 <td data-label="Zip Code" class="pt-3 py-3">{{ allVaccineeRegistered.zipcode }}</td>
                                 <td data-label="Vaccine Type" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_type }}</td>
-                                <td data-label="Dosage" class="pt-3 py-3">{{ allVaccineeRegistered.dosage }}</td>
+                                <td data-label="Dose" class="pt-3 py-3">{{ allVaccineeRegistered.dose }}</td>
                                 <td data-label="Vaccine Date" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_date }}</td>
                                 <td data-label="Location" class="pt-3 py-3">{{ allVaccineeRegistered.vaccine_location }}</td>
                                 <td data-label="Pregnant" class="pt-3 py-3">{{ allVaccineeRegistered.pregnant }}</td>
                                 <td data-label="Months" class="pt-3 py-3">{{ allVaccineeRegistered.month }}</td>
                                 <td data-label="Days" class="pt-3 py-3">{{ allVaccineeRegistered.days }}</td>
+                                <td data-label="Action" class="pt-3 py-3">
+                                    <button
+                                    :value="allVaccineeRegistered.id"
+                                        type="button"
+                                        @click="completeStatus($event)"
+                                        class="h8 w8 flex items-center justify-center rounded-full border border-transparent text-sm text-red-500 focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                                        >
+                                        Not complete
+                                    </button>
+                                </td>
                             </template>
                         </tr>
                     </tbody>
@@ -289,8 +333,8 @@ const getAllVaccineeRegistered = computed(() => store.state.allVaccinees.data);
 function completeStatus(e) {
     const buttonValue = e.target.value;
     store.dispatch("completeStatus", buttonValue).then(() => {
+        location.reload();
         
-        // store.dispatch("getVaccines");
       });
 }
 

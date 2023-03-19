@@ -25,7 +25,8 @@ class UpdateInventoryRequest extends FormRequest
     {
         return [
             'logistic_id' => 'required',
-            'used' => 'required'
+            'used' => 'required',
+            'schedule' => 'required'
         ];
     }
 }

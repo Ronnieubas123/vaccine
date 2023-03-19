@@ -106,11 +106,28 @@ class InventoryController extends Controller
                     'logistics.vaccine_name as vaccine_name',
                     'inventory.created_at as created_at',
                     'inventory.used as used',
-                    'inventory.id as id'
+                    'inventory.id as id',
+                    'schedule.date as schedule'
                 )
                 ->join("logistics", "inventory.logistic_id", "=", "logistics.id")
+                ->join("schedule", "inventory.schedule", "=", "schedule.date")
                 ->orderBy('created_at', 'DESC')
                 ->get();
         return $inventory;
+    }
+    public function getSchedule() {
+        $inventory = DB::table('inventory')
+            ->select(
+                'inventory.logistic_id as logistic_id', 
+                'logistics.vaccine_name as vaccinename',
+                DB::raw("DATE_FORMAT(inventory.schedule, '%b %d, %Y') as schedule"),
+                DB::raw('SUM(used) as used')
+            )
+            ->groupBy('logistic_id','vaccinename','schedule')
+            ->join("logistics", "inventory.logistic_id", "=", "logistics.id")
+            ->orderBy("schedule", "DESC")
+            ->get();
+            
+             return $inventory;
     }
 }

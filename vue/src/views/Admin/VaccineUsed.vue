@@ -7,7 +7,7 @@
     <div class="md:grid-cols-3 md:gap-6">
       <div class="md:col-span-1">
         <div class="px-4 sm:px-0">
-          <h3 class="text-2xl font-medium leading-6 text-gray-900 mb-4">Add Vaccine Schedule</h3>
+          <h3 class="text-2xl font-medium leading-6 text-gray-900 mb-4">Add Vaccine Used</h3>
           <!-- <p class="mt-1 text-sm text-gray-600">This information will be displayed publicly so be careful what you share.</p> -->
         </div>
       </div>
@@ -20,12 +20,20 @@
                       <label for="company-website" class="block text-sm font-medium text-gray-700">Date</label>
                       <div class="mt-1 rounded-md flex">
                         <select v-model="vaccineused.logistic_id" name="logistic" id="logistic" class="mr-3">
+                          <option value="" selected disabled hidden>Choose logistic here</option>
                             <template v-for="logistics in logistic">
                                 <option :value="logistics.id">{{logistics.vaccine_name}}</option>
                             </template>
                             
                         </select>
                         <input v-model="vaccineused.used" type="number" id="used" name="used">
+                        <select v-model="vaccineused.schedule" name="schedule" id="schedule" class="mr-3">
+                          <option value="" selected disabled hidden>Choose schedule here</option>
+                            <template v-for="scheduleLists in scheduleList">
+                                <option :value="scheduleLists.date">{{scheduleLists.date}}</option>
+                            </template>
+                            
+                        </select>
                       </div>
                     </div>
                   </div>
@@ -54,12 +62,14 @@ const route = useRoute();
 // const vaccineType = computed(() => store.state.vaccineType.data);
 // const vaccineTypeName = computed(() => store.state.vaccineTypeName.data);
 const logistic = computed(() => store.state.logistic.data);
+const scheduleList = computed(() => store.state.schedule.data);
 
 store.dispatch("vaccineUsedGetLogistic");
 
 let vaccineused = ref({
     logistic_id: '',
-    used: 0
+    used: 0,
+    schedule: ''
 });
 
 

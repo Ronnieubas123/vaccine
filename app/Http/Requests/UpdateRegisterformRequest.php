@@ -45,7 +45,8 @@ class UpdateRegisterformRequest extends FormRequest
             'pregnant' => 'required|string',
             'month' => 'required|string',
             'days' => 'required|string',
-            'reference_id' => 'required|string'
+            'reference_id' => 'required|string',
+            'dose' => 'required'
             
         ]; 
     }

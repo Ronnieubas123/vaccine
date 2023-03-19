@@ -27,7 +27,7 @@ class UserController extends Controller
         //      $test[] = $user->name;
         // }   
         // return $test;
-        return UserResource::collection(User::orderBy('id', 'DESC')->where('type','Bhw')->paginate(10));
+        return UserResource::collection(User::orderBy('id', 'DESC')->where('type','!=','Admin')->paginate(10));
     }
 
     /**

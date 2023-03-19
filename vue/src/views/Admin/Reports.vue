@@ -64,7 +64,34 @@
                                 <div>
                                     <h2 class=" text-xl font-bold mb-5 mt-10">{{barangay.barangay_name + " " + "Vaccinee list Reports"}}</h2>
                                 </div>
-                               
+                               <!--Search-->
+                                <div class="flex float-right">
+                                    <div class="mb-3 xl:w-96">
+                                        <div class="relative mb-4 flex w-full flex-wrap items-stretch">
+                                        <input
+                                            v-model="searchbarangay"
+                                            type="search"
+                                            class="relative m-0 block w-[1%] min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-1.5 text-base font-normal text-neutral-700 outline-none transition duration-300 ease-in-out focus:border-primary-600 focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200"
+                                            placeholder="Search by Vaccine date or Vaccine name"
+                                            aria-label="Search"
+                                            aria-describedby="button-addon2" />
+                                        <span
+                                            class="input-group-text flex items-center whitespace-nowrap rounded px-3 py-1.5 text-center text-base font-normal text-neutral-700 dark:text-neutral-200"
+                                            id="basic-addon2">
+                                            <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20"
+                                            fill="currentColor"
+                                            class="h-5 w-5">
+                                            <path
+                                                fill-rule="evenodd"
+                                                d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+                                                clip-rule="evenodd" />
+                                            </svg>
+                                        </span>
+                                        </div>
+                                    </div>
+                                </div>
                                 <table class="w-full text-sm">
                                     <thead class=" text-left">
                                         <tr>
@@ -83,7 +110,7 @@
                                     </thead>
                                     <tbody>
                                         <template v-if="index === 0">
-                                            <template v-for="filterRegisterform in allFilterRegisterform">
+                                            <template v-for="filterRegisterform in filteredDataBarangay">
                                                 <tr v-if="barangay.barangay_name == filterRegisterform.vaccine_location">
                                                     <template v-if="filterRegisterform.status == 1">
                                                         <td data-label="Name" class="pt-3 py-3">{{ filterRegisterform.firstname +"&nbsp"+  filterRegisterform.middlename +"&nbsp"+  filterRegisterform.lastname}}</td>
@@ -94,7 +121,7 @@
                                                         <td data-label="Address" class="pt-3 py-3">{{ filterRegisterform.address_line_1 + filterRegisterform.city + filterRegisterform.state  }}</td>
                                                         <td data-label="Zip Code" class="pt-3 py-3">{{ filterRegisterform.zipcode }}</td>
                                                         <td data-label="Vaccine Type" class="pt-3 py-3">{{ filterRegisterform.vaccine_type }}</td>
-                                                        <td data-label="Dosage" class="pt-3 py-3">{{ filterRegisterform.dosage }}</td>
+                                                        <td data-label="Dose" class="pt-3 py-3">{{ filterRegisterform.dose }}</td>
                                                         <td data-label="Vaccine Date" class="pt-3 py-3">{{ filterRegisterform.vaccine_date }}</td>
                                                         <td data-label="Location" class="pt-3 py-3">{{ filterRegisterform.vaccine_location }}</td>
                                                     </template>
@@ -102,7 +129,7 @@
                                             </template>
                                         </template>
                                         <template v-else>
-                                            <template v-for="filterRegisterform in allFilterRegisterform">
+                                            <template v-for="filterRegisterform in filteredDataBarangay">
                                                 <tr v-if="barangay.barangay_name === filterRegisterform.vaccine_location">
                                                     <template v-if="filterRegisterform.status == 1">
                                                         <td data-label="Name" class="pt-3 py-3">{{ filterRegisterform.firstname +"&nbsp"+  filterRegisterform.middlename +"&nbsp"+  filterRegisterform.lastname}}</td>
@@ -113,7 +140,7 @@
                                                         <td data-label="Address" class="pt-3 py-3">{{ filterRegisterform.address_line_1 + filterRegisterform.city + filterRegisterform.state  }}</td>
                                                         <td data-label="Zip Code" class="pt-3 py-3">{{ filterRegisterform.zipcode }}</td>
                                                         <td data-label="Vaccine Type" class="pt-3 py-3">{{ filterRegisterform.vaccine_type }}</td>
-                                                        <td data-label="Dosage" class="pt-3 py-3">{{ filterRegisterform.dosage }}</td>
+                                                        <td data-label="Dose" class="pt-3 py-3">{{ filterRegisterform.dose }}</td>
                                                         <td data-label="Vaccine Date" class="pt-3 py-3">{{ filterRegisterform.vaccine_date }}</td>
                                                         <td data-label="Location" class="pt-3 py-3">{{ filterRegisterform.vaccine_location }}</td>
                                                     </template>
@@ -149,6 +176,34 @@
                                 <div>
                                     <h2 class=" text-xl font-bold mb-5 mt-10">{{schedules.date + " Vaccinee list Reports"}}</h2>
                                 </div>
+                                <!--Search-->
+                                <div class="flex float-right">
+                                    <div class="mb-3 xl:w-96">
+                                        <div class="relative mb-4 flex w-full flex-wrap items-stretch">
+                                        <input
+                                            v-model="searchbydate"
+                                            type="search"
+                                            class="relative m-0 block w-[1%] min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-1.5 text-base font-normal text-neutral-700 outline-none transition duration-300 ease-in-out focus:border-primary-600 focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200"
+                                            placeholder="Search by Location or Vaccine name"
+                                            aria-label="Search"
+                                            aria-describedby="button-addon2" />
+                                        <span
+                                            class="input-group-text flex items-center whitespace-nowrap rounded px-3 py-1.5 text-center text-base font-normal text-neutral-700 dark:text-neutral-200"
+                                            id="basic-addon2">
+                                            <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20"
+                                            fill="currentColor"
+                                            class="h-5 w-5">
+                                            <path
+                                                fill-rule="evenodd"
+                                                d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+                                                clip-rule="evenodd" />
+                                            </svg>
+                                        </span>
+                                        </div>
+                                    </div>
+                                </div>
                                 <table class="w-full text-sm">
                                     <thead class=" text-left">
                                         <tr>
@@ -168,7 +223,7 @@
                                     <tbody> 
                                         
                                         <template v-if="index === 0">   
-                                            <template v-for="filterRegisterform in allFilterRegisterform">
+                                            <template v-for="filterRegisterform in filteredDataDate">
                                                 <tr v-if="schedules.id == filterRegisterform.date_id">
                                                     <template v-if="filterRegisterform.status == 1">
                                                         <td data-label="Name" class="pt-3 py-3">{{ filterRegisterform.firstname +"&nbsp"+  filterRegisterform.middlename +"&nbsp"+  filterRegisterform.lastname}}</td>
@@ -179,7 +234,7 @@
                                                         <td data-label="Address" class="pt-3 py-3">{{ filterRegisterform.address_line_1 + filterRegisterform.city + filterRegisterform.state  }}</td>
                                                         <td data-label="Zip Code" class="pt-3 py-3">{{ filterRegisterform.zipcode }}</td>
                                                         <td data-label="Vaccine Type" class="pt-3 py-3">{{ filterRegisterform.vaccine_type }}</td>
-                                                        <td data-label="Dosage" class="pt-3 py-3">{{ filterRegisterform.dosage }}</td>
+                                                        <td data-label="Dose" class="pt-3 py-3">{{ filterRegisterform.dose }}</td>
                                                         <td data-label="Vaccine Date" class="pt-3 py-3">{{ filterRegisterform.vaccine_date }}</td>
                                                         <td data-label="Location" class="pt-3 py-3">{{ filterRegisterform.vaccine_location }}</td>
                                                     </template>
@@ -187,7 +242,7 @@
                                             </template>
                                         </template>
                                         <template v-else>
-                                            <template v-for="filterRegisterform in allFilterRegisterform">
+                                            <template v-for="filterRegisterform in filteredDataDate">
                                                 <tr v-if="schedules.id == filterRegisterform.date_id">
                                                     <template v-if="filterRegisterform.status == 1">
                                                         <td data-label="Name" class="pt-3 py-3">{{ filterRegisterform.firstname +"&nbsp"+  filterRegisterform.middlename +"&nbsp"+  filterRegisterform.lastname}}</td>
@@ -198,7 +253,7 @@
                                                         <td data-label="Address" class="pt-3 py-3">{{ filterRegisterform.address_line_1 + filterRegisterform.city + filterRegisterform.state  }}</td>
                                                         <td data-label="Zip Code" class="pt-3 py-3">{{ filterRegisterform.zipcode }}</td>
                                                         <td data-label="Vaccine Type" class="pt-3 py-3">{{ filterRegisterform.vaccine_type }}</td>
-                                                        <td data-label="Dosage" class="pt-3 py-3">{{ filterRegisterform.dosage }}</td>
+                                                        <td data-label="Dose" class="pt-3 py-3">{{ filterRegisterform.dose }}</td>
                                                         <td data-label="Vaccine Date" class="pt-3 py-3">{{ filterRegisterform.vaccine_date }}</td>
                                                         <td data-label="Location" class="pt-3 py-3">{{ filterRegisterform.vaccine_location }}</td>
                                                     </template>
@@ -233,6 +288,34 @@
                         <div>
                             <h2 class=" text-xl font-bold mb-5 mt-10">{{"filterVaccine.vaccine" + " Vaccinee list Reports"}}</h2>
                         </div>
+                         <!--Search-->
+                         <div class="flex float-right">
+                            <div class="mb-3 xl:w-96">
+                            <div class="relative mb-4 flex w-full flex-wrap items-stretch">
+                                <input
+                                    v-model="searchbyvaccine"
+                                    type="search"
+                                    class="relative m-0 block w-[1%] min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-1.5 text-base font-normal text-neutral-700 outline-none transition duration-300 ease-in-out focus:border-primary-600 focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200"
+                                    placeholder="Search by Location or Vaccine date"
+                                    aria-label="Search"
+                                    aria-describedby="button-addon2" />
+                                    <span
+                                        class="input-group-text flex items-center whitespace-nowrap rounded px-3 py-1.5 text-center text-base font-normal text-neutral-700 dark:text-neutral-200"
+                                        id="basic-addon2">
+                                        <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20"
+                                        fill="currentColor"
+                                        class="h-5 w-5">
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+                                            clip-rule="evenodd" />
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                         <table class="w-full text-sm m-auto">
                             <thead class=" text-left">
                                 <tr>
@@ -251,7 +334,7 @@
                             </thead>
                             <tbody>
                                 <template v-if="index === 0">   
-                                            <template v-for="filterRegisterform in allFilterRegisterform">
+                                            <template v-for="filterRegisterform in filteredDataVaccine">
                                                 <tr v-if="vaccine.id == filterRegisterform.vaccine_id">
                                                     <template v-if="filterRegisterform.status == 1">
                                                         <td data-label="Name" class="pt-3 py-3">{{ filterRegisterform.firstname +"&nbsp"+  filterRegisterform.middlename +"&nbsp"+  filterRegisterform.lastname}}</td>
@@ -262,7 +345,7 @@
                                                         <td data-label="Address" class="pt-3 py-3">{{ filterRegisterform.address_line_1 + filterRegisterform.city + filterRegisterform.state  }}</td>
                                                         <td data-label="Zip Code" class="pt-3 py-3">{{ filterRegisterform.zipcode }}</td>
                                                         <td data-label="Vaccine Type" class="pt-3 py-3">{{ filterRegisterform.vaccine_type }}</td>
-                                                        <td data-label="Dosage" class="pt-3 py-3">{{ filterRegisterform.dosage }}</td>
+                                                        <td data-label="Dose" class="pt-3 py-3">{{ filterRegisterform.dose }}</td>
                                                         <td data-label="Vaccine Date" class="pt-3 py-3">{{ filterRegisterform.vaccine_date }}</td>
                                                         <td data-label="Location" class="pt-3 py-3">{{ filterRegisterform.vaccine_location }}</td>
                                                     </template>
@@ -270,7 +353,7 @@
                                             </template>
                                         </template>
                                         <template v-else>
-                                            <template v-for="filterRegisterform in allFilterRegisterform">
+                                            <template v-for="filterRegisterform in filteredDataVaccine">
                                                 <tr v-if="vaccine.id == filterRegisterform.vaccine_id">
                                                     <template v-if="filterRegisterform.status == 1">
                                                         <td data-label="Name" class="pt-3 py-3">{{ filterRegisterform.firstname +"&nbsp"+  filterRegisterform.middlename +"&nbsp"+  filterRegisterform.lastname}}</td>
@@ -281,7 +364,7 @@
                                                         <td data-label="Address" class="pt-3 py-3">{{ filterRegisterform.address_line_1 + filterRegisterform.city + filterRegisterform.state  }}</td>
                                                         <td data-label="Zip Code" class="pt-3 py-3">{{ filterRegisterform.zipcode }}</td>
                                                         <td data-label="Vaccine Type" class="pt-3 py-3">{{ filterRegisterform.vaccine_type }}</td>
-                                                        <td data-label="Dosage" class="pt-3 py-3">{{ filterRegisterform.dosage }}</td>
+                                                        <td data-label="Dose" class="pt-3 py-3">{{ filterRegisterform.dose }}</td>
                                                         <td data-label="Vaccine Date" class="pt-3 py-3">{{ filterRegisterform.vaccine_date }}</td>
                                                         <td data-label="Location" class="pt-3 py-3">{{ filterRegisterform.vaccine_location }}</td>
                                                     </template>
@@ -352,7 +435,42 @@ export default {
         barangaytab: 0,
         scheduletab: 0,
         vaccinetab: 0,
+        searchbarangay: '',
+        searchbydate: '',
+        searchbyvaccine: '',
+        allFilterRegisterforms: allFilterRegisterform,
+        allData: [
+    {"id": 1, "city":"California", "country": "United State of America", "price": "700", "reviewnum": "890", "daynum": "5", "imgsrc": "img/place/1.png"},
+    {"id": 2, "city":"london", "country": "United Kingdom", "price": "550", "reviewnum": "900", "daynum": "4", "imgsrc": "img/place/2.png"},
+    {"id": 3, "city":"Korola Megna", "country": "Nepal", "price": "350", "reviewnum": "150", "daynum": "5", "imgsrc": "img/place/3.png"},
+    {"id": 4, "city":"Miami Beach", "country": "United State of America", "price": "850", "reviewnum": "660", "daynum": "7", "imgsrc": "img/place/4.png"},
+    {"id": 5, "city":"California", "country": "United State of America", "price": "600", "reviewnum": "380", "daynum": "6", "imgsrc": "img/place/5.png"},
+    {"id": 6, "city":"Saintmartine Iceland", "country": "Kingdom of the Netherlands", "price": "450", "reviewnum": "340", "daynum": "3", "imgsrc": "img/place/6.png"}
+]
     };
+  },
+  computed: {
+    filteredDataBarangay() {
+      return this.allFilterRegisterforms
+        .filter(
+          ({ vaccine_type, vaccine_date }) => [vaccine_type, vaccine_date]
+            .some(val => val.toLowerCase().includes(this.searchbarangay))
+        );
+      },
+      filteredDataDate() {
+      return this.allFilterRegisterforms
+        .filter(
+          ({ vaccine_type, vaccine_location }) => [vaccine_type, vaccine_location]
+            .some(val => val.toLowerCase().includes(this.searchbydate))
+        );
+      },
+      filteredDataVaccine() {
+      return this.allFilterRegisterforms
+        .filter(
+          ({ vaccine_date, vaccine_location }) => [vaccine_date, vaccine_location]
+            .some(val => val.toLowerCase().includes(this.searchbyvaccine))
+        );
+      }
   },
   methods: {
     vaccineFilter(value) {

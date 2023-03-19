@@ -25,7 +25,7 @@
                     <div class="h-full pb-5 pt-5">
                     <img :src="vaccines.image_url" class="h-5/6"/>
                     <h4 class="mt-4 text-lg"><b>Name:</b> {{ vaccines.name}}</h4>
-                    <h3 class=" text-sm"><b>Dosage: </b>{{ vaccines.dosage }}</h3>
+                    <!-- <h3 class=" text-sm"><b>Dosage: </b>{{ vaccines.dosage }}</h3> -->
                     <h3 class=" text-sm"><b>Manufacturer: </b>{{ vaccines.manufacturer }}</h3>
                     <h3 class=" text-sm"><b>Type: </b>{{ vaccines.type }}</h3>
                     <div v-html="vaccines.description" class="overflow-hidden flex-1 text-sm"></div>

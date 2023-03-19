@@ -64,6 +64,18 @@
                   <div v-if="vaccineform.receive_vaccine_dose" class="grid grid-cols-3 gap-6">
                     <div class="col-span-3 sm:col-span-2">
                       <div v-if="vaccineform.receive_vaccine_dose === 'Yes'">
+
+                        <label for="company-website" class="block text-sm font-medium text-gray-700">Select Dose</label>
+                        <div class="mt-1 rounded-md">
+                              <select v-model="vaccineform.dose" name="date" id="date">
+                                <option value="" selected disabled hidden>Choose Dose</option>
+                                <option value="1st">1st dose</option>
+                                <option value="2nd">2nd dose</option>
+                                <option value="Booster">Booster</option>
+                            </select>
+                        </div>
+
+
                         <label for="company-website" class="block text-sm font-medium text-gray-700">What was your 1st dose vaccine type?</label>
                         <div class="mt-1 rounded-md">
                           <div v-for="formvaccines in formvaccine" :key="formvaccines.id" >
@@ -73,6 +85,7 @@
                             </span> 
                           </div>
                         </div>
+                     
                       </div>
                       <div v-else>
                         <label for="company-website" class="block text-sm font-medium text-gray-700">Which vaccine are you interested in receiving?</label>
@@ -277,7 +290,6 @@
                           <template v-for="citizineGetScheds in citizineGetSched">
                             <option :value="citizineGetScheds.id">{{citizineGetScheds.date}}</option>
                           </template>
-                          
                         </select>
                         
                       </div>
@@ -294,6 +306,7 @@
           </div>
         </div>
       </form>
+      {{ vaccineform }}
    </div>
   </admin-page-component>
  </template>
@@ -372,7 +385,8 @@ let vaccineform = ref({
   pregnant: 'None',
   month: 'None',
   days: 'None',
-  reference_id: generatedReferenceId
+  reference_id: generatedReferenceId,
+  dose: '1st'
 });
 
 

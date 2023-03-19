@@ -45,6 +45,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/get-all-vaccine-left', [\App\Http\Controllers\InventoryController::class, 'vaccineLeft']);
     Route::get('/get-all-vaccine-used', [\App\Http\Controllers\InventoryController::class, 'vaccineUsed']);
     Route::get('/get-all-history', [\App\Http\Controllers\InventoryController::class, 'history']);
+    Route::get('/get-all-schedule', [\App\Http\Controllers\InventoryController::class, 'getSchedule']);
+    
     
 
     

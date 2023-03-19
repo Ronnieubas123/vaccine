@@ -24,14 +24,14 @@
                 </div>
               </div>
 
-              <div class="grid grid-cols-3 gap-6">
+              <!-- <div class="grid grid-cols-3 gap-6">
                 <div class="col-span-3 sm:col-span-2">
                   <label for="company-website" class="block text-sm font-medium text-gray-700">Vaccine Dosage</label>
                   <div class="mt-1 flex rounded-md shadow-sm">
                     <input v-model="vaccine.dosage" type="text" name="dosage" id="dosage" class="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Vaccine Dosage" />
                   </div>
                 </div>
-              </div>
+              </div> -->
 
               <div class="grid grid-cols-3 gap-6">
                 <div class="col-span-3 sm:col-span-2">
@@ -110,7 +110,7 @@ const update = route.params.id;
 
 let vaccine = ref({
     name: '',
-    dosage:'',
+    dosage:'1',
     description: '',
     image_url: null,
     manufacturer: '',

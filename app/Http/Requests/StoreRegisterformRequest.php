@@ -45,7 +45,8 @@ class StoreRegisterformRequest extends FormRequest
             'pregnant' => 'required|string',
             'month' => '',
             'days' => '',
-            'reference_id' => 'required|string'
+            'reference_id' => 'required|string',
+            'dose' => 'required'
             
         ]; 
     }

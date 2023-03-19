@@ -123,6 +123,10 @@ const store = createStore({
             loading: false,
             data: []
         },
+        inventorySchedule: {
+            loading: false,
+            data: []
+        },
         currentVaccineForm: {
             data: [],
             error: null
@@ -142,6 +146,12 @@ const store = createStore({
                 .catch((err) => {
                     throw err;
                   });
+        },
+        getScheduleInventory({ commit }) {
+                return axiosClient.get("/get-all-schedule").then((res) => {
+                    commit('setInventorySchedule', res.data);
+                    return res;
+                });
         },
         getHistory({ commit }) {
                 return axiosClient.get("/get-all-history").then((res) => {
@@ -756,6 +766,9 @@ const store = createStore({
         },
         setInventoryHistory: (state, inventoryHistory) => {
             state.inventoryHistory.data = inventoryHistory;
+        },
+        setInventorySchedule: (state, inventorySchedule) => {
+            state.inventorySchedule.data = inventorySchedule;
         },
         setCurrentVaccineUseds: (state, currentVaccineUsed) => {
             state.currentVaccineUsed.data = currentVaccineUsed.data;
