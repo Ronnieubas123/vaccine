@@ -439,14 +439,6 @@ export default {
         searchbydate: '',
         searchbyvaccine: '',
         allFilterRegisterforms: allFilterRegisterform,
-        allData: [
-    {"id": 1, "city":"California", "country": "United State of America", "price": "700", "reviewnum": "890", "daynum": "5", "imgsrc": "img/place/1.png"},
-    {"id": 2, "city":"london", "country": "United Kingdom", "price": "550", "reviewnum": "900", "daynum": "4", "imgsrc": "img/place/2.png"},
-    {"id": 3, "city":"Korola Megna", "country": "Nepal", "price": "350", "reviewnum": "150", "daynum": "5", "imgsrc": "img/place/3.png"},
-    {"id": 4, "city":"Miami Beach", "country": "United State of America", "price": "850", "reviewnum": "660", "daynum": "7", "imgsrc": "img/place/4.png"},
-    {"id": 5, "city":"California", "country": "United State of America", "price": "600", "reviewnum": "380", "daynum": "6", "imgsrc": "img/place/5.png"},
-    {"id": 6, "city":"Saintmartine Iceland", "country": "Kingdom of the Netherlands", "price": "450", "reviewnum": "340", "daynum": "3", "imgsrc": "img/place/6.png"}
-]
     };
   },
   computed: {

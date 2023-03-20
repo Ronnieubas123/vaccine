@@ -76,5 +76,8 @@ class BarangayController extends Controller
     public function allBarangaysReport() {
         return BarangayResource::collection(Barangay::orderBy('created_at', 'ASC')->get());
     }
+    public function getAllBarangayForReports() {
+        return BarangayResource::collection(Barangay::orderBy('created_at', 'ASC')->get());
+    }
     
 }

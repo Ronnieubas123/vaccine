@@ -46,6 +46,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/get-all-vaccine-used', [\App\Http\Controllers\InventoryController::class, 'vaccineUsed']);
     Route::get('/get-all-history', [\App\Http\Controllers\InventoryController::class, 'history']);
     Route::get('/get-all-schedule', [\App\Http\Controllers\InventoryController::class, 'getSchedule']);
+    Route::get('/get-all-schedule', [\App\Http\Controllers\InventoryController::class, 'getSchedule']);
+    Route::get('/get-all-barangay-reports', [\App\Http\Controllers\BarangayController::class, 'getAllBarangayForReports']);
+    Route::get('/get-all-vaccine-reports', [\App\Http\Controllers\VaccineController::class, 'getAllVaccineForReports']);
+    
+    
     
     
 
@@ -66,6 +71,8 @@ Route::get('/filter-registerform', [\App\Http\Controllers\RegisterformController
 Route::get('/filter-date/{registerform:vaccine_date}', [\App\Http\Controllers\RegisterformController::class, 'filterDate']);
 Route::get('/filter-vaccine/{vaccine:name}', [\App\Http\Controllers\RegisterformController::class, 'filterVaccine']);
 Route::get('/message/{registerform:vaccine_date}', [\App\Http\Controllers\RegisterformController::class, 'message']);
+Route::get('/filter-reports', [\App\Http\Controllers\RegisterformController::class, 'filterReports']);
+
 
 
 

@@ -75,7 +75,6 @@
             </div>
           </div>
         </form>
-        {{ logistic }}
       </div>
     </div>
   </div>
@@ -106,31 +105,6 @@ let logistic = ref({
 
 store.dispatch('getAllVaccineType');
 store.dispatch('getAllVaccineTypeName');
-
-// export default {
-//   data() {
-//   },
-//   methods: {
-  
-//   },
-//   setup () {
-//     return {
-//     }
-//   }
-// }
-
-// watch(
-//   () => store.state.currentUser.data,
-//   (newVal, oldVal) => {
-//     user.value = {
-//       ...JSON.parse(JSON.stringify(newVal)),
-//     }
-//   }
-// );
-
-// if (route.params.id) {
-//   store.dispatch("getUserss", route.params.id);
-// }
 
 
 function addVaccineLogistic() {

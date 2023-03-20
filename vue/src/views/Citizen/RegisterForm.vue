@@ -74,15 +74,15 @@
                                 <option value="Booster">Booster</option>
                             </select>
                         </div>
-
-
-                        <label for="company-website" class="block text-sm font-medium text-gray-700">What was your 1st dose vaccine type?</label>
+                        <label for="company-website" class="mt-5 block text-sm font-medium text-gray-700">What was your 1st dose vaccine type?</label>
                         <div class="mt-1 rounded-md">
-                          <div v-for="formvaccines in formvaccine" :key="formvaccines.id" >
-                            <span>
-                              <input v-model="vaccineform.first_vaccine_type" type="radio" name="first_vaccine_type" :value="formvaccines.id" @click="FirstVaccineType">
-                              {{ formvaccines.name }}
-                            </span> 
+                          <div >
+                              <select v-model="vaccineform.first_vaccine_type" name="first_vaccine_type" id="first_vaccine_type">
+                                <option value="" selected disabled hidden>Choose Vaccine</option>
+                                <template v-for="formvaccines in formvaccine" :key="formvaccines.id">
+                                  <option :value="formvaccines.id">{{formvaccines.name}}</option>
+                                </template>
+                              </select>
                           </div>
                         </div>
                      
@@ -90,11 +90,17 @@
                       <div v-else>
                         <label for="company-website" class="block text-sm font-medium text-gray-700">Which vaccine are you interested in receiving?</label>
                         <div class="mt-1 rounded-md">
-                          <div v-for="formvaccines in formvaccine" :key="formvaccines.id" >
-                            <span>
+                          <div>
+                            <select v-model="vaccineform.first_vaccine_type" name="first_vaccine_type" id="first_vaccine_type">
+                                <option value="" selected disabled hidden>Choose Vaccine</option>
+                                <template v-for="formvaccines in formvaccine" :key="formvaccines.id">
+                                  <option :value="formvaccines.id">{{formvaccines.name}}</option>
+                                </template>
+                              </select>
+                            <!-- <span>
                               <input v-model="vaccineform.first_vaccine_type" type="radio" name="first_vaccine_type" :value="formvaccines.id" @click="FirstVaccineType">
                               {{ formvaccines.name }}
-                            </span>
+                            </span> -->
                           </div>
                         </div>
                       </div>
@@ -306,7 +312,7 @@
           </div>
         </div>
       </form>
-      {{ vaccineform }}
+   
    </div>
   </admin-page-component>
  </template>

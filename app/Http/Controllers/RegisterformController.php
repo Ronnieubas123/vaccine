@@ -11,7 +11,7 @@ use App\Http\Requests\UpdateRegisterformRequest;
 use App\Http\Requests\StoreRegisterformSearhRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-
+use League\CommonMark\Extension\FrontMatter\Data\FrontMatterDataParserInterface;
 
 class RegisterformController extends Controller
 {
@@ -161,7 +161,7 @@ class RegisterformController extends Controller
                 "registerform.state as state",
                 "registerform.city as city",
                 "registerform.zipcode as zipcode",
-                "schedule.date as vaccine_date",
+                DB::raw("DATE_FORMAT(schedule.date, '%b %d, %Y') as vaccine_date"),
                 "registerform.vaccine_location as vaccine_location",
                 "registerform.pregnant as pregnant",
                 "registerform.month as month",
@@ -303,6 +303,159 @@ class RegisterformController extends Controller
         DB::table('registerform')
                 ->where('id', $id)
                 ->update(['status' => 1]);
+
+    }
+    public function filterReports(Request $request) {
+        $fromdate = $request->input('fromdate');
+        $todate = $request->input('todate');
+        $barangay = $request->input('barangay');
+        $vaccine = $request->input('vaccine');
+
+        if($fromdate == '' || $todate == '') {
+            return response([
+                'error' => 'Please make sure that the From date or To date filter has value'
+            ], 422);
+        } else if($fromdate != '' && $todate != '' && $barangay == '' && $vaccine == ''  ) {
+            $filterReport = DB::table("registerform")
+                ->select(
+                    "registerform.firstname as firstname",
+                    "registerform.middlename as middlename",
+                    "registerform.lastname as lastname",
+                    "vaccines.name as vaccine_type",
+                    "registerform.first_vaccine_type as vaccine_id",
+                    "registerform.dose as dose",
+                    "registerform.age as age",
+                    "registerform.sex as sex",
+                    "registerform.email as email",
+                    "registerform.phone as phone",
+                    "registerform.address_line_1 as address_line_1",
+                    "registerform.state as state",
+                    "registerform.city as city",
+                    "registerform.zipcode as zipcode",
+                    DB::raw("DATE_FORMAT(schedule.date, '%b %d, %Y') as vaccine_date"),
+                    "registerform.vaccine_date as date_id",
+                    "registerform.vaccine_location as vaccine_location",
+                    "registerform.pregnant as pregnant",
+                    "registerform.month as month",
+                    "registerform.days as days",
+                    "registerform.status as status",
+                    "registerform.id as id"
+                    // "registerform.reference_id as reference_id"
+                    )
+                ->join("vaccines", "registerform.first_vaccine_type", "=", "vaccines.id")
+                ->join("schedule", "registerform.vaccine_date", "=", "schedule.id")
+                ->whereBetween('schedule.date', [$fromdate, $todate])
+                // ->where('vaccine_location','=', $barangay)
+                ->get();
+            return $filterReport;
+
+        } else if($fromdate != '' && $todate != '' && $barangay != '' && $vaccine == '' ) {
+
+            $filterReport = DB::table("registerform")
+                ->select(
+                    "registerform.firstname as firstname",
+                    "registerform.middlename as middlename",
+                    "registerform.lastname as lastname",
+                    "vaccines.name as vaccine_type",
+                    "registerform.first_vaccine_type as vaccine_id",
+                    "registerform.dose as dose",
+                    "registerform.age as age",
+                    "registerform.sex as sex",
+                    "registerform.email as email",
+                    "registerform.phone as phone",
+                    "registerform.address_line_1 as address_line_1",
+                    "registerform.state as state",
+                    "registerform.city as city",
+                    "registerform.zipcode as zipcode",
+                    DB::raw("DATE_FORMAT(schedule.date, '%b %d, %Y') as vaccine_date"),
+                    "registerform.vaccine_date as date_id",
+                    "registerform.vaccine_location as vaccine_location",
+                    "registerform.pregnant as pregnant",
+                    "registerform.month as month",
+                    "registerform.days as days",
+                    "registerform.status as status",
+                    "registerform.id as id"
+                    // "registerform.reference_id as reference_id"
+                    )
+                ->join("vaccines", "registerform.first_vaccine_type", "=", "vaccines.id")
+                ->join("schedule", "registerform.vaccine_date", "=", "schedule.id")
+                ->whereBetween('schedule.date', [$fromdate, $todate])
+                ->where('vaccine_location','=', $barangay)
+                ->get();
+            return $filterReport;
+
+        } else if($fromdate != '' && $todate != '' && $vaccine != '' && $barangay == '' ) {
+            $filterReport = DB::table("registerform")
+            ->select(
+                "registerform.firstname as firstname",
+                "registerform.middlename as middlename",
+                "registerform.lastname as lastname",
+                "vaccines.name as vaccine_type",
+                "registerform.first_vaccine_type as vaccine_id",
+                "registerform.dose as dose",
+                "registerform.age as age",
+                "registerform.sex as sex",
+                "registerform.email as email",
+                "registerform.phone as phone",
+                "registerform.address_line_1 as address_line_1",
+                "registerform.state as state",
+                "registerform.city as city",
+                "registerform.zipcode as zipcode",
+                DB::raw("DATE_FORMAT(schedule.date, '%b %d, %Y') as vaccine_date"),
+                "registerform.vaccine_date as date_id",
+                "registerform.vaccine_location as vaccine_location",
+                "registerform.pregnant as pregnant",
+                "registerform.month as month",
+                "registerform.days as days",
+                "registerform.status as status",
+                "registerform.id as id"
+                // "registerform.reference_id as reference_id"
+                )
+            ->join("vaccines", "registerform.first_vaccine_type", "=", "vaccines.id")
+            ->join("schedule", "registerform.vaccine_date", "=", "schedule.id")
+            ->whereBetween('schedule.date', [$fromdate, $todate])
+            ->where('vaccines.name','=', $vaccine)
+            ->get();
+        return $filterReport;
+        } else if($fromdate != '' && $todate != '' && $barangay != '' && $vaccine != '' ) {
+            $filterReport = DB::table("registerform")
+            ->select(
+                "registerform.firstname as firstname",
+                "registerform.middlename as middlename",
+                "registerform.lastname as lastname",
+                "vaccines.name as vaccine_type",
+                "registerform.first_vaccine_type as vaccine_id",
+                "registerform.dose as dose",
+                "registerform.age as age",
+                "registerform.sex as sex",
+                "registerform.email as email",
+                "registerform.phone as phone",
+                "registerform.address_line_1 as address_line_1",
+                "registerform.state as state",
+                "registerform.city as city",
+                "registerform.zipcode as zipcode",
+                DB::raw("DATE_FORMAT(schedule.date, '%b %d, %Y') as vaccine_date"),
+                "registerform.vaccine_date as date_id",
+                "registerform.vaccine_location as vaccine_location",
+                "registerform.pregnant as pregnant",
+                "registerform.month as month",
+                "registerform.days as days",
+                "registerform.status as status",
+                "registerform.id as id"
+                // "registerform.reference_id as reference_id"
+                )
+            ->join("vaccines", "registerform.first_vaccine_type", "=", "vaccines.id")
+            ->join("schedule", "registerform.vaccine_date", "=", "schedule.id")
+            ->whereBetween('schedule.date', [$fromdate, $todate])
+            ->where([
+                    ['vaccines.name','=', $vaccine],
+                    ['vaccine_location','=', $barangay]
+                ])
+            ->get();
+        return $filterReport;
+        }
+
+        
 
     }
     

@@ -12,7 +12,7 @@ import Register from '../views/Citizen/Register.vue';
 import Barangay from '../views/Admin/Barangay.vue';
 import BarangayCreate from '../views/Admin/BarangayCreate.vue';
 import VaccineRegistration from '../views/Admin/VaccineRegistration.vue';
-import Reports from '../views/Admin/Reports.vue';
+import Reportss from '../views/Admin/Reportss.vue';
 import AnnouncementCreate from '../views/Admin/AnnouncementCreate.vue';
 import User from '../views/Admin/User.vue';
 import UserCreate from '../views/Admin/UserCreate.vue';
@@ -52,7 +52,7 @@ const routes = [
             { path: 'barangay/create', name: 'BarangayCreate', component: BarangayCreate },
             { path: 'barangay/:id', name:'BarangayView', component: BarangayCreate },
             { path: 'vaccine-registration', name:'VaccineRegistration', component: VaccineRegistration },
-            { path: 'reports', name:'Reports', component: Reports },
+            { path: 'reports', name:'Reports', component: Reportss },
             { path: 'announcement-create', name:'AnnouncementCreate', component: AnnouncementCreate },
             { path: 'announcement/:id', name:'AnnouncementView', component: AnnouncementCreate },
             { path: 'users-create', name:'UserCreate', component: UserCreate },

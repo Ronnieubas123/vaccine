@@ -130,11 +130,53 @@ const store = createStore({
         currentVaccineForm: {
             data: [],
             error: null
+        },
+        searchFilterReports: {
+            data: []
+        },
+        reportsGetAllBarangay: {
+            data: []
+        },
+        reportsGetAllVaccine: {
+            data: []
         }
         
     },
     getters: {},
     actions: {
+        reportsGetAllVaccine({ commit }) {
+            return axiosClient.get("/get-all-vaccine-reports").then((res) => {
+                commit('setAllVaccineForReports', res.data);
+                    return res;
+            });
+        },
+        reportsGetAllBarangay({ commit }) {
+            return axiosClient.get("/get-all-barangay-reports").then((res) => {
+                commit('setAllBarangayForReports', res.data);
+                    return res;
+                });
+        },
+        reportsFilterSearch({ commit }, filter) {
+            return axiosClient
+                .get('filter-reports/', {
+                    params: {
+                        fromdate: filter.fromdate,
+                        todate: filter.todate,
+                        barangay: filter.barangay,
+                        vaccine: filter.vaccine
+                    }
+                })
+                .then((res) => {
+                    commit("setFilterReports", res.data);
+                    return res;
+                })
+                // .then(function(response) {
+                //     console.log(response);
+                // })
+                // .catch(function(error) {
+                //     console.log(error);
+                // })
+        },
         getVacccineUseds({ commit }, id ) {
             return axiosClient
                 .get(`inventory/${id}`)
@@ -781,16 +823,16 @@ const store = createStore({
             } else {
                 state.currentVaccineForm.error = currentVaccineForm.error;
             }
-            
-            // state.currentVaccineForm.error = currentVaccineForm.error;
-            // console.log(currentVaccineForm.error);
-            // console.log(currentVaccineForm);
-            // sessionStorage.setItem('ERROR', currentVaccineForm.error);
         },
-        // setCurrentVaccineFormError: (state, currentVaccineForm) => {
-        //     state.currentVaccineForm.error = currentVaccineForm.error;
-        //     sessionStorage.setItem('ERROR', currentVaccineForm.error);
-        // }
+        setFilterReports: (state, filterRegisterform) => {
+            state.filterRegisterform.data = filterRegisterform;
+        },
+        setAllBarangayForReports: (state, reportsGetAllBarangay) => {
+            state.reportsGetAllBarangay.data = reportsGetAllBarangay.data;
+        },
+        setAllVaccineForReports: (state, reportsGetAllVaccine) => {
+            state.reportsGetAllVaccine.data = reportsGetAllVaccine.data;
+        }
         
         
     },

@@ -149,4 +149,9 @@ class VaccineController extends Controller
     function allVaccineReport() {
         return VaccineResource::collection(Vaccine::orderBy('created_at', 'DESC')->paginate(10));
     }
+    function getAllVaccineForReports () {
+        return VaccineResource::collection(Vaccine::orderBy('created_at', 'DESC')->paginate(10));
+    }
+   
+
 }
