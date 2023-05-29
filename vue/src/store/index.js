@@ -9,6 +9,7 @@ const store = createStore({
             data: {},
             token: sessionStorage.getItem("TOKEN"),
             type: sessionStorage.getItem("TYPE"),
+            id: sessionStorage.getItem("USERID")
         },
         multiform: {
             stepData:[],
@@ -44,21 +45,10 @@ const store = createStore({
             loading: false,
             data: []
         },
-        // filterDate: {
-        //     loading: false,
-        //     data: []
-        // },
-        // filterVaccine: {
-        //     loading: false,
-        //     data: []
-        // },
         currentAnnouncement: {
             loading: false,
             data: []
         },
-        // loggedinUser: {
-        //     data: []
-        // },
         currentUser: {
             loading: false,
             data: []
@@ -89,7 +79,8 @@ const store = createStore({
         },
         currentSchedule: {
             loading: false,
-            data: []
+            data: [],
+            error: ''
         },
         citizineSchedule: {
             loading: false,
@@ -97,7 +88,7 @@ const store = createStore({
         },
         schedule: {
             loading: false,
-            data: []
+            data: [],
         },
         allBarangays: {
             data: []
@@ -139,11 +130,161 @@ const store = createStore({
         },
         reportsGetAllVaccine: {
             data: []
+        },
+        currentCitizenInfo: {
+            data: [],
+        },
+        citizenInfo: {
+            data: [],
+            loading: false,
+            photo: {}
+
+        },
+        vaccineRecord: {
+            data: [],
+            citizenRecordModal: [],
+            loading: false
+        },
+        vaccineDescription: {
+            data: [],
+            loading: false
+        },
+        citizenVaccineRegisterList: {
+            data: [],
+            loading: false
+        },
+        citizenStatus: {
+            data: []
+        },
+        barangayLocationList: {
+            data: []
+        },
+        barangayOptionAddUser: {
+            data: [],
+        },
+        allVaccineesRegisterd: {
+            data: [],
+            loading: false
+        },
+        allBarangaysSchedule: {
+            data: []
+        },
+        citizenVaccineeList: {
+            data: [],
+            loading: false
         }
+
         
     },
     getters: {},
     actions: {
+        getCitizenVaccineeList({ commit }, citizenId) {
+            commit("setVaccineeListLoading", true);
+            return axiosClient.get('citizen-vaccinee-list', {
+                params: {
+                    citizenId: citizenId
+                }
+            }).then((res) => {
+                commit("setVaccineeList", res.data);
+                commit("setVaccineeListLoading", false);
+                return res;
+            }) 
+        },
+        addUserGetBarangayOption({ commit }) {
+            return axiosClient.get('get-barangay-option-add-users')
+            .then((res) => {
+                commit('getBarangayOptionAddUser', res.data);
+                return res;
+            })
+        },
+        getLocationScheduleList({ commit }, barangayName) {
+            return axiosClient.get('get-barangay-location-list', {
+                params: {
+                    barangayName: barangayName
+                }
+            }).then((res) => {
+                commit('getBarangayLocationList', res.data);
+                return res;
+            })
+        },
+        checkUserStatus({commit}, citizenId) {
+            return axiosClient.get('check-citizen-status', {
+                params: {
+                    citizenId: citizenId
+                }
+            }).then((res) => {
+                commit("setCitizenStatus", res.data);
+                return res;
+            })
+        },
+        getCitizenVaccineRegisterList({ commit }, citizenId) {
+            commit("setVaccineRegisterListLoading", true);
+            return axiosClient.get('citizen-vaccine-registed', {
+                params: {
+                    citizenId: citizenId
+                }
+            }).then((res) => {
+                commit("setVaccineRegisterList", res.data);
+                commit("setVaccineRegisterListLoading", false);
+                return res;
+            }) 
+        },
+        getVaccineDescription({ commit }, vaccineId) {
+            commit("setVaccineDescriptionLoading", true);
+            return axiosClient.get('vaccine-description', {
+                params: {
+                    vaccineId: vaccineId
+                }
+            }).then((res) => {
+                commit("setVaccineDescription", res.data);
+                commit("setVaccineDescriptionLoading", false);
+                return res;
+            })
+        },
+        getCitizenVaccineRecord({commit}, citizenId) {
+            commit("setVaccineRecordLoading", true);
+            return axiosClient
+                .get('vaccine-record/', {
+                    params: {
+                        citizenId: citizenId,
+                    }
+                })
+                .then((res) => {
+                    commit("setVaccineRecord", res.data);
+                    commit("setVaccineRecordLoading", false);
+                    return res;
+                })
+        },
+        updateCitizen({ commit }, citizenInfos) {
+            delete citizenInfos.image_url;
+            return axiosClient.post('/update-citizen',citizenInfos)
+                .then(({data}) => {
+                    commit('setCitizenInfo', data);
+                    return data;
+                })
+        },
+        getCitizenInfos({ commit }, id ) {
+            commit("setCitizenInfoLoading", true);
+            return axiosClient
+                .get(`update-citizen-info/${id}`)
+                .then((res) => {
+                    commit("setCurrentCitizens", res.data);
+                    commit("setCitizenInfoLoading", false);
+                    return res;
+                })
+        },
+        getCitizenInfo({ commit } ,citizenId) {
+            commit("setCitizenInfoLoading", true);
+            return axiosClient.get(`get-citizine-info`, {
+                params: {
+                    citizenId: citizenId
+                }
+            })
+                .then((res) => {
+                    commit("setCitizenInfo", res.data);
+                    commit("setCitizenInfoLoading", false);
+                })
+        },
         reportsGetAllVaccine({ commit }) {
             return axiosClient.get("/get-all-vaccine-reports").then((res) => {
                 commit('setAllVaccineForReports', res.data);
@@ -268,6 +409,17 @@ const store = createStore({
         getAllBarangayRegisterform({ commit }) {
             return axiosClient.get("/get-all-barangays").then((res) => {
                 commit('setAllBarangays', res.data);    
+                return res;
+            });
+         },
+         getAllBarangayForAddSchedule({ commit }, userId) {
+            return axiosClient.get("/get-all-barangays-schedule", {
+                params: {
+                    userId: userId
+                }
+            })
+            .then((res) => {
+                commit('setAllBarangaysSchedule', res.data);    
                 return res;
             });
          },
@@ -538,6 +690,19 @@ const store = createStore({
                 return res;
             });
         },
+        getAllVaccineesRegister({ commit }, userId) {
+            commit('getAllVaccineesRegisterLoading', true);
+            return axiosClient.get('get-all-vaccinee-registerd', {
+                params: {
+                    userId: userId
+                }
+            }).then((res) => {
+                commit('getAllVaccineesRegister', res.data);
+                commit('getAllVaccineesRegisterLoading', false);
+                return res;
+
+            })
+        },
         saveRegistrationForm({ commit }, registration) {
             let response;
 
@@ -647,9 +812,11 @@ const store = createStore({
         },
         //END VACCINE CRUD
         register({ commit }, user ) {
+            commit("setCitizenInfoLoading", true);
             return axiosClient.post('/register',user)
                 .then(({data}) => {
                     commit('setUser', data);
+                    commit("setCitizenInfoLoading", false);
                     return data;
             })
         },
@@ -666,6 +833,10 @@ const store = createStore({
             state.user.token = userData.token;
             state.user.type = userData.type;
             state.user.data = userData.user;
+            state.user.id = userData.id;
+            sessionStorage.setItem('DATA', userData.user);
+            sessionStorage.setItem('USERID', userData.id);
+            console.log(userData.id);
             sessionStorage.setItem('TOKEN', userData.token);
             sessionStorage.setItem('TYPE', userData.type);
         },
@@ -768,6 +939,7 @@ const store = createStore({
         },
         setCurrentschedule: (state, currentSchedule) => {
             state.currentSchedule.data = currentSchedule.data;
+            state.currentSchedule.error = currentSchedule.error;
         },
         setCitizineSchedule: (state, citizineSchedule) => {
             state.citizineSchedule.data = citizineSchedule.data;
@@ -832,8 +1004,63 @@ const store = createStore({
         },
         setAllVaccineForReports: (state, reportsGetAllVaccine) => {
             state.reportsGetAllVaccine.data = reportsGetAllVaccine.data;
-        }
+        },
+        setCitizenInfoLoading: (state, loading) => {
+            state.citizenInfo.loading = loading;
+        },
         
+        setCitizenInfo: (state, citizenInfo) => {
+           state.citizenInfo.data = citizenInfo.data;
+           state.citizenInfo.photo = citizenInfo.photo;
+           
+        },  
+        setCurrentCitizens: (state, currentCitizenInfo) => {
+             state.currentCitizenInfo.data = currentCitizenInfo.data[0];
+        },
+        setVaccineRecord: (state, vaccineRecord) => {
+            state.vaccineRecord.data = vaccineRecord.data;
+            state.vaccineRecord.citizenRecordModal = vaccineRecord.citizenRecordModal;
+            
+        },
+        setVaccineRecordLoading: (state, loading) => {
+            state.vaccineRecord.loading = loading;
+        },
+        setVaccineDescription: (state, vaccineDescription) => {
+            state.vaccineDescription.data = vaccineDescription.data[0];
+        },
+        setVaccineDescriptionLoading: (state, loading) => {
+            state.vaccineDescription.loading = loading;
+        },
+        setVaccineRegisterListLoading: (state, loading) => {
+            state.citizenVaccineRegisterList.loading = loading;
+        },
+        setVaccineRegisterList: (state, citizenVaccineRegisterList) => {
+            state.citizenVaccineRegisterList.data = citizenVaccineRegisterList.data;
+        },
+        setCitizenStatus: (state, citizenStatus) => {
+            state.citizenStatus.data = citizenStatus.data;
+        },
+        getBarangayLocationList: (state, barangayLocationList) => {
+            state.barangayLocationList.data = barangayLocationList.data;
+        },
+        getBarangayOptionAddUser: (state, barangayOptionAddUser) => {
+            state.barangayOptionAddUser.data = barangayOptionAddUser.data;
+        },
+        getAllVaccineesRegisterLoading: (state, loading) => {
+            state.allVaccineesRegisterd.loading = loading;
+        },
+        getAllVaccineesRegister: (state, allVaccineesRegisterd) => {
+            state.allVaccineesRegisterd.data = allVaccineesRegisterd;
+        },
+        setAllBarangaysSchedule: (state, allBarangaysSchedule) => {
+            state.allBarangaysSchedule.data = allBarangaysSchedule.data;
+        },
+        setVaccineeList: (state, citizenVaccineeList) => {
+            state.citizenVaccineeList.data = citizenVaccineeList.data;
+        },
+        setVaccineeListLoading: (state, loading) => {
+            state.citizenVaccineeList.loading = loading;
+        }
         
     },
     module: {}

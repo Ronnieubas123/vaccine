@@ -90,7 +90,8 @@
     email: '',
     password: '',
     password_confirmation: '',
-    type: 'Admin',
+    type: 'Citizen',
+    barangay_id: 0
   }
   
   function register(ev) {
@@ -99,7 +100,7 @@
       .dispatch('register', user)
       .then((res) => {
         router.push({
-          name: 'Dashboard'
+          name: 'Records'
         })
       })
   }

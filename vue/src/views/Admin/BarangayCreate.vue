@@ -48,6 +48,7 @@
             </div>
           </div>
         </form>
+        {{ test }}
       </div>
     </div>
   </div>
@@ -73,6 +74,7 @@ let barangay = ref({
 });
 
 
+const test = computed(() => store.state.currentBarangay.data);
 
 watch(
   () => store.state.currentBarangay.data,

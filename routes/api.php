@@ -29,6 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('/vaccine', \App\Http\Controllers\VaccineController::class);
     Route::resource('/barangay', \App\Http\Controllers\BarangayController::class);
     Route::resource('/getvaccine-registration', \App\Http\Controllers\RegisterformController::class);
+    Route::get('/get-all-vaccinee-registerd', [\App\Http\Controllers\RegisterformController::class, 'getAllVaccineeRegisterd']);
     Route::resource('/announcement', \App\Http\Controllers\AnnouncementController::class);
     Route::get('/vaccine-type', [\App\Http\Controllers\VaccineController::class, 'getVaccineType']);
     Route::get('/vaccine-type-name', [\App\Http\Controllers\VaccineController::class, 'getVaccineTypeName']);
@@ -49,13 +50,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/get-all-schedule', [\App\Http\Controllers\InventoryController::class, 'getSchedule']);
     Route::get('/get-all-barangay-reports', [\App\Http\Controllers\BarangayController::class, 'getAllBarangayForReports']);
     Route::get('/get-all-vaccine-reports', [\App\Http\Controllers\VaccineController::class, 'getAllVaccineForReports']);
+    // Route::get('/get-citizine-info', [\App\Http\Controllers\UserController::class, 'citizineInfo']);
+    Route::get('/update-citizen-info/{user:id}', [\App\Http\Controllers\UserController::class, 'updateCitizenInfo']);
+    Route::post('/update-citizen', [\App\Http\Controllers\UserController::class, 'updateCitizen']);
+    Route::get('/citizen-vaccine-registed', [\App\Http\Controllers\RegisterformController::class, 'citizenVaccineRegisted']);
+    Route::get('/get-barangay-option-add-users', [\App\Http\Controllers\BarangayController::class, 'getBarangayOptionAddUser']);
+    Route::get('/get-all-barangays-schedule', [\App\Http\Controllers\BarangayController::class, 'getAllBarangaySchedule']);
+    Route::get('/citizen-vaccinee-list', [\App\Http\Controllers\RegisterformController::class, 'citizenVaccineeList']);
     
-    
-    
-    
-
     
 });
+Route::get('/get-citizine-info', [\App\Http\Controllers\UserController::class, 'citizineInfo']);
 
 Route::get('/get-all-barangays', [\App\Http\Controllers\BarangayController::class, 'allBarangysRegisterform']);
 Route::get('/citizine-get-sched', [\App\Http\Controllers\ScheduleController::class, 'citizineGetSched']);
@@ -72,6 +77,12 @@ Route::get('/filter-date/{registerform:vaccine_date}', [\App\Http\Controllers\Re
 Route::get('/filter-vaccine/{vaccine:name}', [\App\Http\Controllers\RegisterformController::class, 'filterVaccine']);
 Route::get('/message/{registerform:vaccine_date}', [\App\Http\Controllers\RegisterformController::class, 'message']);
 Route::get('/filter-reports', [\App\Http\Controllers\RegisterformController::class, 'filterReports']);
+Route::get('/vaccine-record', [\App\Http\Controllers\RegisterformController::class, 'vaccineRecord']);
+Route::get('/vaccine-description', [\App\Http\Controllers\VaccineController::class, 'vaccineRecord']);
+Route::get('/check-citizen-status', [\App\Http\Controllers\UserController::class, 'checkCitizenStatus']);
+Route::get('/get-barangay-location-list', [\App\Http\Controllers\ScheduleController::class, 'getBarangayLocationList']);
+
+
 
 
 

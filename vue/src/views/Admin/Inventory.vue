@@ -297,7 +297,7 @@ export default {
 
 
 </script>
-<style>
+<style scoped>
 tbody tr:nth-child(odd) {
     background-color: #f3f4f680;
 }

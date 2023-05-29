@@ -81,8 +81,8 @@
   
   const navigation = [
     { name: 'Home', to: { name: 'LandingPage' } },
-    { name: 'Track Request Status', to: { name: 'TrackRequestStatus' } },
-    { name: 'Announcement', to: { name: 'CitizineAnnouncement' } }
+    { name: 'Announcement', to: { name: 'CitizineAnnouncement' } },
+    { name: 'Signin', to: { name: 'Login' }}
   ]
   
   export default{

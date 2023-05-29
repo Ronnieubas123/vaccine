@@ -25,12 +25,13 @@ import VaccineUsed from '../views/Admin/VaccineUsed.vue';
 
 
 
-
+import CitizenDashboard from '../components/CitizenDashboard.vue';
 import CitizenDefaultLayout from '../components/CitizenDefaultLayout.vue';
 import RegisterForm from '../views/Citizen/RegisterForm.vue';
 import LandingPage from '../views/Citizen/LandingPage.vue';
 import TrackRequestStatus from '../views/Citizen/TrackRequestStatus.vue';
 import CitizineAnnouncement from '../views/Citizen/CitizineAnnouncement.vue';
+import Records from '../views/Citizen/Records.vue';
 
 
 const routes = [
@@ -105,6 +106,18 @@ const routes = [
         ]
 
     },
+    {
+        path: '/citizen',
+        redirect: '/citizen/records',
+        name: 'Records',
+        component: CitizenDashboard,
+        meta: { requiresAuth: true},
+        children: [
+            { path: 'records', name: 'Records', component: Records },
+            { path: 'vaccine-registration', name: 'RegisterForm', component: RegisterForm },
+            { path: 'c-announcement', name: 'CitizineAnnouncement', component: CitizineAnnouncement}
+        ]
+    }
 
 ];
 
@@ -122,6 +135,8 @@ router.beforeEach((to, from, next)=> {
         next({name: 'Vaccinee'});
     } else if(store.state.user.token && store.state.user.type === 'BS' && (to.meta.isGuest)) {
         next({name: 'Reports'});
+    } else if (store.state.user.token && store.state.user.type === 'Citizen' && (to.meta.isGuest)) {
+        next({name: 'Records'});
     }
     else {
         next();

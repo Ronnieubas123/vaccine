@@ -27,7 +27,8 @@ class UpdateUserRequest extends FormRequest
             'name' => 'required|string',
             'email' => 'required|string',
             'password' => 'required',
-            'type' => 'required|string'
+            'type' => 'required|string',
+            'barangay_id' => 'require|int'
         ];
     }
 }

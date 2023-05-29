@@ -199,7 +199,7 @@
               <td data-label="Address" class="pt-3 py-3">{{ trackStatus.address_line_1 + trackStatus.city + trackStatus.state  }}</td>
               <td data-label="Zip Code" class="pt-3 py-3">{{ trackStatus.zipcode }}</td>
               <td data-label="Vaccine Type" class="pt-3 py-3">{{ trackStatus.vaccine_type }}</td>
-              <td data-label="Dosage" class="pt-3 py-3">{{ trackStatus.dosage }}</td>
+              <td data-label="Dose" class="pt-3 py-3">{{ trackStatus.dose }}</td>
               <td data-label="Vaccine Date" class="pt-3 py-3">{{ trackStatus.vaccine_date }}</td>
               <td data-label="Location" class="pt-3 py-3">{{ trackStatus.vaccine_location }}</td>
               <td data-label="Pregnant" class="pt-3 py-3">{{ trackStatus.pregnant }}</td>
@@ -262,7 +262,7 @@
               <td data-label="Address" class="pt-3 py-3">{{ trackStatus.address_line_1 + trackStatus.city + trackStatus.state  }}</td>
               <td data-label="Zip Code" class="pt-3 py-3">{{ trackStatus.zipcode }}</td>
               <td data-label="Vaccine Type" class="pt-3 py-3">{{ trackStatus.vaccine_type }}</td>
-              <td data-label="Dosage" class="pt-3 py-3">{{ trackStatus.dosage }}</td>
+              <td data-label="Dose" class="pt-3 py-3">{{ trackStatus.dose }}</td>
               <td data-label="Vaccine Date" class="pt-3 py-3">{{ trackStatus.vaccine_date }}</td>
               <td data-label="Location" class="pt-3 py-3">{{ trackStatus.vaccine_location }}</td>
               <td data-label="Pregnant" class="pt-3 py-3">{{ trackStatus.pregnant }}</td>

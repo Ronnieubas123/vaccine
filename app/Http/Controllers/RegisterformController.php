@@ -11,6 +11,7 @@ use App\Http\Requests\UpdateRegisterformRequest;
 use App\Http\Requests\StoreRegisterformSearhRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use League\CommonMark\Extension\FrontMatter\Data\FrontMatterDataParserInterface;
 
 class RegisterformController extends Controller
@@ -22,35 +23,31 @@ class RegisterformController extends Controller
      */
     public function index()
     {
-        // query all citizine that already vacinated
-       $vaccinated = DB::table("registerform")
-            ->select(
-                "registerform.firstname as firstname",
-                "registerform.middlename as middlename",
-                "registerform.lastname as lastname",
-                "vaccines.name as vaccine_type",
-                "registerform.dose as dose",
-                "registerform.age as age",
-                "registerform.sex as sex",
-                "registerform.email as email",
-                "registerform.phone as phone",
-                "registerform.address_line_1 as address_line_1",
-                "registerform.state as state",
-                "registerform.city as city",
-                "registerform.zipcode as zipcode",
-                "schedule.date as vaccine_date",
-                "registerform.vaccine_location as vaccine_location",
-                "registerform.pregnant as pregnant",
-                "registerform.month as month",
-                "registerform.days as days",
+         $citizenRegistered = DB::table('registerform')
+            ->select
+            (
+                "users.name as name",
+                "citizen.age as age",
+                "citizen.sex as sex",
+                "citizen.region as region",
+                "citizen.province as province",
+                "citizen.city_municipality as city_municipality",
+                "citizen.barangay as barangay",
+                "citizen.photo as photo",
+                "registerform.citizen_id as citizen_id",
                 "registerform.status as status",
-                "registerform.id as id"
-                // "registerform.reference_id as reference_id"
-                )
+                "citizen.pregnant as pregnant",
+                "citizen.months as months"
+
+            )
+            ->groupBy('registerform.citizen_id','users.name','citizen.age','citizen.sex','citizen.region','citizen.province','citizen.city_municipality','citizen.barangay','citizen.photo','registerform.status','citizen.pregnant','citizen.months')
             ->join("vaccines", "registerform.first_vaccine_type", "=", "vaccines.id")
             ->join("schedule", "registerform.vaccine_date", "=", "schedule.id")
+            ->join("users", "registerform.citizen_id","=","users.id")
+            ->join("citizen", "registerform.citizen_id","=","citizen.user_id")
+            ->where("registerform.status","=","1")
             ->get();
-        return $vaccinated;
+        return $citizenRegistered;
     }
 
     /**
@@ -63,39 +60,28 @@ class RegisterformController extends Controller
     {
 
         $data = $request->validated();
+        $citizenId = $data['citizen_id'];
+        $first_vaccine_type = $data['first_vaccine_type'];
 
-        if(isset($data['firstname']) && $data['middlename'] && $data['lastname'] && $data['first_vaccine_type']) {
-
-            $firstname = $data['firstname'];
-            $middlename = $data['middlename'];
-            $lastname = $data['lastname'];
-            $first_vaccine_type = $data['first_vaccine_type'];
-
-            $registration = Registerform::where(
-                [
-                    ['firstname', '=', $firstname],
-                    ['middlename', '=', $middlename],
-                    ['lastname', '=', $lastname],
-                    ['first_vaccine_type', '=', $first_vaccine_type],
-                    ['status', '=', '0']
+        $registration = Registerform::where(
+            [
+                ['citizen_id', '=', $citizenId],
+                ['first_vaccine_type', '=', $first_vaccine_type],
+                ['status', '=', '0']
     
-                ])->first();
-            if ($registration === null) {
-               $registrationForm = Registerform::create($request->validated());
-                return response([
-                   'data' => new RegisterformResource($registrationForm),
-                   'success' => 'Success',
-                ]);
-            } else {
-                return response([
-                    'error' => 'You already registered the vaccine',
-                ], 422);
-            }
-            
+            ])->first();
+        if ($registration === null) {
+            $registrationForm = Registerform::create($request->validated());
+            return response([
+                'data' => new RegisterformResource($registrationForm),
+                'success' => 'Success',
+            ]);
+        } else {
+            return response([
+                'error' => 'You already registered the vaccine',
+            ], 422);
         }
-
-        
-        
+            
     }
 
     /**
@@ -152,7 +138,7 @@ class RegisterformController extends Controller
                 "registerform.middlename as middlename",
                 "registerform.lastname as lastname",
                 "vaccines.name as vaccine_type",
-                "vaccines.dosage as dosage",
+                "registerform.dose as dose",
                 "registerform.age as age",
                 "registerform.sex as sex",
                 "registerform.email as email",
@@ -299,10 +285,14 @@ class RegisterformController extends Controller
     }
 
     public function completeStatus(Registerform $registerform) {
+        $userId = Auth::user()->id;
         $id = $registerform->id;
         DB::table('registerform')
                 ->where('id', $id)
-                ->update(['status' => 1]);
+                ->update([
+                    'status' => 1,
+                    'user_id' => $userId
+                ]);
 
     }
     public function filterReports(Request $request) {
@@ -318,20 +308,16 @@ class RegisterformController extends Controller
         } else if($fromdate != '' && $todate != '' && $barangay == '' && $vaccine == ''  ) {
             $filterReport = DB::table("registerform")
                 ->select(
-                    "registerform.firstname as firstname",
-                    "registerform.middlename as middlename",
-                    "registerform.lastname as lastname",
+                    "users.name as name",
                     "vaccines.name as vaccine_type",
                     "registerform.first_vaccine_type as vaccine_id",
                     "registerform.dose as dose",
-                    "registerform.age as age",
-                    "registerform.sex as sex",
-                    "registerform.email as email",
-                    "registerform.phone as phone",
-                    "registerform.address_line_1 as address_line_1",
-                    "registerform.state as state",
-                    "registerform.city as city",
-                    "registerform.zipcode as zipcode",
+                    "citizen.age as age",
+                    "citizen.sex as sex",
+                    "users.email as email",
+                    "citizen.region as region",
+                    "citizen.province as province",
+                    "citizen.city_municipality as city_municipality",
                     DB::raw("DATE_FORMAT(schedule.date, '%b %d, %Y') as vaccine_date"),
                     "registerform.vaccine_date as date_id",
                     "registerform.vaccine_location as vaccine_location",
@@ -340,12 +326,13 @@ class RegisterformController extends Controller
                     "registerform.days as days",
                     "registerform.status as status",
                     "registerform.id as id"
-                    // "registerform.reference_id as reference_id"
                     )
                 ->join("vaccines", "registerform.first_vaccine_type", "=", "vaccines.id")
                 ->join("schedule", "registerform.vaccine_date", "=", "schedule.id")
+                ->join("users","registerform.citizen_id","=","users.id")
+                ->join("citizen","registerform.citizen_id","=","citizen.user_id")
                 ->whereBetween('schedule.date', [$fromdate, $todate])
-                // ->where('vaccine_location','=', $barangay)
+                ->where('registerform.status','=','1')
                 ->get();
             return $filterReport;
 
@@ -353,20 +340,16 @@ class RegisterformController extends Controller
 
             $filterReport = DB::table("registerform")
                 ->select(
-                    "registerform.firstname as firstname",
-                    "registerform.middlename as middlename",
-                    "registerform.lastname as lastname",
+                    "users.name as name",
                     "vaccines.name as vaccine_type",
                     "registerform.first_vaccine_type as vaccine_id",
                     "registerform.dose as dose",
-                    "registerform.age as age",
-                    "registerform.sex as sex",
-                    "registerform.email as email",
-                    "registerform.phone as phone",
-                    "registerform.address_line_1 as address_line_1",
-                    "registerform.state as state",
-                    "registerform.city as city",
-                    "registerform.zipcode as zipcode",
+                    "citizen.age as age",
+                    "citizen.sex as sex",
+                    "users.email as email",
+                    "citizen.region as region",
+                    "citizen.province as province",
+                    "citizen.city_municipality as city_municipality",
                     DB::raw("DATE_FORMAT(schedule.date, '%b %d, %Y') as vaccine_date"),
                     "registerform.vaccine_date as date_id",
                     "registerform.vaccine_location as vaccine_location",
@@ -375,32 +358,32 @@ class RegisterformController extends Controller
                     "registerform.days as days",
                     "registerform.status as status",
                     "registerform.id as id"
-                    // "registerform.reference_id as reference_id"
                     )
                 ->join("vaccines", "registerform.first_vaccine_type", "=", "vaccines.id")
                 ->join("schedule", "registerform.vaccine_date", "=", "schedule.id")
+                ->join("users","registerform.citizen_id","=","users.id")
+                ->join("citizen","registerform.citizen_id","=","citizen.user_id")
                 ->whereBetween('schedule.date', [$fromdate, $todate])
-                ->where('vaccine_location','=', $barangay)
+                ->where([
+                    ['vaccine_location','=', $barangay],
+                    ['registerform.status','=','1']
+                ])
                 ->get();
             return $filterReport;
 
         } else if($fromdate != '' && $todate != '' && $vaccine != '' && $barangay == '' ) {
             $filterReport = DB::table("registerform")
             ->select(
-                "registerform.firstname as firstname",
-                "registerform.middlename as middlename",
-                "registerform.lastname as lastname",
+                "users.name as name",
                 "vaccines.name as vaccine_type",
                 "registerform.first_vaccine_type as vaccine_id",
                 "registerform.dose as dose",
-                "registerform.age as age",
-                "registerform.sex as sex",
-                "registerform.email as email",
-                "registerform.phone as phone",
-                "registerform.address_line_1 as address_line_1",
-                "registerform.state as state",
-                "registerform.city as city",
-                "registerform.zipcode as zipcode",
+                "citizen.age as age",
+                "citizen.sex as sex",
+                "users.email as email",
+                "citizen.region as region",
+                "citizen.province as province",
+                "citizen.city_municipality as city_municipality",
                 DB::raw("DATE_FORMAT(schedule.date, '%b %d, %Y') as vaccine_date"),
                 "registerform.vaccine_date as date_id",
                 "registerform.vaccine_location as vaccine_location",
@@ -409,31 +392,31 @@ class RegisterformController extends Controller
                 "registerform.days as days",
                 "registerform.status as status",
                 "registerform.id as id"
-                // "registerform.reference_id as reference_id"
                 )
             ->join("vaccines", "registerform.first_vaccine_type", "=", "vaccines.id")
             ->join("schedule", "registerform.vaccine_date", "=", "schedule.id")
+            ->join("users","registerform.citizen_id","=","users.id")
+            ->join("citizen","registerform.citizen_id","=","citizen.user_id")
             ->whereBetween('schedule.date', [$fromdate, $todate])
-            ->where('vaccines.name','=', $vaccine)
+            ->where([
+                ['vaccines.name','=', $vaccine],
+                ['registerform.status','=','1']
+            ])
             ->get();
         return $filterReport;
         } else if($fromdate != '' && $todate != '' && $barangay != '' && $vaccine != '' ) {
             $filterReport = DB::table("registerform")
             ->select(
-                "registerform.firstname as firstname",
-                "registerform.middlename as middlename",
-                "registerform.lastname as lastname",
+                "users.name as name",
                 "vaccines.name as vaccine_type",
                 "registerform.first_vaccine_type as vaccine_id",
                 "registerform.dose as dose",
-                "registerform.age as age",
-                "registerform.sex as sex",
-                "registerform.email as email",
-                "registerform.phone as phone",
-                "registerform.address_line_1 as address_line_1",
-                "registerform.state as state",
-                "registerform.city as city",
-                "registerform.zipcode as zipcode",
+                "citizen.age as age",
+                "citizen.sex as sex",
+                "users.email as email",
+                "citizen.region as region",
+                "citizen.province as province",
+                "citizen.city_municipality as city_municipality",
                 DB::raw("DATE_FORMAT(schedule.date, '%b %d, %Y') as vaccine_date"),
                 "registerform.vaccine_date as date_id",
                 "registerform.vaccine_location as vaccine_location",
@@ -442,21 +425,174 @@ class RegisterformController extends Controller
                 "registerform.days as days",
                 "registerform.status as status",
                 "registerform.id as id"
-                // "registerform.reference_id as reference_id"
                 )
             ->join("vaccines", "registerform.first_vaccine_type", "=", "vaccines.id")
             ->join("schedule", "registerform.vaccine_date", "=", "schedule.id")
+            ->join("users","registerform.citizen_id","=","users.id")
+            ->join("citizen","registerform.citizen_id","=","citizen.user_id")
             ->whereBetween('schedule.date', [$fromdate, $todate])
             ->where([
                     ['vaccines.name','=', $vaccine],
-                    ['vaccine_location','=', $barangay]
+                    ['vaccine_location','=', $barangay],
+                    ['registerform.status','=','1']
                 ])
             ->get();
         return $filterReport;
         }
+    }
+    public function vaccineRecord (Request $request) {
+        $citizenId = $request->citizenId;
 
+        $citizen = DB::table('registerform')
+            ->select(
+                'vaccines.name as vaccine',
+                'schedule.date as date',
+                'registerform.status as status',
+                'registerform.id as id'
+            )
+            ->join('vaccines', 'registerform.first_vaccine_type', '=', 'vaccines.id')
+            ->join('schedule', 'registerform.vaccine_date', '=', 'schedule.id')
+            ->where('registerform.citizen_id','=', $citizenId)
+            ->get();
+        
+        $modal = DB::table('registerform')
+            ->select(
+                'users.name as name',
+                'vaccines.name as vaccine',
+                'citizen.DOF as dof',
+                'schedule.date as date',
+                'registerform.id as id'
+
+            )
+            ->join('users','registerform.citizen_id','=','users.id')
+            ->join('citizen','registerform.citizen_id','=','citizen.user_id')
+            ->join('vaccines','registerform.first_vaccine_type','=','vaccines.id')
+            ->join('schedule','registerform.vaccine_date','=','schedule.id')
+            ->where('registerform.citizen_id','=',$citizenId)
+            ->get();
         
 
+        return response([
+            'data' => $citizen ,
+            'citizenRecordModal' => $modal
+        ]); 
+    }
+    public function citizenVaccineRegisted(Request $request) {
+        $citizenId = $request->citizenId;
+
+        $citizen = DB::table('registerform')
+            ->select(
+                'users.name as name',
+                'vaccines.name as vaccine',
+                'schedule.date as date',
+                'registerform.status as status',
+                'registerform.id as id',
+                'registerform.vaccine_location as vaccine_location'
+            )
+            ->join('users','registerform.citizen_id','=','users.id')
+            ->join('citizen','registerform.citizen_id','=','citizen.user_id')
+            ->join('vaccines','registerform.first_vaccine_type','=','vaccines.id')
+            ->join('schedule','registerform.vaccine_date','=','schedule.id')
+            ->where([
+                ['registerform.citizen_id','=',$citizenId],
+                ['registerform.status','=',0]
+            ])
+            ->get();
+            return response([
+                'data' => $citizen
+            ]);
+                
+    }
+    public function getAllVaccineeRegisterd(Request $request) {
+        $userId = $request->userId;
+        $user = DB::table('users')->where('id', $userId)->first();
+        $userType = $user->type;
+        $barangayId = $user->barangay_id;
+       
+        if ($userType == 'Bhw') {
+            $barangay = DB::table('barangays')->where('id', $barangayId)->first();
+            $barangayName = $barangay->barangay_name;
+           
+            $citizenRegistered = DB::table('registerform')
+            ->select
+            (
+                "users.name as name",
+                "citizen.age as age",
+                "citizen.sex as sex",
+                "citizen.region as region",
+                "citizen.province as province",
+                "citizen.city_municipality as city_municipality",
+                "citizen.barangay as barangay",
+                "citizen.photo as photo",
+                "registerform.citizen_id as citizen_id",
+                "registerform.status as status",
+                "citizen.pregnant as pregnant",
+                "citizen.months as months"
+
+            )
+            ->groupBy('registerform.citizen_id','users.name','citizen.age','citizen.sex','citizen.region','citizen.province','citizen.city_municipality','citizen.barangay','citizen.photo','registerform.status','citizen.pregnant','citizen.months')
+            ->join("vaccines", "registerform.first_vaccine_type", "=", "vaccines.id")
+            ->join("schedule", "registerform.vaccine_date", "=", "schedule.id")
+            ->join("users", "registerform.citizen_id","=","users.id")
+            ->join("citizen", "registerform.citizen_id","=","citizen.user_id")
+            ->where([
+                ["registerform.status","=","0"],
+                ["registerform.vaccine_location","=",$barangayName]
+            ])
+            ->get();
+        return $citizenRegistered;
+
+        } else if ($userType == 'Admin') {
+            $citizenRegistered = DB::table('registerform')
+            ->select
+            (
+                "users.name as name",
+                "citizen.age as age",
+                "citizen.sex as sex",
+                "citizen.region as region",
+                "citizen.province as province",
+                "citizen.city_municipality as city_municipality",
+                "citizen.barangay as barangay",
+                "citizen.photo as photo",
+                "registerform.citizen_id as citizen_id",
+                "registerform.status as status",
+                "citizen.pregnant as pregnant",
+                "citizen.months as months"
+
+            )
+            ->groupBy('registerform.citizen_id','users.name','citizen.age','citizen.sex','citizen.region','citizen.province','citizen.city_municipality','citizen.barangay','citizen.photo','registerform.status','citizen.pregnant','citizen.months')
+            ->join("vaccines", "registerform.first_vaccine_type", "=", "vaccines.id")
+            ->join("schedule", "registerform.vaccine_date", "=", "schedule.id")
+            ->join("users", "registerform.citizen_id","=","users.id")
+            ->join("citizen", "registerform.citizen_id","=","citizen.user_id")
+            ->where("registerform.status","=","0")
+            ->get();
+        return $citizenRegistered;
+        }
+    }
+    public function citizenVaccineeList(Request $request) {
+        $citizenId = $request->citizenId;
+
+        $citizen = DB::table('registerform')
+            ->select(
+                'users.name as name',
+                'vaccines.name as vaccine',
+                'schedule.date as date',
+                'registerform.status as status',
+                'registerform.id as id'
+            )
+            ->join('users','registerform.citizen_id','=','users.id')
+            ->join('citizen','registerform.citizen_id','=','citizen.user_id')
+            ->join('vaccines','registerform.first_vaccine_type','=','vaccines.id')
+            ->join('schedule','registerform.vaccine_date','=','schedule.id')
+            ->where([
+                ['registerform.citizen_id','=',$citizenId],
+                ['registerform.status','=',1]
+            ])
+            ->get();
+            return response([
+                'data' => $citizen
+            ]);
     }
     
 }

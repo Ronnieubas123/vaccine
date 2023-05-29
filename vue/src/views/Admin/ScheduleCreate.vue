@@ -17,13 +17,25 @@
             <div class="space-y-6 bg-white px-4 py-5 sm:p-6">
 
               <div class="grid grid-cols-1 gap-6">
-                    <div class="col-span-3 sm:col-span-2">
-                      <label for="company-website" class="block text-sm font-medium text-gray-700">Date</label>
-                      <div class="mt-1 rounded-md">
-                        <input v-model="schedule.date" type="date" id="date" name="date">
-                      </div>
-                    </div>
+                <div class="col-span-3 sm:col-span-2">
+                  <label for="company-website" class="block text-sm font-medium text-gray-700">Date</label>
+                  <div class="mt-1 rounded-md">
+                    <input v-model="schedule.date" type="date" id="date" name="date">
                   </div>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 gap-6">
+                <div class="col-span-3 sm:col-span-2">
+                  <label for="company-website" class="block text-sm font-medium text-gray-700">Barangay</label>
+                  <div class="mt-1 rounded-md">
+                      <select v-model="schedule.barangay_id" id="barangay_id" name="barangay_id" autocomplete="barangay_id" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xl sm:text-sm sm:leading-6">
+                        <template v-for="barangay in barangays">
+                          <option :value="barangay.id">{{ barangay.barangay_name }}</option>
+                        </template>
+                      </select>
+                  </div>
+                </div>
+              </div>
               
             </div>
             <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
@@ -46,12 +58,12 @@ import { useRouter, useRoute } from "vue-router"
 
 const router = useRouter();
 const route = useRoute();
-// const vaccineType = computed(() => store.state.vaccineType.data);
-// const vaccineTypeName = computed(() => store.state.vaccineTypeName.data);
 
+const barangays = computed(() => store.state.allBarangaysSchedule.data);
 
 let schedule = ref({
     date: '',
+    barangay: ''
 });
 
 
@@ -67,6 +79,10 @@ watch(
 if (route.params.id) {
   store.dispatch("getSchedules", route.params.id);
 }
+
+const userId = store.state.user.id;
+store.dispatch("getAllBarangayForAddSchedule", userId);
+// store.dispatch("getAllBarangayRegisterform");
 
 
 function AddSchedule() {

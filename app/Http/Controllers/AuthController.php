@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {   
@@ -17,20 +18,44 @@ class AuthController extends Controller
                 'required',
                 'confirmed',
                 Password::min(8)->mixedCase()->numbers()->symbols()
-            ]
+            ],
+            'type' => 'required|string',
+            'barangay_id' => 'required|int'
         ]);
 
         /** @var \App\Models\User $user */
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password'])
+            'password' => bcrypt($data['password']),
+            'type' => $data['type'],
+            'barangay_id' => $data['barangay_id']
         ]);
+        $id = $user->id;
+        DB::table('citizen')->insert([
+            'user_id' => $id,
+            'DOF' => 'None',
+            'sex' => 'None',
+            'age' => 'None',
+            'indigenous' => 'None',
+            'region' => 'None',
+            'province' => 'None',
+            'city_municipality' => 'None',
+            'barangay' => 'None',
+            'photo' => 'None',
+            'pregnant' => 'None',
+            'months' => 'None'
+        ]);
+        /** @var \App\Models\MyUserModel $user **/
         $token = $user->createToken('main')->plainTextToken;
+        $userType = $user->type; 
+        $userID = $user->id; 
 
         return response([
             'user' => $user,
-            'token' => $token
+            'token' => $token,
+            'type' => $userType,
+            'id' => $userID
         ]);
     }
     
@@ -54,12 +79,14 @@ class AuthController extends Controller
         /** @var \App\Models\MyUserModel $user **/
         $user = Auth::user();
         $token = $user->createToken('main')->plainTextToken;
-        $userID = auth()->user()->type; 
+        $userType = auth()->user()->type; 
+        $userID = auth()->user()->id; 
 
         return response([
             'user' => $user,
             'token' => $token,
-            'type' => $userID
+            'type' => $userType,
+            'id' => $userID
         ]);
     }
     public function logout()

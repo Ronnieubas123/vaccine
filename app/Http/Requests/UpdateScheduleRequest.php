@@ -24,7 +24,8 @@ class UpdateScheduleRequest extends FormRequest
     public function rules()
     {
         return [
-            'date' => 'required|string'
+            'date' => 'required|string',
+            'barangay_id' => 'required|string'
         ];
     }
 }

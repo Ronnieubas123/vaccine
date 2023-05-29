@@ -152,6 +152,19 @@ class VaccineController extends Controller
     function getAllVaccineForReports () {
         return VaccineResource::collection(Vaccine::orderBy('created_at', 'DESC')->paginate(10));
     }
+    function vaccineRecord(Request $request) {
+        $vaccineId = $request->vaccineId;
+        
+        $vaccineDescription = DB::table('vaccines')
+            ->select(
+                "vaccines.description as description"
+            )
+            ->where("vaccines.id","=",$vaccineId)
+            ->get();
+        return  response([
+            'data' => $vaccineDescription
+        ]);
+    }
    
 
 }

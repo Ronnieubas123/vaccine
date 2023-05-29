@@ -4,13 +4,13 @@
         <div class="text-center mb-8">
           <h2 class="text-3xl font-bold mb-1 mt-5 pb-1 text-cyan-500">BAKREK</h2>
           <h4 class="text-xl font-semibold mb-1 mt-5 pb-1">All-In-One Vaccination Program for Barangay Health Center</h4>
-          <!-- <p class="mt-2 text-center text-sm text-gray-600">
+          <p class="mt-2 text-center text-sm text-gray-600">
             Or 
             {{ '' }}
             <router-link :to="{ name: 'Register'}" class="font-medium text-sky-400 hover:text-sky-300">
               register for free
-            </router-link>
-          </p> -->
+            </router-link>  
+          </p>
         </div>
         <form @submit="login">
           <div v-if="errorMsg" class="flex items-center justify-between py-3 px-5 bg-red-500 text-white rounded">
@@ -105,6 +105,10 @@ function login(ev) {
       } else if (store.state.user.type === 'BS') {
           router.push({ 
              name: 'Reports'
+          })
+      }else if (store.state.user.type === 'Citizen') {
+          router.push({ 
+             name: 'Records'
           })
       }
       

@@ -6,6 +6,8 @@ use App\Models\Schedule;
 use App\Http\Requests\StoreScheduleRequest;
 use App\Http\Requests\UpdateScheduleRequest;
 use App\Http\Resources\ScheduleResource;
+use App\Http\Resources\BarangayResource;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ScheduleController extends Controller
@@ -17,7 +19,20 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        return ScheduleResource::collection(Schedule::orderBy('created_at', 'DESC')->paginate(10));
+        $schedule = DB::table('schedule')
+            ->select(
+                'schedule.date as date',
+                'barangays.barangay_name as barangay',
+                'schedule.id as schedule_id'
+            )
+            ->join('barangays','schedule.barangay_id','=','barangays.id')
+            ->orderBy('date', 'DESC')
+            ->get();
+        
+            return response([
+                'data' => $schedule
+            ]);
+       
     }
 
     /**
@@ -28,8 +43,22 @@ class ScheduleController extends Controller
      */
     public function store(StoreScheduleRequest $request)
     {
-        $sched = Schedule::create($request->validated());
-        return new ScheduleResource($sched);
+        $date = $request->date;
+        $barangayId = $request->barangay_id;
+        if (DB::table('schedule')
+            ->where([
+                ['date','=',$date],
+                ['barangay_id','=',$barangayId]
+            ])
+            ->exists()) {
+            return response([
+                'error' => 'Schedule is already added'
+            ]);
+        } else {
+            $sched = Schedule::create($request->validated());
+             return new ScheduleResource($sched);
+        }
+       
     }
 
     /**
@@ -89,6 +118,27 @@ class ScheduleController extends Controller
     }
     public function allScheduleReport() {
         return ScheduleResource::collection(Schedule::orderBy('created_at', 'DESC')->paginate(10));
+    }
+    public function getBarangayLocationList(Request $request) {
+        $barangayName = $request->barangayName;
+
+        $barangay = DB::table('barangays')->where('barangay_name', $barangayName)->first();
+
+        $barangayId = $barangay->id;
+        
+        
+        $schedule = DB::table('schedule')
+            ->select(
+                'schedule.date as date',
+                'schedule.id as id'
+            )
+            ->orderBy('date','DESC')
+            ->where('schedule.barangay_id','=', $barangayId)
+            ->get();
+        
+        return response([
+            'data' => $schedule
+        ]);
     }
     
 }

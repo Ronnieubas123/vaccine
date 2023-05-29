@@ -60,9 +60,7 @@
                                     <th class="pt-3 py-3">Age</th>
                                     <th class="pt-3 py-3">Sex</th>
                                     <th class="pt-3 py-3">Email</th>
-                                    <th class="pt-3 py-3">Phone</th>
                                     <th class="pt-3 py-3">Address</th>
-                                    <th class="pt-3 py-3">Zip code</th>
                                     <th class="pt-3 py-3">Vaccine Type</th>
                                     <th class="pt-3 py-3">Vaccine Dose</th>
                                     <th class="pt-3 py-3">Vaccine Date</th>
@@ -72,13 +70,11 @@
                             <tbody> 
                                 <template v-for="allFilterRegisterforms in allFilterRegisterform">
                                     <tr>
-                                        <td data-label="Name" class="pt-3 py-3">{{ allFilterRegisterforms.firstname +"&nbsp"+  allFilterRegisterforms.middlename +"&nbsp"+  allFilterRegisterforms.lastname}}</td>
+                                        <td data-label="Name" class="pt-3 py-3">{{ allFilterRegisterforms.name}}</td>
                                         <td data-label="Age" class="pt-3 py-3">{{ allFilterRegisterforms.age }}</td>
                                         <td data-label="Sex" class="pt-3 py-3">{{ allFilterRegisterforms.sex }}</td>
                                         <td data-label="Email" class="pt-3 py-3">{{ allFilterRegisterforms.email }}</td>
-                                        <td data-label="Phone" class="pt-3 py-3">{{ allFilterRegisterforms.phone }}</td>
-                                        <td data-label="Address" class="pt-3 py-3">{{ allFilterRegisterforms.address_line_1 + allFilterRegisterforms.city + allFilterRegisterforms.state  }}</td>
-                                        <td data-label="Zip Code" class="pt-3 py-3">{{ allFilterRegisterforms.zipcode }}</td>
+                                        <td data-label="Address" class="pt-3 py-3">{{ allFilterRegisterforms.region + allFilterRegisterforms.province + allFilterRegisterforms.city_municipality }}</td>
                                         <td data-label="Vaccine Type" class="pt-3 py-3">{{ allFilterRegisterforms.vaccine_type }}</td>
                                         <td data-label="Dose" class="pt-3 py-3">{{ allFilterRegisterforms.dose }}</td>
                                         <td data-label="Vaccine Date" class="pt-3 py-3">{{ allFilterRegisterforms.vaccine_date }}</td>
@@ -117,9 +113,6 @@ let filter = ref({
 
 function reportsFilterSearch() {
     store.dispatch("reportsFilterSearch", filter.value).then(() => {
-        // router.push({
-        // name: 'Schedule',
-        // });
     })
 }
 

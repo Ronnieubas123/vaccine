@@ -140,6 +140,7 @@ const navigationAdmin = [
 const navigationBhw = [
   { name: 'Vaccinee', to: { name: 'Vaccinee' }, logo: "vaccinated.png"},
   {name: 'Vaccine Registration', to: {name: 'VaccineRegistration'}, logo: "verify.png"},
+  { name: 'Schedule', to: {name: 'Schedule' }, logo: "crowd-of-users.png"},
   {name: 'Reports', to: {name: 'Reports'}, logo: "verify.png"}
 ];
 

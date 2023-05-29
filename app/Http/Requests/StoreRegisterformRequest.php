@@ -27,18 +27,7 @@ class StoreRegisterformRequest extends FormRequest
             'receive_vaccine_dose' => 'required|string',
             'first_vaccine_type' => 'int',
             'interested_vaccine' => 'string',
-            'firstname' => 'required|string',
-            'middlename' => 'required|string',
-            'lastname' => 'required|string',
-            'dof' => 'required|string',
-            'age' => 'required',
-            'address_line_1' => 'required|string',
-            'city' => 'required|string',
-            'state' => 'required|string',
-            'zipcode' => 'required|int',
-            'phone' => 'required|int',
-            'email' => 'required|string',
-            'sex' => 'required|string',
+            'citizen_id' => 'string',
             'vaccine_location' => 'required|string',
             'vaccine_date' => 'required',
             'status' => 'required|string',
@@ -46,7 +35,8 @@ class StoreRegisterformRequest extends FormRequest
             'month' => '',
             'days' => '',
             'reference_id' => 'required|string',
-            'dose' => 'required'
+            'dose' => 'required',
+            'user_id' => 'string'
             
         ]; 
     }

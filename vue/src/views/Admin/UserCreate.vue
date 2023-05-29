@@ -54,6 +54,20 @@
                       </div>
                     </div>
                   </div>
+
+                  <div class="grid grid-cols-1 gap-6">
+                    <div class="col-span-3 sm:col-span-2">
+                      <label for="company-website" class="block text-sm font-medium text-gray-700">Barangay</label>
+                      <div class="mt-1 rounded-md">
+                        <select v-model="user.barangay_id" name="barangay_id" id="barangay_id">
+                          <option value="" selected disabled>Choose barangay here</option>
+                            <template v-for="barangay in barangays">
+                              <option :value="barangay.id">{{ barangay.barangay_name }}</option>
+                            </template>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
               
             </div>
             <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
@@ -77,12 +91,16 @@ import { useRouter, useRoute } from "vue-router"
 const router = useRouter();
 const route = useRoute();
 const userLoading = computed(() => store.state.currentUser.loading);
+const barangays = computed(() => store.state.barangayOptionAddUser.data);
+
+store.dispatch('addUserGetBarangayOption');
 
 let user = ref({
     name: '',
     email: '',
     password: '',
-    type: ''
+    type: '',
+    barangay_id: 0
 });
 
 

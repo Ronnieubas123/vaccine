@@ -7,6 +7,7 @@ use App\Http\Requests\StoreBarangayRequest;
 use App\Http\Requests\UpdateBarangayRequest;
 use App\Http\Resources\BarangayResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BarangayController extends Controller
 {
@@ -78,6 +79,23 @@ class BarangayController extends Controller
     }
     public function getAllBarangayForReports() {
         return BarangayResource::collection(Barangay::orderBy('created_at', 'ASC')->get());
+    }
+    public function getBarangayOptionAddUser() {
+        return BarangayResource::collection(Barangay::orderBy('created_at', 'ASC')->get());
+    }
+    public function getAllBarangaySchedule(Request $request) {
+        $userId = $request->userId;
+        $user = DB::table('users')->where('id', $userId)->first();
+        $barangayId = $user->barangay_id;
+        $userType = $user->type;
+
+        if ($userType == 'Bhw') {
+            return BarangayResource::collection(Barangay::orderBy('created_at', 'ASC')->where('id', $barangayId)->get());
+        } else if($userType == 'Admin') {
+            return BarangayResource::collection(Barangay::orderBy('created_at', 'ASC')->get());
+        }
+
+
     }
     
 }
